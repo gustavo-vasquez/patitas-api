@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Patitas.Infrastructure\Patitas.Infrastructure.csproj" />
     <ProjectReference Include="..\Patitas.Services\Patitas.Services.csproj" />
   </ItemGroup>
 

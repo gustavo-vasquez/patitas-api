@@ -5,11 +5,11 @@ VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patitas.Presentation", "Patitas.Presentation\Patitas.Presentation.csproj", "{1E013CDE-863F-4380-9AA2-F7E99B0BA23B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patitas.Services", "Patitas.Services\Patitas.Services.csproj", "{971EC5D5-E93C-4604-A4E3-F9A293DB93D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patitas.Services", "Patitas.Services\Patitas.Services.csproj", "{971EC5D5-E93C-4604-A4E3-F9A293DB93D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patitas.Domain", "Patitas.Domain\Patitas.Domain.csproj", "{7E77F7CB-F020-4617-86CD-1E07D5C56C0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Patitas.Domain", "Patitas.Domain\Patitas.Domain.csproj", "{7E77F7CB-F020-4617-86CD-1E07D5C56C0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patitas.Data", "Patitas.Data\Patitas.Data.csproj", "{E21D8F8D-27EC-40C1-A40D-C9A6AC7F964B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patitas.Infrastructure", "Patitas.Infrastructure\Patitas.Infrastructure.csproj", "{2D09E175-65B6-42FD-8841-08DAA5BC8579}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{7E77F7CB-F020-4617-86CD-1E07D5C56C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E77F7CB-F020-4617-86CD-1E07D5C56C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E77F7CB-F020-4617-86CD-1E07D5C56C0B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E21D8F8D-27EC-40C1-A40D-C9A6AC7F964B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E21D8F8D-27EC-40C1-A40D-C9A6AC7F964B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E21D8F8D-27EC-40C1-A40D-C9A6AC7F964B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E21D8F8D-27EC-40C1-A40D-C9A6AC7F964B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D09E175-65B6-42FD-8841-08DAA5BC8579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D09E175-65B6-42FD-8841-08DAA5BC8579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D09E175-65B6-42FD-8841-08DAA5BC8579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D09E175-65B6-42FD-8841-08DAA5BC8579}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
