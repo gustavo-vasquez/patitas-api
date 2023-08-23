@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Patitas.Infrastructure.Contracts
 {
-    internal interface IRepository<T, K> where T : class where K : class
+    public interface IRepository<T, K> where T : class where K : struct
     {
         Task<T?> GetByIdAsync(K id);
         Task<IEnumerable<T>> GetAllAsync();

@@ -4,7 +4,7 @@ using System.Reflection.Metadata;
 
 namespace Patitas.Infrastructure.Repositories
 {
-    public class Repository<T, K> : IRepository<T, K> where T : class where K : class
+    public class Repository<T, K> : IRepository<T, K> where T : class where K : struct
     {
         private readonly PatitasContext _context;
 
