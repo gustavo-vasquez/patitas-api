@@ -1,5 +1,5 @@
 ﻿using Patitas.Domain.Entities;
-using Patitas.Infrastructure.Contracts;
+using Patitas.Infrastructure.Contracts.Manager;
 using Patitas.Services.Contracts;
 using Patitas.Services.DTO;
 using System;

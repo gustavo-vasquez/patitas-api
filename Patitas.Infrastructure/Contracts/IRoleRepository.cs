@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Patitas.Infrastructure.Contracts
 {
-    public interface IUserRepository : IRepository<Usuario, int>
+    public interface IRoleRepository : IRepository<RolUsuario, int>
     {
-        Task<Usuario> GetUserLoginData(string email, string password);
     }
 }

@@ -8,11 +8,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Patitas.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ADD_RolesYUsuarios : Migration
+    public partial class SEED_BarrioRolUsuarios : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.InsertData(
+                table: "Barrios",
+                columns: new[] { "Id", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "Congreso" },
+                    { 2, "Palermo" },
+                    { 3, "Puerto Madero" },
+                    { 4, "Recoleta" }
+                });
+
             migrationBuilder.InsertData(
                 table: "RolesUsuario",
                 columns: new[] { "Id", "Nombre" },
@@ -29,21 +40,21 @@ namespace Patitas.Infrastructure.Migrations
                 columns: new[] { "Id", "Direccion", "Email", "FechaCreacion", "FotoDePerfil", "Id_Barrio", "Id_RolUsuario", "NombreUsuario", "Password", "Telefono" },
                 values: new object[,]
                 {
-                    { 1, null, "cosme.fulanito@gmail.com", new DateTime(2023, 8, 18, 1, 54, 0, 73, DateTimeKind.Local).AddTicks(7497), null, 4, 1, "Cosme_Fulanito", "asd123", null },
-                    { 2, null, "admin.patitas@gmail.com", new DateTime(2023, 8, 18, 1, 54, 0, 73, DateTimeKind.Local).AddTicks(7509), null, 3, 2, "Administrador", "asd123", null },
-                    { 3, null, "refugio_sanpedro@gmail.com", new DateTime(2023, 8, 18, 1, 54, 0, 73, DateTimeKind.Local).AddTicks(7511), null, 2, 3, "Refugio.San.Pedro", "asd123", null },
-                    { 4, null, "picaduras_oficial@gmail.com", new DateTime(2023, 8, 18, 1, 54, 0, 73, DateTimeKind.Local).AddTicks(7512), null, 1, 4, "Picaduras", "asd123", null }
+                    { 1, null, "admin.patitas@gmail.com", new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3914), null, 3, 1, "administrador", "asd123", null },
+                    { 2, null, "adoptante.test@gmail.com", new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3924), null, 4, 2, "adoptante.test", "asd123", null },
+                    { 3, null, "refugio_sanpedro@gmail.com", new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3926), null, 1, 3, "san.pedro", "asd123", null },
+                    { 4, null, "cuidado_animal_oficial@gmail.com", new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3927), null, 2, 4, "cuidado_animal", "asd123", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Administradores",
                 columns: new[] { "Id", "EsFundador" },
-                values: new object[] { 2, true });
+                values: new object[] { 1, true });
 
             migrationBuilder.InsertData(
                 table: "Adoptantes",
                 columns: new[] { "Id", "Apellido", "DNI", "FechaNacimiento", "Nombre" },
-                values: new object[] { 1, "Fulanito", null, null, "Cosme" });
+                values: new object[] { 2, "Test", null, null, "Adoptante" });
 
             migrationBuilder.InsertData(
                 table: "Refugios",
@@ -53,7 +64,7 @@ namespace Patitas.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Veterinarias",
                 columns: new[] { "Id", "Especialidades", "FechaFundacion", "HorarioApertura", "HorarioCierre", "Nombre", "RazonSocial", "SitioWeb", "TelefonoAlternativo" },
-                values: new object[] { 4, "Vacunación, Cirugía, Ecografía, Peluquería", new DateTime(2012, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "10", "20", "Picaduras", "Picaduras S.R.L.", null, null });
+                values: new object[] { 4, "Vacunación, Cirugía, Ecografía, Peluquería", new DateTime(2012, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "10", "20", "Cuidado Animal", "Cuidado Animal S.A.", null, null });
         }
 
         /// <inheritdoc />
@@ -62,12 +73,12 @@ namespace Patitas.Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "Administradores",
                 keyColumn: "Id",
-                keyValue: 2);
+                keyValue: 1);
 
             migrationBuilder.DeleteData(
                 table: "Adoptantes",
                 keyColumn: "Id",
-                keyValue: 1);
+                keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Refugios",
@@ -96,6 +107,26 @@ namespace Patitas.Infrastructure.Migrations
 
             migrationBuilder.DeleteData(
                 table: "Usuarios",
+                keyColumn: "Id",
+                keyValue: 4);
+
+            migrationBuilder.DeleteData(
+                table: "Barrios",
+                keyColumn: "Id",
+                keyValue: 1);
+
+            migrationBuilder.DeleteData(
+                table: "Barrios",
+                keyColumn: "Id",
+                keyValue: 2);
+
+            migrationBuilder.DeleteData(
+                table: "Barrios",
+                keyColumn: "Id",
+                keyValue: 3);
+
+            migrationBuilder.DeleteData(
+                table: "Barrios",
                 keyColumn: "Id",
                 keyValue: 4);
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patitas.Infrastructure.Contracts;
+using System.Linq.Expressions;
 using System.Reflection.Metadata;
 
 namespace Patitas.Infrastructure.Repositories
@@ -18,14 +19,24 @@ namespace Patitas.Infrastructure.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
+        public async Task<T?> FindByAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().Where(predicate).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<bool> ExistsAsync(K id)
+        public async Task<IEnumerable<T>> FindAllByAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _context.Set<T>().AnyAsync();
+            return await _context.Set<T>().Where(predicate).ToListAsync();
+        }
+
+        public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().AnyAsync(predicate);
         }
 
         public async Task CreateAsync(T entity)

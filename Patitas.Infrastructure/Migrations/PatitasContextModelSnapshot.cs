@@ -40,7 +40,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 2,
+                            Id = 1,
                             EsFundador = true
                         });
                 });
@@ -74,9 +74,9 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Apellido = "Fulanito",
-                            Nombre = "Cosme"
+                            Id = 2,
+                            Apellido = "Test",
+                            Nombre = "Adoptante"
                         });
                 });
 
@@ -811,41 +811,41 @@ namespace Patitas.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "cosme.fulanito@gmail.com",
-                            FechaCreacion = new DateTime(2023, 8, 18, 1, 54, 0, 73, DateTimeKind.Local).AddTicks(7497),
-                            Id_Barrio = 4,
+                            Email = "admin.patitas@gmail.com",
+                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3914),
+                            Id_Barrio = 3,
                             Id_RolUsuario = 1,
-                            NombreUsuario = "Cosme_Fulanito",
+                            NombreUsuario = "administrador",
                             Password = "asd123"
                         },
                         new
                         {
                             Id = 2,
-                            Email = "admin.patitas@gmail.com",
-                            FechaCreacion = new DateTime(2023, 8, 18, 1, 54, 0, 73, DateTimeKind.Local).AddTicks(7509),
-                            Id_Barrio = 3,
+                            Email = "adoptante.test@gmail.com",
+                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3924),
+                            Id_Barrio = 4,
                             Id_RolUsuario = 2,
-                            NombreUsuario = "Administrador",
+                            NombreUsuario = "adoptante.test",
                             Password = "asd123"
                         },
                         new
                         {
                             Id = 3,
                             Email = "refugio_sanpedro@gmail.com",
-                            FechaCreacion = new DateTime(2023, 8, 18, 1, 54, 0, 73, DateTimeKind.Local).AddTicks(7511),
-                            Id_Barrio = 2,
+                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3926),
+                            Id_Barrio = 1,
                             Id_RolUsuario = 3,
-                            NombreUsuario = "Refugio.San.Pedro",
+                            NombreUsuario = "san.pedro",
                             Password = "asd123"
                         },
                         new
                         {
                             Id = 4,
-                            Email = "picaduras_oficial@gmail.com",
-                            FechaCreacion = new DateTime(2023, 8, 18, 1, 54, 0, 73, DateTimeKind.Local).AddTicks(7512),
-                            Id_Barrio = 1,
+                            Email = "cuidado_animal_oficial@gmail.com",
+                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3927),
+                            Id_Barrio = 2,
                             Id_RolUsuario = 4,
-                            NombreUsuario = "Picaduras",
+                            NombreUsuario = "cuidado_animal",
                             Password = "asd123"
                         });
                 });
@@ -932,8 +932,8 @@ namespace Patitas.Infrastructure.Migrations
                             FechaFundacion = new DateTime(2012, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HorarioApertura = "10",
                             HorarioCierre = "20",
-                            Nombre = "Picaduras",
-                            RazonSocial = "Picaduras S.R.L."
+                            Nombre = "Cuidado Animal",
+                            RazonSocial = "Cuidado Animal S.A."
                         });
                 });
 

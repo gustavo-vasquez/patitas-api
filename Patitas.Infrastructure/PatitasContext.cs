@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patitas.Domain.Entities;
+using Patitas.Infrastructure.Configuration;
 
 namespace Patitas.Infrastructure
 {
@@ -39,42 +40,13 @@ namespace Patitas.Infrastructure
             base.OnModelCreating(modelBuilder);
 
             // Seed data
-            modelBuilder.Entity<Barrio>().HasData(
-                new Barrio() { Id = 1, Nombre = "Congreso" },
-                new Barrio() { Id = 2, Nombre = "Palermo" },
-                new Barrio() { Id = 3, Nombre = "Puerto Madero" },
-                new Barrio() { Id = 4, Nombre = "Recoleta" }
-            );
-
-            modelBuilder.Entity<RolUsuario>().HasData(
-                new RolUsuario() { Id = 1, Nombre = "Administrador" },
-                new RolUsuario() { Id = 2, Nombre = "Adoptante" },
-                new RolUsuario() { Id = 3, Nombre = "Refugio" },
-                new RolUsuario() { Id = 4, Nombre = "Veterinaria" }
-            );
-
-            modelBuilder.Entity<Usuario>().HasData(
-                new Usuario() { Id = 1, NombreUsuario = "Cosme_Fulanito", Email = "cosme.fulanito@gmail.com", Password = "asd123", FechaCreacion = DateTime.Now, Id_Barrio = 4, Id_RolUsuario = 2 },
-                new Usuario() { Id = 2, NombreUsuario = "Administrador", Email = "admin.patitas@gmail.com", Password = "asd123", FechaCreacion = DateTime.Now, Id_Barrio = 3, Id_RolUsuario = 1 },
-                new Usuario() { Id = 3, NombreUsuario = "Refugio.San.Pedro", Email = "refugio_sanpedro@gmail.com", Password = "asd123", FechaCreacion = DateTime.Now, Id_Barrio = 2, Id_RolUsuario = 3 },
-                new Usuario() { Id = 4, NombreUsuario = "Picaduras", Email = "picaduras_oficial@gmail.com", Password = "asd123", FechaCreacion = DateTime.Now, Id_Barrio = 1, Id_RolUsuario = 4 }
-            );
-
-            modelBuilder.Entity<Adoptante>().HasData(
-                new Adoptante() { Id = 1, Nombre = "Cosme", Apellido = "Fulanito" }
-            );
-
-            modelBuilder.Entity<Administrador>().HasData(
-                new Administrador() { Id = 2, EsFundador = true }
-            );
-
-            modelBuilder.Entity<Refugio>().HasData(
-                new Refugio() { Id = 3, Nombre = "San Pedro", RazonSocial = "Refugio San Pedro S.A.", NombreResponsable = "Homero", ApellidoResponsable = "Simpson", HorarioApertura = "09", HorarioCierre = "14" }
-            );
-
-            modelBuilder.Entity<Veterinaria>().HasData(
-                new Veterinaria() { Id = 4, Nombre = "Picaduras", RazonSocial = "Picaduras S.R.L.", Especialidades = "Vacunación, Cirugía, Ecografía, Peluquería", FechaFundacion = DateTime.Parse("2012-10-28"), HorarioApertura = "10", HorarioCierre = "20" }
-            );
+            modelBuilder.ApplyConfiguration(new BarrioConfiguration());
+            modelBuilder.ApplyConfiguration(new RolConfiguration());
+            modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
+            modelBuilder.ApplyConfiguration(new AdministradorConfiguration());
+            modelBuilder.ApplyConfiguration(new AdoptanteConfiguration());
+            modelBuilder.ApplyConfiguration(new RefugioConfiguration());
+            modelBuilder.ApplyConfiguration(new VeterinariaConfiguration());
 
             ////////////////////////////////////////////////////////////////
 

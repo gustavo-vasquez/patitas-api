@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Patitas.Services.Contracts
+namespace Patitas.Services.Contracts.Manager
 {
     public interface IServiceManager
     {
-        IUserService UserService { get; }
+        IAuthenticationService AuthenticationService { get; }
         IAdopterService AdopterService { get; }
     }
 }

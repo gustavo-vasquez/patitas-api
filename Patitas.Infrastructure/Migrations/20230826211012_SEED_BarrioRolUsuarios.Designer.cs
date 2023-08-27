@@ -12,8 +12,8 @@ using Patitas.Infrastructure;
 namespace Patitas.Infrastructure.Migrations
 {
     [DbContext(typeof(PatitasContext))]
-    [Migration("20230818035927_ADD_BarrioSeedData")]
-    partial class ADD_BarrioSeedData
+    [Migration("20230826211012_SEED_BarrioRolUsuarios")]
+    partial class SEED_BarrioRolUsuarios
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,13 @@ namespace Patitas.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Administradores");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EsFundador = true
+                        });
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Adoptante", b =>
@@ -66,6 +73,14 @@ namespace Patitas.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Adoptantes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            Apellido = "Test",
+                            Nombre = "Adoptante"
+                        });
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Animal", b =>
@@ -555,6 +570,18 @@ namespace Patitas.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Refugios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            ApellidoResponsable = "Simpson",
+                            HorarioApertura = "09",
+                            HorarioCierre = "14",
+                            Nombre = "San Pedro",
+                            NombreResponsable = "Homero",
+                            RazonSocial = "Refugio San Pedro S.A."
+                        });
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.RolUsuario", b =>
@@ -573,6 +600,28 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RolesUsuario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Administrador"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Adoptante"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nombre = "Refugio"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nombre = "Veterinaria"
+                        });
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.SeguimientoDeVacunacion", b =>
@@ -760,6 +809,48 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id_RolUsuario");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin.patitas@gmail.com",
+                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3914),
+                            Id_Barrio = 3,
+                            Id_RolUsuario = 1,
+                            NombreUsuario = "administrador",
+                            Password = "asd123"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "adoptante.test@gmail.com",
+                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3924),
+                            Id_Barrio = 4,
+                            Id_RolUsuario = 2,
+                            NombreUsuario = "adoptante.test",
+                            Password = "asd123"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "refugio_sanpedro@gmail.com",
+                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3926),
+                            Id_Barrio = 1,
+                            Id_RolUsuario = 3,
+                            NombreUsuario = "san.pedro",
+                            Password = "asd123"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "cuidado_animal_oficial@gmail.com",
+                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3927),
+                            Id_Barrio = 2,
+                            Id_RolUsuario = 4,
+                            NombreUsuario = "cuidado_animal",
+                            Password = "asd123"
+                        });
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Vacuna", b =>
@@ -835,6 +926,18 @@ namespace Patitas.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Veterinarias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            Especialidades = "Vacunación, Cirugía, Ecografía, Peluquería",
+                            FechaFundacion = new DateTime(2012, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HorarioApertura = "10",
+                            HorarioCierre = "20",
+                            Nombre = "Cuidado Animal",
+                            RazonSocial = "Cuidado Animal S.A."
+                        });
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.VeterinariaAsignadaARefugio", b =>

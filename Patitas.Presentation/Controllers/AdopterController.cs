@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Patitas.Services.Contracts;
+using Patitas.Services.Contracts.Manager;
 using Patitas.Services.DTO;
 
 namespace Patitas.Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/adopter")]
     [ApiController]
     public class AdopterController : Controller
     {
