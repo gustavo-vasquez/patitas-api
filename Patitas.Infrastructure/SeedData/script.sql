@@ -85,14 +85,6 @@ values (4, 3);
 --select a.Nombre as 'Nombre del animal', a.Genero, r.Nombre as 'Refugio', r.RazonSocial
 --from dbo.Animales as a inner join dbo.Refugios as r on a.Id_Refugio = r.Id
 
--- Comentarios
-SET IDENTITY_INSERT dbo.Comentarios ON
-insert into dbo.Comentarios (Id, Descripcion, FechaCreacion, EstaActivo, FechaEdicion, PendienteDeAprobacion, AprobadoPor_IdAdministrador, Nro_Estrellas, Id_Refugio, Id_Adoptante)
-values
-(1, 'Muy buen refugio, tremenda experiencia xD', GETDATE(), 1, null, 0, 1, 4, 3, 2),
-(2, 'Todo el proceso se dió muy rápido y siempre fueron muy gentiles.', GETDATE(), 1, null, 0, 1, 5, 3, 5);
-SET IDENTITY_INSERT dbo.Comentarios OFF
-
 -- Estrellas de comentario (descripción)
 insert into dbo.DetalleEstrellas (NroEstrella, Descripcion)
 values
@@ -101,3 +93,11 @@ values
 (3, 'Buen lugar'),
 (4, 'Muy recomendable'),
 (5, 'Excelente');
+
+-- Comentarios
+SET IDENTITY_INSERT dbo.Comentarios ON
+insert into dbo.Comentarios (Id, Descripcion, FechaCreacion, EstaActivo, FechaEdicion, PendienteDeAprobacion, AprobadoPor_IdAdministrador, Nro_Estrellas, Id_Refugio, Id_Adoptante)
+values
+(1, 'Muy buen refugio, tremenda experiencia xD', GETDATE(), 1, null, 0, 1, 4, 3, 2),
+(2, 'Todo el proceso se dió muy rápido y siempre fueron muy gentiles.', GETDATE(), 1, null, 0, 1, 5, 3, 5);
+SET IDENTITY_INSERT dbo.Comentarios OFF

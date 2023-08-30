@@ -7,7 +7,7 @@ using Patitas.Services.DTO.Register;
 
 namespace Patitas.Presentation.Controllers
 {
-    [Route("/api/auth")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthenticationController : Controller
     {
@@ -27,9 +27,9 @@ namespace Patitas.Presentation.Controllers
                 LoginResponseDTO userInfo = await _serviceManager.AuthenticationService.Login(loginData.Email, loginData.Password);
                 return Ok(userInfo);
             }
-            catch
+            catch(Exception ex)
             {
-                return Unauthorized();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -37,8 +37,15 @@ namespace Patitas.Presentation.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerData)
         {
-            RegisterResponseDTO result = await _serviceManager.AuthenticationService.Register(registerData);
-            return Ok(result);
+            try
+            {
+                RegisterResponseDTO result = await _serviceManager.AuthenticationService.Register(registerData);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize]
