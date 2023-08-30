@@ -39,17 +39,6 @@ namespace Patitas.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-            // Seed data
-            modelBuilder.ApplyConfiguration(new BarrioConfiguration());
-            modelBuilder.ApplyConfiguration(new RolConfiguration());
-            modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
-            modelBuilder.ApplyConfiguration(new AdministradorConfiguration());
-            modelBuilder.ApplyConfiguration(new AdoptanteConfiguration());
-            modelBuilder.ApplyConfiguration(new RefugioConfiguration());
-            modelBuilder.ApplyConfiguration(new VeterinariaConfiguration());
-
-            ////////////////////////////////////////////////////////////////
-
             modelBuilder.Entity<Usuario>()
                 .HasOne(e => e.Administrador)
                 .WithOne(e => e.Usuario)

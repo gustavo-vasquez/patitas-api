@@ -35,14 +35,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Administradores");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EsFundador = true
-                        });
+                    b.ToTable("Administradores", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Adoptante", b =>
@@ -69,15 +62,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Adoptantes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            Apellido = "Test",
-                            Nombre = "Adoptante"
-                        });
+                    b.ToTable("Adoptantes", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Animal", b =>
@@ -139,7 +124,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Refugio");
 
-                    b.ToTable("Animales");
+                    b.ToTable("Animales", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.AnimalVacuna", b =>
@@ -157,7 +142,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Vacuna");
 
-                    b.ToTable("AnimalVacuna");
+                    b.ToTable("AnimalVacuna", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Barrio", b =>
@@ -175,29 +160,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Barrios");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Nombre = "Congreso"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Nombre = "Palermo"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Nombre = "Puerto Madero"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Nombre = "Recoleta"
-                        });
+                    b.ToTable("Barrios", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.CausaDeDenuncia", b =>
@@ -215,7 +178,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CausasDeDenuncia");
+                    b.ToTable("CausasDeDenuncia", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Comentario", b =>
@@ -265,7 +228,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Nro_Estrellas");
 
-                    b.ToTable("Comentarios");
+                    b.ToTable("Comentarios", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Denuncia", b =>
@@ -300,7 +263,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Usuario");
 
-                    b.ToTable("Denuncias");
+                    b.ToTable("Denuncias", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.DetalleEstrella", b =>
@@ -315,7 +278,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("NroEstrella");
 
-                    b.ToTable("DetalleEstrellas");
+                    b.ToTable("DetalleEstrellas", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Especie", b =>
@@ -333,7 +296,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Especies");
+                    b.ToTable("Especies", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.EspecieVacuna", b =>
@@ -348,7 +311,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Vacuna");
 
-                    b.ToTable("EspecieVacuna");
+                    b.ToTable("EspecieVacuna", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.FormularioPreAdopcion", b =>
@@ -423,7 +386,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id_Adoptante")
                         .IsUnique();
 
-                    b.ToTable("FormulariosPreAdopcion");
+                    b.ToTable("FormulariosPreAdopcion", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.ModeracionDePublicacion", b =>
@@ -452,7 +415,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Administrador");
 
-                    b.ToTable("ModeracionDePublicaciones");
+                    b.ToTable("ModeracionDePublicaciones", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Publicacion", b =>
@@ -496,7 +459,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("RespondeA_IdPublicacion");
 
-                    b.ToTable("Publicaciones");
+                    b.ToTable("Publicaciones", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Raza", b =>
@@ -519,7 +482,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Especie");
 
-                    b.ToTable("Razas");
+                    b.ToTable("Razas", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Refugio", b =>
@@ -566,19 +529,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Refugios");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            ApellidoResponsable = "Simpson",
-                            HorarioApertura = "09",
-                            HorarioCierre = "14",
-                            Nombre = "San Pedro",
-                            NombreResponsable = "Homero",
-                            RazonSocial = "Refugio San Pedro S.A."
-                        });
+                    b.ToTable("Refugios", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.RolUsuario", b =>
@@ -596,29 +547,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RolesUsuario");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Nombre = "Administrador"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Nombre = "Adoptante"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Nombre = "Refugio"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Nombre = "Veterinaria"
-                        });
+                    b.ToTable("RolesUsuario", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.SeguimientoDeVacunacion", b =>
@@ -655,7 +584,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Veterinaria");
 
-                    b.ToTable("SeguimientoDeVacunaciones");
+                    b.ToTable("SeguimientoDeVacunaciones", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.SolicitudDeAdopcion", b =>
@@ -692,7 +621,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Refugio");
 
-                    b.ToTable("SolicitudesDeAdopcion");
+                    b.ToTable("SolicitudesDeAdopcion", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Tema", b =>
@@ -710,7 +639,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Temas");
+                    b.ToTable("Temas", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Turno", b =>
@@ -753,7 +682,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_SolicitudDeAdopcion");
 
-                    b.ToTable("Turnos");
+                    b.ToTable("Turnos", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Usuario", b =>
@@ -805,49 +734,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_RolUsuario");
 
-                    b.ToTable("Usuarios");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin.patitas@gmail.com",
-                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3914),
-                            Id_Barrio = 3,
-                            Id_RolUsuario = 1,
-                            NombreUsuario = "administrador",
-                            Password = "asd123"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "adoptante.test@gmail.com",
-                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3924),
-                            Id_Barrio = 4,
-                            Id_RolUsuario = 2,
-                            NombreUsuario = "adoptante.test",
-                            Password = "asd123"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "refugio_sanpedro@gmail.com",
-                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3926),
-                            Id_Barrio = 1,
-                            Id_RolUsuario = 3,
-                            NombreUsuario = "san.pedro",
-                            Password = "asd123"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Email = "cuidado_animal_oficial@gmail.com",
-                            FechaCreacion = new DateTime(2023, 8, 26, 18, 10, 12, 303, DateTimeKind.Local).AddTicks(3927),
-                            Id_Barrio = 2,
-                            Id_RolUsuario = 4,
-                            NombreUsuario = "cuidado_animal",
-                            Password = "asd123"
-                        });
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Vacuna", b =>
@@ -873,7 +760,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vacunas");
+                    b.ToTable("Vacunas", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Veterinaria", b =>
@@ -922,19 +809,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Veterinarias");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 4,
-                            Especialidades = "Vacunación, Cirugía, Ecografía, Peluquería",
-                            FechaFundacion = new DateTime(2012, 10, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HorarioApertura = "10",
-                            HorarioCierre = "20",
-                            Nombre = "Cuidado Animal",
-                            RazonSocial = "Cuidado Animal S.A."
-                        });
+                    b.ToTable("Veterinarias", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.VeterinariaAsignadaARefugio", b =>
@@ -949,7 +824,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Refugio");
 
-                    b.ToTable("VeterinariasAsignadasARefugios");
+                    b.ToTable("VeterinariasAsignadasARefugios", (string)null);
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Administrador", b =>

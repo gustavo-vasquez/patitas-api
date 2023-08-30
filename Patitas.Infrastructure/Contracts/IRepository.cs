@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Patitas.Infrastructure.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,6 +11,7 @@ namespace Patitas.Infrastructure.Contracts
     public interface IRepository<T, K> where T : class where K : struct
     {
         Task<T?> GetByIdAsync(K id);
+        Task<T?> GetByIdAsync(K id, IncludeTypes includeType, string tableNameProperty = "");
         Task<T?> FindByAsync(Expression<Func<T, bool>> predicate);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> FindAllByAsync(Expression<Func<T, bool>> predicate);

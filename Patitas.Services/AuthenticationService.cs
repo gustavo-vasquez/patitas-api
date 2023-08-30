@@ -31,20 +31,20 @@ namespace Patitas.Services
 
         public async Task<LoginResponseDTO> Login(string email, string password)
         {
-            Usuario user = await _repositoryManager.UserRepository.GetUserLoginData(email, password);
+            Usuario usuario = await _repositoryManager.UsuarioRepository.GetUserLoginData(email, password);
             //RolUsuario role = await _repositoryManager.RoleRepository.GetRoleByUser(user.Id);
             
             // Establezco los claims que va a contener el token
-            IEnumerable<Claim> claims = this.setClaimsForToken(user, user.RolUsuario.Nombre);
+            IEnumerable<Claim> claims = this.setClaimsForToken(usuario, usuario.RolUsuario.Nombre);
             // Token listo para ser enviado
             string generatedToken = this.GenerateToken(claims);
 
             return new LoginResponseDTO()
             {
-                Username = user.NombreUsuario,
-                Email = user.Email,
-                ProfilePicture = user.FotoDePerfil,
-                RoleName = user.RolUsuario.Nombre,
+                Username = usuario.NombreUsuario,
+                Email = usuario.Email,
+                ProfilePicture = usuario.FotoDePerfil,
+                RoleName = usuario.RolUsuario.Nombre,
                 TokenAccess = generatedToken
             }; // Esta información es la que va a recibir el navegador
         }
@@ -53,10 +53,10 @@ namespace Patitas.Services
         {
             try
             {
-                if(await _repositoryManager.UserRepository.ExistsAsync(u => u.Email.Equals(registerData.Email) || u.NombreUsuario.Equals(registerData.Username)))
+                if(await _repositoryManager.UsuarioRepository.ExistsAsync(u => u.Email.Equals(registerData.Email) || u.NombreUsuario.Equals(registerData.Username)))
                     throw new Exception("El email o nombre de usuario ya se encuentra registrado.");
 
-                Usuario newUser = new Usuario()
+                Usuario usuarioNuevo = new Usuario()
                 {
                     NombreUsuario = registerData.Username,
                     Email = registerData.Email,
@@ -66,28 +66,28 @@ namespace Patitas.Services
                     Id_RolUsuario = 2
                 };
 
-                await _repositoryManager.UserRepository.CreateAsync(newUser);
+                await _repositoryManager.UsuarioRepository.CreateAsync(usuarioNuevo);
 
-                Usuario? user = await _repositoryManager.UserRepository.FindByAsync(x => x.Email.Equals(newUser.Email));
+                Usuario? usuario = await _repositoryManager.UsuarioRepository.FindByAsync(x => x.Email.Equals(usuarioNuevo.Email));
 
-                if (user != null)
+                if (usuario != null)
                 {
-                    Adoptante newAdopter = new Adoptante() { Id = user.Id, Nombre = user.NombreUsuario };
-                    await _repositoryManager.AdopterRepository.CreateAsync(newAdopter);
+                    Adoptante adoptanteNuevo = new Adoptante() { Id = usuario.Id, Nombre = usuario.NombreUsuario };
+                    await _repositoryManager.AdoptanteRepository.CreateAsync(adoptanteNuevo);
                 }
                 else
                 {
-                    await _repositoryManager.UserRepository.DeleteAsync(newUser);
+                    await _repositoryManager.UsuarioRepository.DeleteAsync(usuarioNuevo);
                     throw new Exception("El adoptante no pudo ser creado. Inténtelo de nuevo.");
                 }
 
                 // auto-login
-                LoginResponseDTO loginResponse = await this.Login(newUser.Email, newUser.Password);
+                LoginResponseDTO loginResponse = await this.Login(usuarioNuevo.Email, usuarioNuevo.Password);
 
                 return new RegisterResponseDTO()
                 {
                     Message = "¡Registro completado con éxito!",
-                    Welcome = $"Bienvenido a Patitas, {user.NombreUsuario}",
+                    Welcome = $"Bienvenido a Patitas, {usuario.NombreUsuario}",
                     LoginResponse = loginResponse
                 };
             }

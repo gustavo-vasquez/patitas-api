@@ -8,9 +8,13 @@ namespace Patitas.Infrastructure.Contracts.Manager
 {
     public interface IRepositoryManager
     {
-        IUserRepository UserRepository { get; }
-        IAdopterRepository AdopterRepository { get; }
-        INeighborhoodRepository NeighborhoodRepository { get; }
-        IRoleRepository RoleRepository { get; }
+        IUsuarioRepository UsuarioRepository { get; }
+        IAdoptanteRepository AdoptanteRepository { get; }
+        IRefugioRepository RefugioRepository { get; }
+        IVeterinariaRepository VeterinariaRepository { get; }
+        IBarrioRepository BarrioRepository { get; }
+        IRolRepository RolRepository { get; }
+        IComentarioRepository ComentarioRepository { get; }
+        IAnimalRepository AnimalRepository { get; }
     }
 }

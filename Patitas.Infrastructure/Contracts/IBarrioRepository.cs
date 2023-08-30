@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Patitas.Infrastructure.Contracts
 {
-    public interface INeighborhoodRepository : IRepository<Barrio, int>
+    public interface IBarrioRepository : IRepository<Barrio, int>
     {
     }
 }

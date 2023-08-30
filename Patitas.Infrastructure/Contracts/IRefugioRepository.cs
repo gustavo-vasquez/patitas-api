@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Patitas.Infrastructure.Contracts
 {
-    public interface IRoleRepository : IRepository<RolUsuario, int>
+    public interface IRefugioRepository : IRepository<Refugio, int>
     {
     }
 }

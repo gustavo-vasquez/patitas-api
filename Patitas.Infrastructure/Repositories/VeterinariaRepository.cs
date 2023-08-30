@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Patitas.Infrastructure.Repositories
 {
-    internal class NeighborhoodRepository : Repository<Barrio, int>, INeighborhoodRepository
+    internal class VeterinariaRepository : Repository<Veterinaria, int>, IVeterinariaRepository
     {
         private readonly PatitasContext _context;
 
-        public NeighborhoodRepository(PatitasContext context) : base(context)
+        public VeterinariaRepository(PatitasContext context) : base(context)
         {
             _context = context;
         }

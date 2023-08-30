@@ -9,6 +9,10 @@ namespace Patitas.Services.Contracts.Manager
     public interface IServiceManager
     {
         IAuthenticationService AuthenticationService { get; }
-        IAdopterService AdopterService { get; }
+        IAdoptanteService AdoptanteService { get; }
+        IRefugioService RefugioService { get; }
+        IVeterinariaService VeterinariaService { get; }
+        IComentarioService ComentarioService { get; }
+        IAnimalService AnimalService { get; }
     }
 }

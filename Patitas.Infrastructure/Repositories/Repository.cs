@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patitas.Infrastructure.Contracts;
+using Patitas.Infrastructure.Enums;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
 
@@ -16,7 +17,28 @@ namespace Patitas.Infrastructure.Repositories
 
         public async Task<T?> GetByIdAsync(K id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            T? result = await _context.Set<T>().FindAsync(id);
+
+            return result;
+        }
+
+        public async Task<T?> GetByIdAsync(K id, IncludeTypes includeType, string tableNameProperty = "")
+        {
+            T? result = await _context.Set<T>().FindAsync(id);
+
+            switch(includeType)
+            {
+                case IncludeTypes.REFERENCE_TABLE_NAME:
+                    await _context.Entry(result!).Reference(tableNameProperty).LoadAsync();
+                    break;
+                case IncludeTypes.COLLECTION_TABLE_NAME:
+                    await _context.Entry(result!).Collection(tableNameProperty).LoadAsync();
+                    break;
+                default:
+                    break;
+            }   
+
+            return result;
         }
 
         public async Task<T?> FindByAsync(Expression<Func<T, bool>> predicate)

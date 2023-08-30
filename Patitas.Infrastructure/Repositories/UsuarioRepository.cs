@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Patitas.Infrastructure.Repositories
 {
-    internal class UserRepository : Repository<Usuario, int>, IUserRepository
+    internal class UsuarioRepository : Repository<Usuario, int>, IUsuarioRepository
     {
         private readonly PatitasContext _context;
-        public UserRepository(PatitasContext context) : base(context)
+        public UsuarioRepository(PatitasContext context) : base(context)
         {
             _context = context;
         }

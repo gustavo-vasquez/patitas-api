@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Patitas.Infrastructure.Contracts
 {
-    public interface IAdopterRepository : IRepository<Adoptante, int>
+    public interface IUsuarioRepository : IRepository<Usuario, int>
     {
-        Task<FormularioPreAdopcion> GetPreAdoptionForm(int id);
+        Task<Usuario> GetUserLoginData(string email, string password);
     }
 }

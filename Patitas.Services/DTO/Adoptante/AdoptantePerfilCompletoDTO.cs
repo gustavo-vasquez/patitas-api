@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Patitas.Services.DTO
+namespace Patitas.Services.DTO.Adoptante
 {
-    public class AdopterProfileInfoDTO
+    public class AdoptantePerfilCompletoDTO
     {
         public string NombreUsuario { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
