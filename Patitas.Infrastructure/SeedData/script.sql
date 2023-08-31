@@ -1,3 +1,5 @@
+use Patitas;
+
 -- Barrios
 SET IDENTITY_INSERT dbo.Barrios ON
 insert into dbo.Barrios(Id, Nombre)
