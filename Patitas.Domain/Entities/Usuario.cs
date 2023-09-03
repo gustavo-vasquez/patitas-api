@@ -30,7 +30,7 @@ namespace Patitas.Domain.Entities
         public string? Direccion { get; set; }
         public DateTime FechaCreacion { get; set; }
         public int Id_Barrio { get; set; }
-        public int Id_RolUsuario { get; set; }
+        public int Id_Rol { get; set; }
 
         // 1 a N
         // 1 barrio <--> N usuarios
@@ -38,8 +38,8 @@ namespace Patitas.Domain.Entities
         public Barrio Barrio { get; set; } = null!;
         
         // 1 rol <--> N usuarios
-        [ForeignKey("Id_RolUsuario")]
-        public RolUsuario RolUsuario { get; set; } = null!;
+        [ForeignKey("Id_Rol")]
+        public Rol RolUsuario { get; set; } = null!;
 
         // 1 usuario <--> N denuncias
         public ICollection<Denuncia> Denuncias { get; } = new List<Denuncia>();

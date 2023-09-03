@@ -35,7 +35,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Administradores", (string)null);
+                    b.ToTable("Administradores");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Adoptante", b =>
@@ -62,7 +62,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Adoptantes", (string)null);
+                    b.ToTable("Adoptantes");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Animal", b =>
@@ -124,7 +124,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Refugio");
 
-                    b.ToTable("Animales", (string)null);
+                    b.ToTable("Animales");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.AnimalVacuna", b =>
@@ -135,6 +135,9 @@ namespace Patitas.Infrastructure.Migrations
                     b.Property<int>("Id_Vacuna")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("FechaDeAplicacion")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("NroDosisAplicada")
                         .HasColumnType("int");
 
@@ -142,7 +145,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Vacuna");
 
-                    b.ToTable("AnimalVacuna", (string)null);
+                    b.ToTable("AnimalVacuna");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Barrio", b =>
@@ -160,7 +163,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Barrios", (string)null);
+                    b.ToTable("Barrios");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.CausaDeDenuncia", b =>
@@ -178,7 +181,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CausasDeDenuncia", (string)null);
+                    b.ToTable("CausasDeDenuncia");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Comentario", b =>
@@ -228,7 +231,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Nro_Estrellas");
 
-                    b.ToTable("Comentarios", (string)null);
+                    b.ToTable("Comentarios");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Denuncia", b =>
@@ -263,7 +266,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Usuario");
 
-                    b.ToTable("Denuncias", (string)null);
+                    b.ToTable("Denuncias");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.DetalleEstrella", b =>
@@ -278,7 +281,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("NroEstrella");
 
-                    b.ToTable("DetalleEstrellas", (string)null);
+                    b.ToTable("DetalleEstrellas");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Especie", b =>
@@ -296,7 +299,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Especies", (string)null);
+                    b.ToTable("Especies");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.EspecieVacuna", b =>
@@ -311,7 +314,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Vacuna");
 
-                    b.ToTable("EspecieVacuna", (string)null);
+                    b.ToTable("EspecieVacuna");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.FormularioPreAdopcion", b =>
@@ -386,7 +389,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id_Adoptante")
                         .IsUnique();
 
-                    b.ToTable("FormulariosPreAdopcion", (string)null);
+                    b.ToTable("FormulariosPreAdopcion");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.ModeracionDePublicacion", b =>
@@ -415,7 +418,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Administrador");
 
-                    b.ToTable("ModeracionDePublicaciones", (string)null);
+                    b.ToTable("ModeracionDePublicaciones");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Publicacion", b =>
@@ -459,7 +462,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("RespondeA_IdPublicacion");
 
-                    b.ToTable("Publicaciones", (string)null);
+                    b.ToTable("Publicaciones");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Raza", b =>
@@ -482,7 +485,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Especie");
 
-                    b.ToTable("Razas", (string)null);
+                    b.ToTable("Razas");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Refugio", b =>
@@ -529,10 +532,10 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Refugios", (string)null);
+                    b.ToTable("Refugios");
                 });
 
-            modelBuilder.Entity("Patitas.Domain.Entities.RolUsuario", b =>
+            modelBuilder.Entity("Patitas.Domain.Entities.Rol", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -547,22 +550,28 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RolesUsuario", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.SeguimientoDeVacunacion", b =>
                 {
-                    b.Property<int>("Id_Solicitud")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Id_Vacuna")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("EstaAplicada")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("FechaDeAsignacion")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Id_SolicitudDeAdopcion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id_Vacuna")
+                        .HasColumnType("int");
 
                     b.Property<int>("Id_Veterinaria")
                         .HasColumnType("int");
@@ -571,20 +580,21 @@ namespace Patitas.Infrastructure.Migrations
                         .HasColumnType("tinyint");
 
                     b.Property<string>("NroLote")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("PorReprogramar")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id_Solicitud", "Id_Vacuna");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id_SolicitudDeAdopcion");
 
                     b.HasIndex("Id_Vacuna");
 
                     b.HasIndex("Id_Veterinaria");
 
-                    b.ToTable("SeguimientoDeVacunaciones", (string)null);
+                    b.ToTable("SeguimientosDeVacunacion");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.SolicitudDeAdopcion", b =>
@@ -621,7 +631,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Refugio");
 
-                    b.ToTable("SolicitudesDeAdopcion", (string)null);
+                    b.ToTable("SolicitudesDeAdopcion");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Tema", b =>
@@ -639,7 +649,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Temas", (string)null);
+                    b.ToTable("Temas");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Turno", b =>
@@ -682,7 +692,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_SolicitudDeAdopcion");
 
-                    b.ToTable("Turnos", (string)null);
+                    b.ToTable("Turnos");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Usuario", b =>
@@ -711,7 +721,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.Property<int>("Id_Barrio")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id_RolUsuario")
+                    b.Property<int>("Id_Rol")
                         .HasColumnType("int");
 
                     b.Property<string>("NombreUsuario")
@@ -732,9 +742,9 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Barrio");
 
-                    b.HasIndex("Id_RolUsuario");
+                    b.HasIndex("Id_Rol");
 
-                    b.ToTable("Usuarios", (string)null);
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Vacuna", b =>
@@ -748,7 +758,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.Property<int>("CantidadDeDosis")
                         .HasColumnType("int");
 
-                    b.Property<string>("EdadAproximada")
+                    b.Property<string>("EdadIndicada")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -760,7 +770,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vacunas", (string)null);
+                    b.ToTable("Vacunas");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Veterinaria", b =>
@@ -809,7 +819,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("Veterinarias", (string)null);
+                    b.ToTable("Veterinarias");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.VeterinariaAsignadaARefugio", b =>
@@ -824,7 +834,7 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasIndex("Id_Refugio");
 
-                    b.ToTable("VeterinariasAsignadasARefugios", (string)null);
+                    b.ToTable("VeterinariasAsignadasARefugios");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Administrador", b =>
@@ -1033,23 +1043,27 @@ namespace Patitas.Infrastructure.Migrations
 
             modelBuilder.Entity("Patitas.Domain.Entities.SeguimientoDeVacunacion", b =>
                 {
-                    b.HasOne("Patitas.Domain.Entities.SolicitudDeAdopcion", null)
-                        .WithMany()
-                        .HasForeignKey("Id_Solicitud")
+                    b.HasOne("Patitas.Domain.Entities.SolicitudDeAdopcion", "SolicitudDeAdopcion")
+                        .WithMany("SeguimientosDeVacunacion")
+                        .HasForeignKey("Id_SolicitudDeAdopcion")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Patitas.Domain.Entities.Vacuna", null)
-                        .WithMany()
+                    b.HasOne("Patitas.Domain.Entities.Vacuna", "Vacuna")
+                        .WithMany("SeguimientosDeVacunacion")
                         .HasForeignKey("Id_Vacuna")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Patitas.Domain.Entities.Veterinaria", "Veterinaria")
-                        .WithMany("SeguimientoDeVacunaciones")
+                        .WithMany("SeguimientosDeVacunacion")
                         .HasForeignKey("Id_Veterinaria")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("SolicitudDeAdopcion");
+
+                    b.Navigation("Vacuna");
 
                     b.Navigation("Veterinaria");
                 });
@@ -1116,9 +1130,9 @@ namespace Patitas.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Patitas.Domain.Entities.RolUsuario", "RolUsuario")
+                    b.HasOne("Patitas.Domain.Entities.Rol", "RolUsuario")
                         .WithMany("Usuarios")
-                        .HasForeignKey("Id_RolUsuario")
+                        .HasForeignKey("Id_Rol")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1217,13 +1231,15 @@ namespace Patitas.Infrastructure.Migrations
                     b.Navigation("Turnos");
                 });
 
-            modelBuilder.Entity("Patitas.Domain.Entities.RolUsuario", b =>
+            modelBuilder.Entity("Patitas.Domain.Entities.Rol", b =>
                 {
                     b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.SolicitudDeAdopcion", b =>
                 {
+                    b.Navigation("SeguimientosDeVacunacion");
+
                     b.Navigation("Turnos");
                 });
 
@@ -1245,9 +1261,14 @@ namespace Patitas.Infrastructure.Migrations
                     b.Navigation("Veterinaria");
                 });
 
+            modelBuilder.Entity("Patitas.Domain.Entities.Vacuna", b =>
+                {
+                    b.Navigation("SeguimientosDeVacunacion");
+                });
+
             modelBuilder.Entity("Patitas.Domain.Entities.Veterinaria", b =>
                 {
-                    b.Navigation("SeguimientoDeVacunaciones");
+                    b.Navigation("SeguimientosDeVacunacion");
                 });
 #pragma warning restore 612, 618
         }

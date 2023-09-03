@@ -14,15 +14,14 @@ namespace Patitas.Domain.Entities
         public int CantidadDeDosis { get; set; }
 
         [StringLength(50)]
-        public string EdadAproximada { get; set; } = string.Empty;
-        //public bool RequiereDosisDeRefuerzo { get; set; }
+        public string EdadIndicada { get; set; } = string.Empty;
+
+        // 1 vacuna <--> N seguimientos de vacunacion
+        public ICollection<SeguimientoDeVacunacion> SeguimientosDeVacunacion { get; } = new List<SeguimientoDeVacunacion>();
 
         // N a N
         // N animales <--(AnimalVacuna)--> N vacunas
         public ICollection<Animal> Animales { get; } = new List<Animal>();
-
-        // N solicitudes <--(SeguimientoDeVacunacion)--> N vacunas
-        public ICollection<SolicitudDeAdopcion> SolicitudesDeAdopcion { get; } = new List<SolicitudDeAdopcion>();
 
         // N especies <--(EspecieVacuna)--> N vacunas
         public ICollection<Especie> Especies { get; } = new List<Especie>();

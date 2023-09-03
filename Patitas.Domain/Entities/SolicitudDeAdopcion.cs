@@ -31,8 +31,8 @@ namespace Patitas.Domain.Entities
         // 1 solicitud <--> N turnos
         public ICollection<Turno> Turnos { get; } = new List<Turno>();
 
-        // N a N
-        public ICollection<Vacuna> Vacunas { get; } = new List<Vacuna>();
+        // 1 solicitud <--> N seguimientos de vacunacion
+        public ICollection<SeguimientoDeVacunacion> SeguimientosDeVacunacion { get; } = new List<SeguimientoDeVacunacion>();
 
         // N adoptantes <--(AdoptanteCancelaAdopcion)--> N solicitudes
         //public ICollection<Adoptante> AdoptantesQueCancelaron { get; } = new List<Adoptante>();

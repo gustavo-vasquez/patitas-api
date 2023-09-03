@@ -2,7 +2,7 @@
 
 namespace Patitas.Domain.Entities
 {
-    public class RolUsuario
+    public class Rol
     {
         public int Id { get; set; }
 

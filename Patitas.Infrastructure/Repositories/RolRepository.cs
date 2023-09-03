@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Patitas.Infrastructure.Repositories
 {
-    internal class RolRepository : Repository<RolUsuario, int>, IRolRepository
+    internal class RolRepository : Repository<Rol, int>, IRolRepository
     {
         private readonly PatitasContext _context;
 

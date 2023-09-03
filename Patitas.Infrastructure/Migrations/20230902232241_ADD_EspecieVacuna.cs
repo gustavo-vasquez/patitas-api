@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -10,6 +11,29 @@ namespace Patitas.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "RequiereDosisDeRefuerzo",
+                table: "Vacunas");
+
+            migrationBuilder.RenameColumn(
+                name: "EdadAproximada",
+                table: "Vacunas",
+                newName: "EdadIndicada");
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "FechaDeAplicacion",
+                table: "AnimalVacuna",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<int>(
+                name: "NroDosisAplicada",
+                table: "AnimalVacuna",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.CreateTable(
                 name: "EspecieVacuna",
                 columns: table => new
@@ -45,6 +69,26 @@ namespace Patitas.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "EspecieVacuna");
+
+            migrationBuilder.DropColumn(
+                name: "FechaDeAplicacion",
+                table: "AnimalVacuna");
+
+            migrationBuilder.DropColumn(
+                name: "NroDosisAplicada",
+                table: "AnimalVacuna");
+
+            migrationBuilder.RenameColumn(
+                name: "EdadIndicada",
+                table: "Vacunas",
+                newName: "EdadAproximada");
+
+            migrationBuilder.AddColumn<bool>(
+                name: "RequiereDosisDeRefuerzo",
+                table: "Vacunas",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
         }
     }
 }

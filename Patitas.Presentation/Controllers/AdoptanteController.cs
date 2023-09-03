@@ -13,12 +13,6 @@ namespace Patitas.Presentation.Controllers
         public AdoptanteController(IServiceManager serviceManager) => _serviceManager = serviceManager;
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            return Ok();
-        }
-
-        [HttpGet]
         [Route("{adoptanteId}/perfil")]
         public async Task<IActionResult> GetPerfil([FromRoute] int adoptanteId)
         {

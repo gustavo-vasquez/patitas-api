@@ -35,7 +35,8 @@ namespace Patitas.Domain.Entities
         [ForeignKey("Id")]
         public Usuario Usuario { get; set; } = null!;
 
-        public ICollection<SeguimientoDeVacunacion> SeguimientoDeVacunaciones { get; } = new List<SeguimientoDeVacunacion>();
+        // 1 veterinaria <--> N seguimientos de vacunacion
+        public ICollection<SeguimientoDeVacunacion> SeguimientosDeVacunacion { get; } = new List<SeguimientoDeVacunacion>();
 
         // Relaciones N a N
         public ICollection<Refugio> Refugios { get; } = new List<Refugio>();

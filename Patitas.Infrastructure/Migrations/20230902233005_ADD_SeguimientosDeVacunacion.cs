@@ -6,41 +6,43 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Patitas.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ADD_SeguimientoDeVacunacion : Migration
+    public partial class ADD_SeguimientosDeVacunacion : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "SeguimientoDeVacunaciones",
+                name: "SeguimientosDeVacunacion",
                 columns: table => new
                 {
-                    Id_Solicitud = table.Column<int>(type: "int", nullable: false),
-                    Id_Vacuna = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FechaDeAsignacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PorReprogramar = table.Column<bool>(type: "bit", nullable: false),
                     EstaAplicada = table.Column<bool>(type: "bit", nullable: false),
                     NroDosis = table.Column<byte>(type: "tinyint", nullable: false),
-                    NroLote = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NroLote = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Id_SolicitudDeAdopcion = table.Column<int>(type: "int", nullable: false),
+                    Id_Vacuna = table.Column<int>(type: "int", nullable: false),
                     Id_Veterinaria = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SeguimientoDeVacunaciones", x => new { x.Id_Solicitud, x.Id_Vacuna });
+                    table.PrimaryKey("PK_SeguimientosDeVacunacion", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SeguimientoDeVacunaciones_SolicitudesDeAdopcion_Id_Solicitud",
-                        column: x => x.Id_Solicitud,
+                        name: "FK_SeguimientosDeVacunacion_SolicitudesDeAdopcion_Id_SolicitudDeAdopcion",
+                        column: x => x.Id_SolicitudDeAdopcion,
                         principalTable: "SolicitudesDeAdopcion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SeguimientoDeVacunaciones_Vacunas_Id_Vacuna",
+                        name: "FK_SeguimientosDeVacunacion_Vacunas_Id_Vacuna",
                         column: x => x.Id_Vacuna,
                         principalTable: "Vacunas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SeguimientoDeVacunaciones_Veterinarias_Id_Veterinaria",
+                        name: "FK_SeguimientosDeVacunacion_Veterinarias_Id_Veterinaria",
                         column: x => x.Id_Veterinaria,
                         principalTable: "Veterinarias",
                         principalColumn: "Id",
@@ -48,13 +50,18 @@ namespace Patitas.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SeguimientoDeVacunaciones_Id_Vacuna",
-                table: "SeguimientoDeVacunaciones",
+                name: "IX_SeguimientosDeVacunacion_Id_SolicitudDeAdopcion",
+                table: "SeguimientosDeVacunacion",
+                column: "Id_SolicitudDeAdopcion");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SeguimientosDeVacunacion_Id_Vacuna",
+                table: "SeguimientosDeVacunacion",
                 column: "Id_Vacuna");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SeguimientoDeVacunaciones_Id_Veterinaria",
-                table: "SeguimientoDeVacunaciones",
+                name: "IX_SeguimientosDeVacunacion_Id_Veterinaria",
+                table: "SeguimientosDeVacunacion",
                 column: "Id_Veterinaria");
         }
 
@@ -62,7 +69,7 @@ namespace Patitas.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "SeguimientoDeVacunaciones");
+                name: "SeguimientosDeVacunacion");
         }
     }
 }

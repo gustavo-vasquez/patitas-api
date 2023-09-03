@@ -16,12 +16,6 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
         [Route("{refugioId}")]
         public async Task<IActionResult> GetShelter([FromRoute] int refugioId)
         {

@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patitas.Domain.Entities;
-using Patitas.Infrastructure.Configuration;
 
 namespace Patitas.Infrastructure
 {
     public class PatitasContext : DbContext
     {
         public DbSet<Barrio> Barrios { get; set; }
-        public DbSet<RolUsuario> RolesUsuario { get; set; }
+        public DbSet<Rol> Roles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Administrador> Administradores { get; set; }
         public DbSet<Adoptante> Adoptantes { get; set; }
@@ -30,8 +29,8 @@ namespace Patitas.Infrastructure
         //public DbSet<AdoptanteCancelaAdopcion> AdoptantesQueCancelaronAdopciones { get; set; }
         public DbSet<Vacuna> Vacunas { get; set; }
         public DbSet<AnimalVacuna> AnimalVacuna { get; set; }
-        public DbSet<SeguimientoDeVacunacion> SeguimientoDeVacunaciones { get; set; }
         public DbSet<EspecieVacuna> EspecieVacuna { get; set; }
+        public DbSet<SeguimientoDeVacunacion> SeguimientosDeVacunacion { get; set; }
 
         public PatitasContext(DbContextOptions<PatitasContext> options) : base(options) { }
 
@@ -125,14 +124,6 @@ namespace Patitas.Infrastructure
                     r => r.HasOne<Animal>().WithMany().HasForeignKey(av => av.Id_Animal)
                 );
 
-            modelBuilder.Entity<SolicitudDeAdopcion>()
-                .HasMany(sa => sa.Vacunas)
-                .WithMany(v => v.SolicitudesDeAdopcion)
-                .UsingEntity<SeguimientoDeVacunacion>(
-                    l => l.HasOne<Vacuna>().WithMany().HasForeignKey(seg => seg.Id_Vacuna),
-                    r => r.HasOne<SolicitudDeAdopcion>().WithMany().HasForeignKey(seg => seg.Id_Solicitud)
-                );
-
             modelBuilder.Entity<Especie>()
                 .HasMany(r => r.Vacunas)
                 .WithMany(v => v.Especies)
@@ -177,7 +168,7 @@ namespace Patitas.Infrastructure
 
             modelBuilder.Entity<SeguimientoDeVacunacion>()
                 .HasOne(sv => sv.Veterinaria)
-                .WithMany(v => v.SeguimientoDeVacunaciones)
+                .WithMany(v => v.SeguimientosDeVacunacion)
                 .HasForeignKey(sv => sv.Id_Veterinaria)
                 .OnDelete(DeleteBehavior.Restrict);
 

@@ -63,7 +63,7 @@ namespace Patitas.Services
                     Password = registerData.Password,
                     FechaCreacion = DateTime.Now,
                     Id_Barrio = registerData.BarrioId,
-                    Id_RolUsuario = 2
+                    Id_Rol = 2
                 };
 
                 await _repositoryManager.UsuarioRepository.CreateAsync(usuarioNuevo);

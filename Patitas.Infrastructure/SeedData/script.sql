@@ -7,14 +7,14 @@ values (1, 'Congreso'), (2, 'Palermo'), (3, 'Puerto Madero'), (4, 'Recoleta');
 SET IDENTITY_INSERT dbo.Barrios OFF
 
 -- Roles
-SET IDENTITY_INSERT dbo.RolesUsuario ON
-insert into dbo.RolesUsuario(Id, Nombre)
+SET IDENTITY_INSERT dbo.Roles ON
+insert into dbo.Roles(Id, Nombre)
 values (1, 'Administrador'), (2, 'Adoptante'), (3, 'Refugio'), (4, 'Veterinaria');
-SET IDENTITY_INSERT dbo.RolesUsuario OFF
+SET IDENTITY_INSERT dbo.Roles OFF
 
 -- Usuarios
 SET IDENTITY_INSERT dbo.Usuarios ON
-insert into dbo.Usuarios(Id, NombreUsuario, Email, Password, FechaCreacion, Id_Barrio, Id_RolUsuario)
+insert into dbo.Usuarios(Id, NombreUsuario, Email, Password, FechaCreacion, Id_Barrio, Id_Rol)
 values
 (1, 'administrador', 'admin.patitas@gmail.com', 'asd123', GETDATE(), 4, 1),
 (2, 'adoptante.test', 'adoptante.test@gmail.com', 'asd123', GETDATE(), 3, 2),

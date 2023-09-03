@@ -8,5 +8,6 @@ namespace Patitas.Domain.Entities
         public int Id_Animal { get; set; }
         public int Id_Vacuna { get; set; }
         public int NroDosisAplicada { get; set; }
+        public DateTime FechaDeAplicacion { get; set; }
     }
 }
