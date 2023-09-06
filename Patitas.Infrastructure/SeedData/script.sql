@@ -14,13 +14,13 @@ SET IDENTITY_INSERT dbo.Roles OFF
 
 -- Usuarios
 SET IDENTITY_INSERT dbo.Usuarios ON
-insert into dbo.Usuarios(Id, NombreUsuario, Email, Password, FechaCreacion, Id_Barrio, Id_Rol)
+insert into dbo.Usuarios(Id, NombreUsuario, Email, Password, FotoDePerfil, Telefono, Direccion, FechaCreacion, Id_Barrio, Id_Rol)
 values
-(1, 'administrador', 'admin.patitas@gmail.com', 'asd123', GETDATE(), 4, 1),
-(2, 'adoptante.test', 'adoptante.test@gmail.com', 'asd123', GETDATE(), 3, 2),
-(3, 'san.pedro', 'refugio_sanpedro@gmail.com', 'asd123', GETDATE(), 2, 3),
-(4, 'cuidado_animal', 'cuidado_animal_oficial@gmail.com', 'asd123', GETDATE(), 1, 4),
-(5, 'lionel-messi', 'messi10@outlook.com', 'asd123', GETDATE(), 2, 2);
+(1, 'administrador', 'admin.patitas@gmail.com', 'asd123', null, null, null, GETDATE(), 4, 1),
+(2, 'adoptante.test', 'adoptante.test@gmail.com', 'asd123', null, null, null, GETDATE(), 3, 2),
+(3, 'san.pedro', 'refugio_sanpedro@gmail.com', 'asd123', null, '555-5555', 'Av. del Libertador 4101', GETDATE(), 2, 3),
+(4, 'cuidado_animal', 'cuidado_animal_oficial@gmail.com', 'asd123', null, '0800-7898-4658', 'Av. Hipólito Yrigoyen 1849', GETDATE(), 1, 4),
+(5, 'lionel-messi', 'messi10@outlook.com', 'asd123', null, null, null, GETDATE(), 2, 2);
 SET IDENTITY_INSERT dbo.Usuarios OFF
 
 -- Administradores

@@ -8,10 +8,10 @@ namespace Patitas.Services.DTO.Login
 {
     public class LoginResponseDTO
     {
-        public string Username { get; set; } = string.Empty;
+        public string NombreDeUsuario { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string? ProfilePicture { get; set; } = string.Empty;
-        public string RoleName { get;set; } = string.Empty;
-        public string TokenAccess { get; set; } = string.Empty;
+        public string? FotoDePerfil { get; set; } = string.Empty;
+        public string Rol { get;set; } = string.Empty;
+        public string AccessToken { get; set; } = string.Empty;
     }
 }

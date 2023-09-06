@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Patitas.Services.DTO.Register
+namespace Patitas.Services.DTO.Registro
 {
-    public class RegisterResponseDTO
+    public class RegistroResponseDTO
     {
-        public string Message { get; set; } = string.Empty;
-        public string Welcome { get; set; } = string.Empty;
+        public string Resultado { get; set; } = string.Empty;
+        public string Bienvenida { get; set; } = string.Empty;
         public LoginResponseDTO LoginResponse { get; set; } = null!;
     }
 }
