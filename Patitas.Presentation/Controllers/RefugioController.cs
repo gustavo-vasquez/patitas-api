@@ -17,7 +17,7 @@ namespace Patitas.Presentation.Controllers
 
         [HttpGet]
         [Route("{refugioId}")]
-        public async Task<IActionResult> GetShelter([FromRoute] int refugioId)
+        public async Task<IActionResult> GetRefugio([FromRoute] int refugioId)
         {
             try
             {
@@ -76,8 +76,8 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
-        [Route("{refugioId}/more-information")]
-        public async Task<IActionResult> GetMoreInformation([FromRoute] int refugioId)
+        [Route("{refugioId}/mas-informacion")]
+        public async Task<IActionResult> GetMasInformacion([FromRoute] int refugioId)
         {
             try
             {

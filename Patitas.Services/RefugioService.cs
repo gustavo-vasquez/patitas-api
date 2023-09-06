@@ -72,7 +72,9 @@ namespace Patitas.Services
                             Nombre = animal.Nombre,
                             Nacimiento = animal.Nacimiento,
                             Genero = animal.Genero,
+                            Fotografia = animal.Fotografia,
                             SituacionPrevia = animal.SituacionPrevia,
+                            Peso = animal.Peso,
                             Altura = animal.Altura,
                             Esterilizado = animal.Esterilizado,
                             Desparasitado = animal.Desparasitado,
@@ -136,10 +138,13 @@ namespace Patitas.Services
                             Id = veterinaria.Id,
                             Nombre = veterinaria.Nombre,
                             RazonSocial = veterinaria.RazonSocial,
+                            Fotografia = veterinaria.Fotografia,
                             Especialidades = veterinaria.Especialidades,
                             FechaFundacion = veterinaria.FechaFundacion,
                             TelefonoAlternativo = veterinaria.TelefonoAlternativo,
                             SitioWeb = veterinaria.SitioWeb,
+                            Descripcion = veterinaria.Descripcion,
+                            DiasDeAtencion = veterinaria.DiasDeAtencion,
                             HorarioApertura = veterinaria.HorarioApertura,
                             HorarioCierre = veterinaria.HorarioCierre
                         }
@@ -168,9 +173,12 @@ namespace Patitas.Services
                     Id = refugio!.Id,
                     Nombre = refugio.Nombre,
                     RazonSocial = refugio.RazonSocial,
+                    Fotografia = refugio.Fotografia,
                     NombreResponsable = refugio.NombreResponsable,
                     ApellidoResponsable = refugio.ApellidoResponsable,
                     SitioWeb = refugio.SitioWeb,
+                    Descripcion = refugio.Descripcion,
+                    DiasDeAtencion = refugio.DiasDeAtencion,
                     HorarioApertura = refugio.HorarioApertura,
                     HorarioCierre = refugio.HorarioCierre
                 };
