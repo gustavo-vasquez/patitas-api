@@ -12,5 +12,6 @@ namespace Patitas.Domain.Entities
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id_Refugio { get; set; }
+        public DateTime FechaDeAsignacion { get; set; }
     }
 }

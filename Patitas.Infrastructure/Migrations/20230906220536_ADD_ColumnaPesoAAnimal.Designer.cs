@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Patitas.Infrastructure;
 
@@ -11,9 +12,11 @@ using Patitas.Infrastructure;
 namespace Patitas.Infrastructure.Migrations
 {
     [DbContext(typeof(PatitasContext))]
-    partial class PatitasContextModelSnapshot : ModelSnapshot
+    [Migration("20230906220536_ADD_ColumnaPesoAAnimal")]
+    partial class ADD_ColumnaPesoAAnimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

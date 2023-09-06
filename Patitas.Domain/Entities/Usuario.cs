@@ -29,6 +29,7 @@ namespace Patitas.Domain.Entities
         [StringLength(50)]
         public string? Direccion { get; set; }
         public DateTime FechaCreacion { get; set; }
+        public bool EstaActivo { get; set; }
         public int Id_Barrio { get; set; }
         public int Id_Rol { get; set; }
 

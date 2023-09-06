@@ -14,13 +14,13 @@ SET IDENTITY_INSERT dbo.Roles OFF
 
 -- Usuarios
 SET IDENTITY_INSERT dbo.Usuarios ON
-insert into dbo.Usuarios(Id, NombreUsuario, Email, Password, FotoDePerfil, Telefono, Direccion, FechaCreacion, Id_Barrio, Id_Rol)
+insert into dbo.Usuarios(Id, NombreUsuario, Email, Password, FotoDePerfil, Telefono, Direccion, FechaCreacion, EstaActivo, Id_Barrio, Id_Rol)
 values
-(1, 'administrador', 'admin.patitas@gmail.com', 'asd123', null, null, null, GETDATE(), 4, 1),
-(2, 'adoptante.test', 'adoptante.test@gmail.com', 'asd123', null, null, null, GETDATE(), 3, 2),
-(3, 'san.pedro', 'refugio_sanpedro@gmail.com', 'asd123', null, '555-5555', 'Av. del Libertador 4101', GETDATE(), 2, 3),
-(4, 'cuidado_animal', 'cuidado_animal_oficial@gmail.com', 'asd123', null, '0800-7898-4658', 'Av. Hipólito Yrigoyen 1849', GETDATE(), 1, 4),
-(5, 'lionel-messi', 'messi10@outlook.com', 'asd123', null, null, null, GETDATE(), 2, 2);
+(1, 'administrador', 'admin.patitas@gmail.com', 'asd123', null, null, null, GETDATE(), 1, 4, 1),
+(2, 'adoptante.test', 'adoptante.test@gmail.com', 'asd123', null, null, null, GETDATE(), 1, 3, 2),
+(3, 'san.pedro', 'refugio_sanpedro@gmail.com', 'asd123', null, '555-5555', 'Av. del Libertador 4101', GETDATE(), 0, 2, 3),
+(4, 'cuidado_animal', 'cuidado_animal_oficial@gmail.com', 'asd123', null, '0800-7898-4658', 'Av. Hipólito Yrigoyen 1849', GETDATE(), 0, 1, 4),
+(5, 'lionel-messi', 'messi10@outlook.com', 'asd123', null, null, null, GETDATE(), 1, 2, 2);
 SET IDENTITY_INSERT dbo.Usuarios OFF
 
 -- Administradores
@@ -32,12 +32,12 @@ insert into dbo.Adoptantes(Id, Nombre, Apellido)
 values (2, 'Adoptante', 'Test'), (5, 'Lionel', 'Messi');
 
 -- Refugios
-insert into dbo.Refugios(Id, Nombre, RazonSocial, NombreResponsable, ApellidoResponsable, HorarioApertura, HorarioCierre)
-values (3, 'San Pedro', 'Refugio San Pedro S.A.', 'José', 'Paradela', '09', '12');
+insert into dbo.Refugios(Id, Nombre, RazonSocial, NombreResponsable, ApellidoResponsable, DiasDeAtencion, HorarioApertura, HorarioCierre)
+values (3, 'San Pedro', 'Refugio San Pedro S.A.', 'José', 'Paradela', 'Lunes a viernes', '09', '12');
 
 -- Veterinarias
-insert into dbo.Veterinarias(Id, Nombre, RazonSocial, Especialidades, FechaFundacion, HorarioApertura, HorarioCierre)
-values (4, 'Cuidado Animal', 'Cuidado Animal S.A.', 'Vacunación, Cirugía, Ecografía, Peluquería', '2012-10-28', 10, 20);
+insert into dbo.Veterinarias(Id, Nombre, RazonSocial, Especialidades, FechaFundacion, DiasDeAtencion, HorarioApertura, HorarioCierre)
+values (4, 'Cuidado Animal', 'Cuidado Animal S.A.', 'Vacunación, Cirugía, Ecografía, Peluquería', '2012-10-28', 'Lunes a viernes', 10, 20);
 
 -- Especies
 SET IDENTITY_INSERT dbo.Especies ON
@@ -68,21 +68,21 @@ SET IDENTITY_INSERT dbo.Razas OFF
 
 -- Animales
 SET IDENTITY_INSERT dbo.Animales ON
-insert into dbo.Animales(Id, Nombre, Nacimiento, Genero, SituacionPrevia, Altura, Esterilizado, Desparasitado, FechaIngreso, EstaAdoptado, Id_Raza, Id_Refugio)
+insert into dbo.Animales(Id, Nombre, Nacimiento, Genero, Fotografia, SituacionPrevia, Peso, Altura, Esterilizado, Desparasitado, FechaIngreso, EstaAdoptado, Id_Raza, Id_Refugio)
 values
-(1, 'Coco', 2022, 'M', 'Fue rescatado de la calle', 0.55, 0, 1, GETDATE(), 0, 1, 3),
-(2, 'Toby', 2022, 'M', 'Fue rescatado de la calle', 0.55, 0, 1, GETDATE(), 0, 10, 3),
-(3, 'Simba', 2022, 'M', 'Fue rescatado de la calle', 0.55, 0, 1, GETDATE(), 0, 5, 3),
-(4, 'Max', 2022, 'M', 'Fue rescatado de la calle', 0.55, 0, 1, GETDATE(), 0, 14, 3),
-(5, 'Mia', 2022, 'H', 'Fue rescatada de la calle', 0.55, 0, 1, GETDATE(), 0, 3, 3),
-(6, 'Uma', 2022, 'H', 'Fue rescatada de la calle', 0.55, 0, 1, GETDATE(), 0, 8, 3),
-(7, 'Morena', 2022, 'H', 'Fue rescatada de la calle', 0.55, 0, 1, GETDATE(), 0, 15, 3),
-(8, 'Luna', 2022, 'H', 'Fue rescatada de la calle', 0.55, 0, 1, GETDATE(), 0, 12, 3);
+(1, 'Coco', 2022, 'M', '', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 1, 3),
+(2, 'Toby', 2022, 'M', '', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 10, 3),
+(3, 'Simba', 2022, 'M', '', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 5, 3),
+(4, 'Max', 2022, 'M', '', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 14, 3),
+(5, 'Mia', 2022, 'H', '', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 3, 3),
+(6, 'Uma', 2022, 'H', '', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 8, 3),
+(7, 'Morena', 2022, 'H', '', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 15, 3),
+(8, 'Luna', 2022, 'H', '', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 12, 3);
 SET IDENTITY_INSERT dbo.Animales OFF
 
 -- Refugios asociados a Veterinarias
-insert into dbo.VeterinariasAsignadasARefugios (Id_Veterinaria, Id_Refugio)
-values (4, 3);
+insert into dbo.VeterinariasAsignadasARefugios (Id_Veterinaria, Id_Refugio, FechaDeAsignacion)
+values (4, 3, GETDATE());
 
 --select a.Nombre as 'Nombre del animal', a.Genero, r.Nombre as 'Refugio', r.RazonSocial
 --from dbo.Animales as a inner join dbo.Refugios as r on a.Id_Refugio = r.Id

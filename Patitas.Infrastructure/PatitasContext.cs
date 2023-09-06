@@ -26,7 +26,6 @@ namespace Patitas.Infrastructure
         public DbSet<Denuncia> Denuncias { get; set; }
         public DbSet<SolicitudDeAdopcion> SolicitudesDeAdopcion { get; set; }
         public DbSet<Turno> Turnos { get; set; }
-        //public DbSet<AdoptanteCancelaAdopcion> AdoptantesQueCancelaronAdopciones { get; set; }
         public DbSet<Vacuna> Vacunas { get; set; }
         public DbSet<AnimalVacuna> AnimalVacuna { get; set; }
         public DbSet<EspecieVacuna> EspecieVacuna { get; set; }
@@ -108,13 +107,6 @@ namespace Patitas.Infrastructure
                     l => l.HasOne<Publicacion>().WithMany().HasForeignKey(p => p.Id_Publicacion).OnDelete(DeleteBehavior.Restrict),
                     r => r.HasOne<Administrador>().WithMany().HasForeignKey(a => a.Id_Administrador)
                 );
-
-            /*modelBuilder.Entity<Adoptante>()
-                .HasMany(a => a.SolicitudesDeAdopcionCanceladas)
-                .WithMany(sc => sc.AdoptantesQueCancelaron)
-                .UsingEntity<AdoptanteCancelaAdopcion>(
-                l => l.HasOne<SolicitudDeAdopcion>().WithMany().HasForeignKey(aca => aca.Id_SolicitudAdopcion),
-                r => r.HasOne<Adoptante>().WithMany().HasForeignKey(aca => aca.Id_Adoptante));*/
 
             modelBuilder.Entity<Animal>()
                 .HasMany(a => a.Vacunas)

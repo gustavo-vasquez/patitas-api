@@ -13,9 +13,11 @@ namespace Patitas.Domain.Entities
         public string Nombre { get; set; } = string.Empty;
         public int Nacimiento { get; set; }
         public char Genero { get; set; }
+        public string Fotografia { get; set; } = string.Empty;
 
         [StringLength(200)]
         public string SituacionPrevia { get; set; } = string.Empty;
+        public int Peso { get; set; }
         public decimal Altura { get; set; }
         public bool Esterilizado { get; set; }
         public bool Desparasitado { get; set; }

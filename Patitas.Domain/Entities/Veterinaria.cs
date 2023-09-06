@@ -15,6 +15,7 @@ namespace Patitas.Domain.Entities
 
         [StringLength(50)]
         public string RazonSocial { get; set; } = string.Empty;
+        public string? Fotografia { get; set; }
 
         [StringLength(200)]
         public string Especialidades { get; set; } = string.Empty;
@@ -25,6 +26,12 @@ namespace Patitas.Domain.Entities
 
         [StringLength(100)]
         public string? SitioWeb { get; set; }
+
+        [StringLength(200)]
+        public string? Descripcion { get; set;}
+
+        [StringLength(100)]
+        public string DiasDeAtencion { get; set; } = string.Empty;
 
         [StringLength(2)]
         public string HorarioApertura { get; set; } = string.Empty;
