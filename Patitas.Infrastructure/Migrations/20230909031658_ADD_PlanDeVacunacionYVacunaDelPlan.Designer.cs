@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Patitas.Infrastructure;
 
@@ -11,9 +12,11 @@ using Patitas.Infrastructure;
 namespace Patitas.Infrastructure.Migrations
 {
     [DbContext(typeof(PatitasContext))]
-    partial class PatitasContextModelSnapshot : ModelSnapshot
+    [Migration("20230909031658_ADD_PlanDeVacunacionYVacunaDelPlan")]
+    partial class ADD_PlanDeVacunacionYVacunaDelPlan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -654,11 +657,6 @@ namespace Patitas.Infrastructure.Migrations
                     b.Property<int>("Id_Veterinaria")
                         .HasColumnType("int");
 
-                    b.Property<string>("MotivoDeReprogramacion")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<byte>("NroDosis")
                         .HasColumnType("tinyint");
 
@@ -766,11 +764,6 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.Property<int>("Id_SolicitudDeAdopcion")
                         .HasColumnType("int");
-
-                    b.Property<string>("MotivoDeReprogramacion")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("PorReprogramar")
                         .HasColumnType("bit");

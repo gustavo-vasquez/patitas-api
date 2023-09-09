@@ -47,5 +47,9 @@ namespace Patitas.Domain.Entities
 
         // Relaciones N a N
         public ICollection<Refugio> Refugios { get; } = new List<Refugio>();
+
+        // 1 a 1
+        // 1 veterinaria <--> 1 plan de vacunacion
+        public PlanDeVacunacion PlanDeVacunacion { get; set; } = null!;
     }
 }

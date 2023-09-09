@@ -30,6 +30,9 @@ namespace Patitas.Infrastructure
         public DbSet<AnimalVacuna> AnimalVacuna { get; set; }
         public DbSet<EspecieVacuna> EspecieVacuna { get; set; }
         public DbSet<SeguimientoDeVacunacion> SeguimientosDeVacunacion { get; set; }
+        public DbSet<CancelacionDeAdopcion> CancelacionesDeAdopcion { get; set; }
+        public DbSet<PlanDeVacunacion> PlanesDeVacunacion { get; set; }
+        public DbSet<VacunaDelPlan> VacunasDelPlan { get; set; }
 
         public PatitasContext(DbContextOptions<PatitasContext> options) : base(options) { }
 
@@ -81,17 +84,38 @@ namespace Patitas.Infrastructure
                 .HasIndex(e => e.Id_Adoptante)
                 .IsUnique();
 
-            modelBuilder.Entity<Comentario>()
-                .HasOne(r => r.Refugio)
-                .WithMany(c => c.Comentarios)
-                .HasForeignKey(c => c.Id_Refugio)
+            modelBuilder.Entity<SolicitudDeAdopcion>()
+                .HasOne(s => s.PlanDeVacunacion)
+                .WithOne(pv => pv.SolicitudDeAdopcion)
+                .HasForeignKey<PlanDeVacunacion>(pv => pv.Id_SolicitudDeAdopcion)
+                .IsRequired();
+
+            modelBuilder.Entity<PlanDeVacunacion>()
+                .HasIndex(pv => pv.Id_SolicitudDeAdopcion)
+                .IsUnique();
+
+            modelBuilder.Entity<Veterinaria>()
+                .HasOne(v => v.PlanDeVacunacion)
+                .WithOne(pv => pv.Veterinaria)
+                .HasForeignKey<PlanDeVacunacion>(pv => pv.Id_Veterinaria)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanDeVacunacion>()
+                .HasIndex(pv => pv.Id_Veterinaria)
+                .IsUnique();
 
             modelBuilder.Entity<Animal>()
                 .Property(e => e.Altura)
                 .HasColumnType("decimal(2, 2)");
 
             // Relaciones N a N
+            modelBuilder.Entity<Comentario>()
+                .HasOne(r => r.Refugio)
+                .WithMany(c => c.Comentarios)
+                .HasForeignKey(c => c.Id_Refugio)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Veterinaria>()
                 .HasMany(r => r.Refugios)
                 .WithMany(v => v.Veterinarias)
@@ -122,6 +146,14 @@ namespace Patitas.Infrastructure
                 .UsingEntity<EspecieVacuna>(
                     l => l.HasOne<Vacuna>().WithMany().HasForeignKey(rv => rv.Id_Vacuna),
                     r => r.HasOne<Especie>().WithMany().HasForeignKey(rv => rv.Id_Especie)
+                );
+
+            modelBuilder.Entity<PlanDeVacunacion>()
+                .HasMany(pv => pv.Vacunas)
+                .WithMany(v => v.PlanesDeVacunacion)
+                .UsingEntity<VacunaDelPlan>(
+                    l => l.HasOne<Vacuna>().WithMany().HasForeignKey(vp => vp.Id_Vacuna),
+                    r => r.HasOne<PlanDeVacunacion>().WithMany().HasForeignKey(vp => vp.Id_PlanDeVacunacion)
                 );
 
             ///////////////////////////////////////////////////////////
@@ -162,6 +194,12 @@ namespace Patitas.Infrastructure
                 .HasOne(sv => sv.Veterinaria)
                 .WithMany(v => v.SeguimientosDeVacunacion)
                 .HasForeignKey(sv => sv.Id_Veterinaria)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CancelacionDeAdopcion>()
+                .HasOne(c => c.Usuario)
+                .WithMany(u => u.CancelacionesDeAdopcion)
+                .HasForeignKey(c => c.Id_Usuario)
                 .OnDelete(DeleteBehavior.Restrict);
 
             //////////////////////////////////////////////////////////

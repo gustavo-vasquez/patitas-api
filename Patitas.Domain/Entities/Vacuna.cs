@@ -25,5 +25,8 @@ namespace Patitas.Domain.Entities
 
         // N especies <--(EspecieVacuna)--> N vacunas
         public ICollection<Especie> Especies { get; } = new List<Especie>();
+
+        // N vacunas <--(VacunaDelPlan)--> N planes de vacunación
+        public ICollection<PlanDeVacunacion> PlanesDeVacunacion { get; } = new List<PlanDeVacunacion>();
     }
 }

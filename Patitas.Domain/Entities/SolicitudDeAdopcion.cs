@@ -10,6 +10,7 @@ namespace Patitas.Domain.Entities
         public int Id { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime? FechaFinalizacion { get; set; }
+        public bool Aprobada { get; set; }
         public bool EstaActivo { get; set; }
         public int Id_Adoptante { get; set; }
         public int Id_Animal { get; set; }
@@ -34,7 +35,11 @@ namespace Patitas.Domain.Entities
         // 1 solicitud <--> N seguimientos de vacunacion
         public ICollection<SeguimientoDeVacunacion> SeguimientosDeVacunacion { get; } = new List<SeguimientoDeVacunacion>();
 
-        // N adoptantes <--(AdoptanteCancelaAdopcion)--> N solicitudes
-        //public ICollection<Adoptante> AdoptantesQueCancelaron { get; } = new List<Adoptante>();
+        // 1 solicitud <--> N cancelacion de adopcion
+        public ICollection<CancelacionDeAdopcion> CancelacionesDeAdopcion { get; } = new List<CancelacionDeAdopcion>();
+
+        // 1 a 1
+        // 1 solicitud de adopcion <--> 1 plan de vacunacion
+        public PlanDeVacunacion PlanDeVacunacion { get; set; } = null!;
     }
 }

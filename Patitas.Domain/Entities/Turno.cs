@@ -13,6 +13,9 @@ namespace Patitas.Domain.Entities
         public bool Asistio { get; set; }
         public bool EstaActivo { get; set; }
         public bool PorReprogramar { get; set; }
+
+        [StringLength(200)]
+        public string MotivoDeReprogramacion { get; set; } = string.Empty;
         public int Id_SolicitudDeAdopcion { get; set; }
         public int Id_Adoptante { get; set; }
         public int Id_Refugio { get; set; }

@@ -30,9 +30,5 @@ namespace Patitas.Domain.Entities
 
         // 1 adoptante <--> N turnos
         public ICollection<Turno> Turnos { get; } = new List<Turno>();
-
-        // N a N
-        // N adoptantes <--(AdoptanteCancelaAdopcion)--> N solicitudes
-        //public ICollection<SolicitudDeAdopcion> SolicitudesDeAdopcionCanceladas { get; } = new List<SolicitudDeAdopcion>();
     }
 }

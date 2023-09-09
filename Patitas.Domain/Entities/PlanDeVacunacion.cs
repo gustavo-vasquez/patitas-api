@@ -1,35 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Patitas.Domain.Entities
 {
-    public class SeguimientoDeVacunacion
+    public class PlanDeVacunacion
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public DateTime FechaDeAsignacion { get; set; }
-        public bool EstaAplicada { get; set; }
-        public byte NroDosis { get; set; }
-
-        [StringLength(50)]
-        public string? NroLote { get; set; }
-        public bool PorReprogramar { get; set; }
-
-        [StringLength(200)]
-        public string MotivoDeReprogramacion { get; set; } = string.Empty;
         public int Id_SolicitudDeAdopcion { get; set; }
-        public int Id_Vacuna { get; set; }
         public int Id_Veterinaria { get; set; }
+        public bool EstaActivo { get; set; }
 
+        // 1 solicitud de adopcion <--> 1 plan de vacunacion
         [ForeignKey(nameof(Id_SolicitudDeAdopcion))]
         public SolicitudDeAdopcion SolicitudDeAdopcion { get; set; } = null!;
 
-        [ForeignKey(nameof(Id_Vacuna))]
-        public Vacuna Vacuna { get; set; } = null!;
-
+        // 1 veterinaria <--> 1 plan de vacunacion
         [ForeignKey(nameof(Id_Veterinaria))]
         public Veterinaria Veterinaria { get; set; } = null!;
+
+        // N a N
+        // N vacunas <--(VacunaDelPlan)--> N plan de vacunación
+        public ICollection<Vacuna> Vacunas { get; } = new List<Vacuna>();
     }
 }

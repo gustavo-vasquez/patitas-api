@@ -45,8 +45,10 @@ namespace Patitas.Domain.Entities
         // 1 usuario <--> N denuncias
         public ICollection<Denuncia> Denuncias { get; } = new List<Denuncia>();
 
-        // 1 a 1
+        // 1 usuario <--> N cancelacion de adopcion
+        public ICollection<CancelacionDeAdopcion> CancelacionesDeAdopcion { get; } = new List<CancelacionDeAdopcion>();
 
+        // 1 a 1
         public Adoptante? Adoptante { get; set; }
         public Administrador? Administrador { get; set; }
         public Refugio? Refugio { get; set; }
