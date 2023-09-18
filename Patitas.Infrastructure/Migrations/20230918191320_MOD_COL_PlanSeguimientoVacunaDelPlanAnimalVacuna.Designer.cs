@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Patitas.Infrastructure;
 
@@ -11,9 +12,11 @@ using Patitas.Infrastructure;
 namespace Patitas.Infrastructure.Migrations
 {
     [DbContext(typeof(PatitasContext))]
-    partial class PatitasContextModelSnapshot : ModelSnapshot
+    [Migration("20230918191320_MOD_COL_PlanSeguimientoVacunaDelPlanAnimalVacuna")]
+    partial class MOD_COL_PlanSeguimientoVacunaDelPlanAnimalVacuna
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,9 +478,6 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.Property<bool>("EstaActivo")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime>("FechaCompletado")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Id_SolicitudDeAdopcion")
                         .HasColumnType("int");

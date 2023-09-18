@@ -9,7 +9,7 @@ namespace Patitas.Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public DateTime FechaDeAsignacion { get; set; }
+        public DateTime FechaAsignada { get; set; }
         public bool EstaAplicada { get; set; }
         public byte NroDosis { get; set; }
 
@@ -19,6 +19,7 @@ namespace Patitas.Domain.Entities
 
         [StringLength(200)]
         public string MotivoDeReprogramacion { get; set; } = string.Empty;
+        public bool EstaActivo { get; set; }
         public int Id_SolicitudDeAdopcion { get; set; }
         public int Id_Vacuna { get; set; }
         public int Id_Veterinaria { get; set; }

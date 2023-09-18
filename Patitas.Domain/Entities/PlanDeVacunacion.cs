@@ -16,6 +16,8 @@ namespace Patitas.Domain.Entities
         public int Id_SolicitudDeAdopcion { get; set; }
         public int Id_Veterinaria { get; set; }
         public bool EstaActivo { get; set; }
+        public bool Completado { get; set; }
+        public DateTime FechaCompletado { get; set; }
 
         // 1 solicitud de adopcion <--> 1 plan de vacunacion
         [ForeignKey(nameof(Id_SolicitudDeAdopcion))]
