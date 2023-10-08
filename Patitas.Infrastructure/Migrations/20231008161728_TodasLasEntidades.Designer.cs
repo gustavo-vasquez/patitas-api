@@ -12,7 +12,7 @@ using Patitas.Infrastructure;
 namespace Patitas.Infrastructure.Migrations
 {
     [DbContext(typeof(PatitasContext))]
-    [Migration("20230920142553_TodasLasEntidades")]
+    [Migration("20231008161728_TodasLasEntidades")]
     partial class TodasLasEntidades
     {
         /// <inheritdoc />
@@ -379,6 +379,9 @@ namespace Patitas.Infrastructure.Migrations
                     b.Property<int>("Id_Adoptante")
                         .HasColumnType("int");
 
+                    b.Property<int>("Id_Refugio")
+                        .HasColumnType("int");
+
                     b.Property<string>("Motivo")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -422,8 +425,9 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id_Adoptante")
-                        .IsUnique();
+                    b.HasIndex("Id_Adoptante");
+
+                    b.HasIndex("Id_Refugio");
 
                     b.ToTable("FormulariosPreAdopcion");
                 });
@@ -1121,12 +1125,20 @@ namespace Patitas.Infrastructure.Migrations
             modelBuilder.Entity("Patitas.Domain.Entities.FormularioPreAdopcion", b =>
                 {
                     b.HasOne("Patitas.Domain.Entities.Adoptante", "Adoptante")
-                        .WithOne("FormularioPreAdopcion")
-                        .HasForeignKey("Patitas.Domain.Entities.FormularioPreAdopcion", "Id_Adoptante")
+                        .WithMany("FormulariosPreAdopcion")
+                        .HasForeignKey("Id_Adoptante")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Patitas.Domain.Entities.Refugio", "Refugio")
+                        .WithMany("FormulariosPreAdopcion")
+                        .HasForeignKey("Id_Refugio")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Adoptante");
+
+                    b.Navigation("Refugio");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.ModeracionDePublicacion", b =>
@@ -1355,7 +1367,7 @@ namespace Patitas.Infrastructure.Migrations
                 {
                     b.Navigation("Comentarios");
 
-                    b.Navigation("FormularioPreAdopcion");
+                    b.Navigation("FormulariosPreAdopcion");
 
                     b.Navigation("SolicitudesDeAdopcion");
 
@@ -1404,6 +1416,8 @@ namespace Patitas.Infrastructure.Migrations
                     b.Navigation("Animales");
 
                     b.Navigation("Comentarios");
+
+                    b.Navigation("FormulariosPreAdopcion");
 
                     b.Navigation("SolicitudesDeAdopcion");
 

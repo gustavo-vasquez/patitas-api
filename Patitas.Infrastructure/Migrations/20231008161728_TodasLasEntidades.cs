@@ -313,42 +313,6 @@ namespace Patitas.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FormulariosPreAdopcion",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Motivo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    TuvoMascota = table.Column<bool>(type: "bit", nullable: false),
-                    ViveSolo = table.Column<bool>(type: "bit", nullable: false),
-                    ViveEnCasa = table.Column<bool>(type: "bit", nullable: false),
-                    ViveEnDepartamento = table.Column<bool>(type: "bit", nullable: false),
-                    CantidadDeAmbientes = table.Column<byte>(type: "tinyint", nullable: false),
-                    TienePatio = table.Column<bool>(type: "bit", nullable: false),
-                    TieneBalcon = table.Column<bool>(type: "bit", nullable: false),
-                    TieneRedEnVentanas = table.Column<bool>(type: "bit", nullable: false),
-                    TieneVeterinariaCerca = table.Column<bool>(type: "bit", nullable: false),
-                    TieneMascotas = table.Column<bool>(type: "bit", nullable: false),
-                    DescripcionMascotas = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    ConoceLeyDeMaltratoAnimal = table.Column<bool>(type: "bit", nullable: false),
-                    FrecuenciaAnimalSolo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    TieneConocidosEnCasoDeEmergencia = table.Column<bool>(type: "bit", nullable: false),
-                    TieneSalarioAcordeAGastos = table.Column<bool>(type: "bit", nullable: false),
-                    TieneConocidosQueLoAconsejen = table.Column<bool>(type: "bit", nullable: false),
-                    Id_Adoptante = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FormulariosPreAdopcion", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FormulariosPreAdopcion_Adoptantes_Id_Adoptante",
-                        column: x => x.Id_Adoptante,
-                        principalTable: "Adoptantes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Denuncias",
                 columns: table => new
                 {
@@ -481,6 +445,49 @@ namespace Patitas.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comentarios_Refugios_Id_Refugio",
+                        column: x => x.Id_Refugio,
+                        principalTable: "Refugios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FormulariosPreAdopcion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id_Adoptante = table.Column<int>(type: "int", nullable: false),
+                    Id_Refugio = table.Column<int>(type: "int", nullable: false),
+                    Motivo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    TuvoMascota = table.Column<bool>(type: "bit", nullable: false),
+                    TieneMascotas = table.Column<bool>(type: "bit", nullable: false),
+                    DescripcionMascotas = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ViveSolo = table.Column<bool>(type: "bit", nullable: false),
+                    TieneVeterinariaCerca = table.Column<bool>(type: "bit", nullable: false),
+                    ViveEnCasa = table.Column<bool>(type: "bit", nullable: false),
+                    ViveEnDepartamento = table.Column<bool>(type: "bit", nullable: false),
+                    CantidadDeAmbientes = table.Column<byte>(type: "tinyint", nullable: false),
+                    TienePatio = table.Column<bool>(type: "bit", nullable: false),
+                    TieneBalcon = table.Column<bool>(type: "bit", nullable: false),
+                    TieneRedEnVentanas = table.Column<bool>(type: "bit", nullable: false),
+                    ConoceLeyDeMaltratoAnimal = table.Column<bool>(type: "bit", nullable: false),
+                    FrecuenciaAnimalSolo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    TieneConocidosEnCasoDeEmergencia = table.Column<bool>(type: "bit", nullable: false),
+                    TieneSalarioAcordeAGastos = table.Column<bool>(type: "bit", nullable: false),
+                    TieneConocidosQueLoAconsejen = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormulariosPreAdopcion", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FormulariosPreAdopcion_Adoptantes_Id_Adoptante",
+                        column: x => x.Id_Adoptante,
+                        principalTable: "Adoptantes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FormulariosPreAdopcion_Refugios_Id_Refugio",
                         column: x => x.Id_Refugio,
                         principalTable: "Refugios",
                         principalColumn: "Id",
@@ -813,8 +820,12 @@ namespace Patitas.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_FormulariosPreAdopcion_Id_Adoptante",
                 table: "FormulariosPreAdopcion",
-                column: "Id_Adoptante",
-                unique: true);
+                column: "Id_Adoptante");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormulariosPreAdopcion_Id_Refugio",
+                table: "FormulariosPreAdopcion",
+                column: "Id_Refugio");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ModeracionDePublicaciones_Id_Administrador",

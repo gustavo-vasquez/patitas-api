@@ -19,7 +19,6 @@ namespace Patitas.Domain.Entities
 
         [ForeignKey("Id")]
         public Usuario Usuario { get; set; } = null!;
-        public FormularioPreAdopcion? FormularioPreAdopcion { get; set; }
 
         // Relaciones 1 a N
         // 1 Adoptante <--> N Comentarios
@@ -30,5 +29,8 @@ namespace Patitas.Domain.Entities
 
         // 1 adoptante <--> N turnos
         public ICollection<Turno> Turnos { get; } = new List<Turno>();
+
+        // 1 adoptante <--> N formularios pre-adopción
+        public ICollection<FormularioPreAdopcion> FormulariosPreAdopcion { get; } = new List<FormularioPreAdopcion>();
     }
 }
