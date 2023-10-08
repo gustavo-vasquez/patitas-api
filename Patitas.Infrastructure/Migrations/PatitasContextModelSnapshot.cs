@@ -233,9 +233,6 @@ namespace Patitas.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AprobadoPor_IdAdministrador")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -259,12 +256,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.Property<byte>("Nro_Estrellas")
                         .HasColumnType("tinyint");
 
-                    b.Property<bool>("PendienteDeAprobacion")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AprobadoPor_IdAdministrador");
 
                     b.HasIndex("Id_Adoptante");
 
@@ -1056,10 +1048,6 @@ namespace Patitas.Infrastructure.Migrations
 
             modelBuilder.Entity("Patitas.Domain.Entities.Comentario", b =>
                 {
-                    b.HasOne("Patitas.Domain.Entities.Administrador", "Administrador")
-                        .WithMany("Comentarios")
-                        .HasForeignKey("AprobadoPor_IdAdministrador");
-
                     b.HasOne("Patitas.Domain.Entities.Adoptante", "Adoptante")
                         .WithMany("Comentarios")
                         .HasForeignKey("Id_Adoptante")
@@ -1077,8 +1065,6 @@ namespace Patitas.Infrastructure.Migrations
                         .HasForeignKey("Nro_Estrellas")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Administrador");
 
                     b.Navigation("Adoptante");
 
@@ -1360,11 +1346,6 @@ namespace Patitas.Infrastructure.Migrations
                         .HasForeignKey("Id_Veterinaria")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Patitas.Domain.Entities.Administrador", b =>
-                {
-                    b.Navigation("Comentarios");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Adoptante", b =>

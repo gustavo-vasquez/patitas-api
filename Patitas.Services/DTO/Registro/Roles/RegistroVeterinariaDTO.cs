@@ -39,6 +39,9 @@ namespace Patitas.Services.DTO.Registro.Roles
         public override string? Altura { get; set; }
 
         [Required(ErrorMessage = "Este campo es obligatorio.")]
+        public string DiasDeAtencion { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
         [MaxLength(2, ErrorMessage = "Hora de apertura no válida.")]
         public string HoraApertura { get; set; } = string.Empty;
 

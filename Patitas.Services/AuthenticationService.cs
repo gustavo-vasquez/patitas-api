@@ -151,6 +151,7 @@ namespace Patitas.Services
                     RazonSocial = datosDeRegistro.RazonSocial,
                     NombreResponsable = datosDeRegistro.NombreResponsable,
                     ApellidoResponsable = datosDeRegistro.ApellidoResponsable,
+                    DiasDeAtencion = datosDeRegistro.DiasDeAtencion,
                     HorarioApertura = datosDeRegistro.HoraApertura,
                     HorarioCierre = datosDeRegistro.HoraCierre
                 };
@@ -173,6 +174,7 @@ namespace Patitas.Services
                     Especialidades = datosDeRegistro.Especialidades,
                     FechaFundacion = datosDeRegistro.FechaFundacion,
                     TelefonoAlternativo = datosDeRegistro.TelefonoAlternativo,
+                    DiasDeAtencion = datosDeRegistro.DiasDeAtencion,
                     HorarioApertura = datosDeRegistro.HoraApertura,
                     HorarioCierre = datosDeRegistro.HoraCierre
                 };

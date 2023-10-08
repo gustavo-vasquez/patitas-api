@@ -88,11 +88,11 @@ namespace Patitas.Presentation.Controllers
             return Ok("Este es un recurso protegido.");
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("prueba-enum/{rol}")]
         public IActionResult PruebaEnum(RolTypes rolType)
         {
             return Ok(rolType);
-        }
+        }*/
     }
 }

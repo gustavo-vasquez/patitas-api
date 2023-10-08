@@ -100,7 +100,7 @@ namespace Patitas.Services
             List<ComentarioDelRefugioDTO> comentariosDTO = new List<ComentarioDelRefugioDTO>();
 
             foreach (var comentario in comentarios)
-                if (!comentario.PendienteDeAprobacion && comentario.EstaActivo)
+                if (comentario.EstaActivo)
                     comentariosDTO.Add(
                         new ComentarioDelRefugioDTO()
                         {
@@ -109,8 +109,6 @@ namespace Patitas.Services
                             FechaCreacion = comentario.FechaCreacion,
                             EstaActivo = comentario.EstaActivo,
                             FechaEdicion = comentario.FechaEdicion,
-                            PendienteDeAprobacion = comentario.PendienteDeAprobacion,
-                            AprobadoPor_IdAdministrador = comentario.AprobadoPor_IdAdministrador,
                             Nro_Estrellas = comentario.Nro_Estrellas,
                             Id_Refugio = comentario.Id_Refugio,
                             Id_Adoptante = comentario.Id_Adoptante

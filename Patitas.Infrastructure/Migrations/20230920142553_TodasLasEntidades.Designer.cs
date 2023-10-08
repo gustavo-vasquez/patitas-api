@@ -12,8 +12,8 @@ using Patitas.Infrastructure;
 namespace Patitas.Infrastructure.Migrations
 {
     [DbContext(typeof(PatitasContext))]
-    [Migration("20230906220536_ADD_ColumnaPesoAAnimal")]
-    partial class ADD_ColumnaPesoAAnimal
+    [Migration("20230920142553_TodasLasEntidades")]
+    partial class TodasLasEntidades
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,6 +148,9 @@ namespace Patitas.Infrastructure.Migrations
                     b.Property<DateTime>("FechaDeAplicacion")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("FueParteDeAdopcion")
+                        .HasColumnType("bit");
+
                     b.Property<int>("NroDosisAplicada")
                         .HasColumnType("int");
 
@@ -176,6 +179,37 @@ namespace Patitas.Infrastructure.Migrations
                     b.ToTable("Barrios");
                 });
 
+            modelBuilder.Entity("Patitas.Domain.Entities.CancelacionDeAdopcion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("FechaDeCancelacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id_Solicitud")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id_Usuario")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Motivo")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id_Solicitud");
+
+                    b.HasIndex("Id_Usuario");
+
+                    b.ToTable("CancelacionesDeAdopcion");
+                });
+
             modelBuilder.Entity("Patitas.Domain.Entities.CausaDeDenuncia", b =>
                 {
                     b.Property<int>("Id")
@@ -202,9 +236,6 @@ namespace Patitas.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AprobadoPor_IdAdministrador")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -228,12 +259,7 @@ namespace Patitas.Infrastructure.Migrations
                     b.Property<byte>("Nro_Estrellas")
                         .HasColumnType("tinyint");
 
-                    b.Property<bool>("PendienteDeAprobacion")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AprobadoPor_IdAdministrador");
 
                     b.HasIndex("Id_Adoptante");
 
@@ -431,6 +457,40 @@ namespace Patitas.Infrastructure.Migrations
                     b.ToTable("ModeracionDePublicaciones");
                 });
 
+            modelBuilder.Entity("Patitas.Domain.Entities.PlanDeVacunacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Completado")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EstaActivo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaCompletado")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id_SolicitudDeAdopcion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id_Veterinaria")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id_SolicitudDeAdopcion")
+                        .IsUnique();
+
+                    b.HasIndex("Id_Veterinaria")
+                        .IsUnique();
+
+                    b.ToTable("PlanesDeVacunacion");
+                });
+
             modelBuilder.Entity("Patitas.Domain.Entities.Publicacion", b =>
                 {
                     b.Property<int>("Id")
@@ -583,10 +643,13 @@ namespace Patitas.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("EstaActivo")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("EstaAplicada")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("FechaDeAsignacion")
+                    b.Property<DateTime>("FechaAsignada")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Id_SolicitudDeAdopcion")
@@ -597,6 +660,11 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.Property<int>("Id_Veterinaria")
                         .HasColumnType("int");
+
+                    b.Property<string>("MotivoDeReprogramacion")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<byte>("NroDosis")
                         .HasColumnType("tinyint");
@@ -626,6 +694,9 @@ namespace Patitas.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Aprobada")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("EstaActivo")
                         .HasColumnType("bit");
@@ -702,6 +773,11 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.Property<int>("Id_SolicitudDeAdopcion")
                         .HasColumnType("int");
+
+                    b.Property<string>("MotivoDeReprogramacion")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("PorReprogramar")
                         .HasColumnType("bit");
@@ -796,6 +872,27 @@ namespace Patitas.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vacunas");
+                });
+
+            modelBuilder.Entity("Patitas.Domain.Entities.VacunaDelPlan", b =>
+                {
+                    b.Property<int>("Id_PlanDeVacunacion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id_Vacuna")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaDeAplicacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NroDosis")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id_PlanDeVacunacion", "Id_Vacuna");
+
+                    b.HasIndex("Id_Vacuna");
+
+                    b.ToTable("VacunasDelPlan");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Veterinaria", b =>
@@ -933,12 +1030,27 @@ namespace Patitas.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Patitas.Domain.Entities.CancelacionDeAdopcion", b =>
+                {
+                    b.HasOne("Patitas.Domain.Entities.SolicitudDeAdopcion", "SolicitudDeAdopcion")
+                        .WithMany("CancelacionesDeAdopcion")
+                        .HasForeignKey("Id_Solicitud")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Patitas.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("CancelacionesDeAdopcion")
+                        .HasForeignKey("Id_Usuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SolicitudDeAdopcion");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("Patitas.Domain.Entities.Comentario", b =>
                 {
-                    b.HasOne("Patitas.Domain.Entities.Administrador", "Administrador")
-                        .WithMany("Comentarios")
-                        .HasForeignKey("AprobadoPor_IdAdministrador");
-
                     b.HasOne("Patitas.Domain.Entities.Adoptante", "Adoptante")
                         .WithMany("Comentarios")
                         .HasForeignKey("Id_Adoptante")
@@ -956,8 +1068,6 @@ namespace Patitas.Infrastructure.Migrations
                         .HasForeignKey("Nro_Estrellas")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Administrador");
 
                     b.Navigation("Adoptante");
 
@@ -1032,6 +1142,25 @@ namespace Patitas.Infrastructure.Migrations
                         .HasForeignKey("Id_Publicacion")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Patitas.Domain.Entities.PlanDeVacunacion", b =>
+                {
+                    b.HasOne("Patitas.Domain.Entities.SolicitudDeAdopcion", "SolicitudDeAdopcion")
+                        .WithOne("PlanDeVacunacion")
+                        .HasForeignKey("Patitas.Domain.Entities.PlanDeVacunacion", "Id_SolicitudDeAdopcion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Patitas.Domain.Entities.Veterinaria", "Veterinaria")
+                        .WithOne("PlanDeVacunacion")
+                        .HasForeignKey("Patitas.Domain.Entities.PlanDeVacunacion", "Id_Veterinaria")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SolicitudDeAdopcion");
+
+                    b.Navigation("Veterinaria");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Publicacion", b =>
@@ -1181,6 +1310,21 @@ namespace Patitas.Infrastructure.Migrations
                     b.Navigation("RolUsuario");
                 });
 
+            modelBuilder.Entity("Patitas.Domain.Entities.VacunaDelPlan", b =>
+                {
+                    b.HasOne("Patitas.Domain.Entities.PlanDeVacunacion", null)
+                        .WithMany()
+                        .HasForeignKey("Id_PlanDeVacunacion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Patitas.Domain.Entities.Vacuna", null)
+                        .WithMany()
+                        .HasForeignKey("Id_Vacuna")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Patitas.Domain.Entities.Veterinaria", b =>
                 {
                     b.HasOne("Patitas.Domain.Entities.Usuario", "Usuario")
@@ -1205,11 +1349,6 @@ namespace Patitas.Infrastructure.Migrations
                         .HasForeignKey("Id_Veterinaria")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Patitas.Domain.Entities.Administrador", b =>
-                {
-                    b.Navigation("Comentarios");
                 });
 
             modelBuilder.Entity("Patitas.Domain.Entities.Adoptante", b =>
@@ -1278,6 +1417,11 @@ namespace Patitas.Infrastructure.Migrations
 
             modelBuilder.Entity("Patitas.Domain.Entities.SolicitudDeAdopcion", b =>
                 {
+                    b.Navigation("CancelacionesDeAdopcion");
+
+                    b.Navigation("PlanDeVacunacion")
+                        .IsRequired();
+
                     b.Navigation("SeguimientosDeVacunacion");
 
                     b.Navigation("Turnos");
@@ -1294,6 +1438,8 @@ namespace Patitas.Infrastructure.Migrations
 
                     b.Navigation("Adoptante");
 
+                    b.Navigation("CancelacionesDeAdopcion");
+
                     b.Navigation("Denuncias");
 
                     b.Navigation("Refugio");
@@ -1308,6 +1454,9 @@ namespace Patitas.Infrastructure.Migrations
 
             modelBuilder.Entity("Patitas.Domain.Entities.Veterinaria", b =>
                 {
+                    b.Navigation("PlanDeVacunacion")
+                        .IsRequired();
+
                     b.Navigation("SeguimientosDeVacunacion");
                 });
 #pragma warning restore 612, 618

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Patitas.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ADD_TodasLasEntidades : Migration
+    public partial class TodasLasEntidades : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,7 +63,7 @@ namespace Patitas.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RolesUsuario",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -72,7 +72,7 @@ namespace Patitas.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolesUsuario", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,8 +96,7 @@ namespace Patitas.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CantidadDeDosis = table.Column<int>(type: "int", nullable: false),
-                    EdadAproximada = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    RequiereDosisDeRefuerzo = table.Column<bool>(type: "bit", nullable: false)
+                    EdadIndicada = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,8 +136,9 @@ namespace Patitas.Infrastructure.Migrations
                     Telefono = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Direccion = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EstaActivo = table.Column<bool>(type: "bit", nullable: false),
                     Id_Barrio = table.Column<int>(type: "int", nullable: false),
-                    Id_RolUsuario = table.Column<int>(type: "int", nullable: false)
+                    Id_Rol = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -150,9 +150,33 @@ namespace Patitas.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Usuarios_RolesUsuario_Id_RolUsuario",
-                        column: x => x.Id_RolUsuario,
-                        principalTable: "RolesUsuario",
+                        name: "FK_Usuarios_Roles_Id_Rol",
+                        column: x => x.Id_Rol,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EspecieVacuna",
+                columns: table => new
+                {
+                    Id_Especie = table.Column<int>(type: "int", nullable: false),
+                    Id_Vacuna = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EspecieVacuna", x => new { x.Id_Especie, x.Id_Vacuna });
+                    table.ForeignKey(
+                        name: "FK_EspecieVacuna_Especies_Id_Especie",
+                        column: x => x.Id_Especie,
+                        principalTable: "Especies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EspecieVacuna_Vacunas_Id_Vacuna",
+                        column: x => x.Id_Vacuna,
+                        principalTable: "Vacunas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -240,9 +264,12 @@ namespace Patitas.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     RazonSocial = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Fotografia = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NombreResponsable = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ApellidoResponsable = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SitioWeb = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Descripcion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    DiasDeAtencion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HorarioApertura = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     HorarioCierre = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false)
                 },
@@ -264,10 +291,13 @@ namespace Patitas.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     RazonSocial = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Fotografia = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Especialidades = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     FechaFundacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TelefonoAlternativo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     SitioWeb = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Descripcion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    DiasDeAtencion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HorarioApertura = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     HorarioCierre = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false)
                 },
@@ -390,7 +420,9 @@ namespace Patitas.Infrastructure.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Nacimiento = table.Column<int>(type: "int", nullable: false),
                     Genero = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    Fotografia = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SituacionPrevia = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Peso = table.Column<int>(type: "int", nullable: false),
                     Altura = table.Column<decimal>(type: "decimal(2,2)", nullable: false),
                     Esterilizado = table.Column<bool>(type: "bit", nullable: false),
                     Desparasitado = table.Column<bool>(type: "bit", nullable: false),
@@ -428,8 +460,6 @@ namespace Patitas.Infrastructure.Migrations
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EstaActivo = table.Column<bool>(type: "bit", nullable: false),
                     FechaEdicion = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PendienteDeAprobacion = table.Column<bool>(type: "bit", nullable: false),
-                    AprobadoPor_IdAdministrador = table.Column<int>(type: "int", nullable: true),
                     Nro_Estrellas = table.Column<byte>(type: "tinyint", nullable: false),
                     Id_Refugio = table.Column<int>(type: "int", nullable: false),
                     Id_Adoptante = table.Column<int>(type: "int", nullable: false)
@@ -437,11 +467,6 @@ namespace Patitas.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comentarios", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Comentarios_Administradores_AprobadoPor_IdAdministrador",
-                        column: x => x.AprobadoPor_IdAdministrador,
-                        principalTable: "Administradores",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comentarios_Adoptantes_Id_Adoptante",
                         column: x => x.Id_Adoptante,
@@ -467,7 +492,8 @@ namespace Patitas.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id_Veterinaria = table.Column<int>(type: "int", nullable: false),
-                    Id_Refugio = table.Column<int>(type: "int", nullable: false)
+                    Id_Refugio = table.Column<int>(type: "int", nullable: false),
+                    FechaDeAsignacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -491,7 +517,10 @@ namespace Patitas.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id_Animal = table.Column<int>(type: "int", nullable: false),
-                    Id_Vacuna = table.Column<int>(type: "int", nullable: false)
+                    Id_Vacuna = table.Column<int>(type: "int", nullable: false),
+                    NroDosisAplicada = table.Column<int>(type: "int", nullable: false),
+                    FechaDeAplicacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FueParteDeAdopcion = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -518,6 +547,7 @@ namespace Patitas.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FechaFinalizacion = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Aprobada = table.Column<bool>(type: "bit", nullable: false),
                     EstaActivo = table.Column<bool>(type: "bit", nullable: false),
                     Id_Adoptante = table.Column<int>(type: "int", nullable: false),
                     Id_Animal = table.Column<int>(type: "int", nullable: false),
@@ -547,6 +577,103 @@ namespace Patitas.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CancelacionesDeAdopcion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Motivo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    FechaDeCancelacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id_Solicitud = table.Column<int>(type: "int", nullable: false),
+                    Id_Usuario = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CancelacionesDeAdopcion", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CancelacionesDeAdopcion_SolicitudesDeAdopcion_Id_Solicitud",
+                        column: x => x.Id_Solicitud,
+                        principalTable: "SolicitudesDeAdopcion",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CancelacionesDeAdopcion_Usuarios_Id_Usuario",
+                        column: x => x.Id_Usuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlanesDeVacunacion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id_SolicitudDeAdopcion = table.Column<int>(type: "int", nullable: false),
+                    Id_Veterinaria = table.Column<int>(type: "int", nullable: false),
+                    EstaActivo = table.Column<bool>(type: "bit", nullable: false),
+                    Completado = table.Column<bool>(type: "bit", nullable: false),
+                    FechaCompletado = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlanesDeVacunacion", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlanesDeVacunacion_SolicitudesDeAdopcion_Id_SolicitudDeAdopcion",
+                        column: x => x.Id_SolicitudDeAdopcion,
+                        principalTable: "SolicitudesDeAdopcion",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlanesDeVacunacion_Veterinarias_Id_Veterinaria",
+                        column: x => x.Id_Veterinaria,
+                        principalTable: "Veterinarias",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SeguimientosDeVacunacion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FechaAsignada = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EstaAplicada = table.Column<bool>(type: "bit", nullable: false),
+                    NroDosis = table.Column<byte>(type: "tinyint", nullable: false),
+                    NroLote = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    PorReprogramar = table.Column<bool>(type: "bit", nullable: false),
+                    MotivoDeReprogramacion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    EstaActivo = table.Column<bool>(type: "bit", nullable: false),
+                    Id_SolicitudDeAdopcion = table.Column<int>(type: "int", nullable: false),
+                    Id_Vacuna = table.Column<int>(type: "int", nullable: false),
+                    Id_Veterinaria = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SeguimientosDeVacunacion", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SeguimientosDeVacunacion_SolicitudesDeAdopcion_Id_SolicitudDeAdopcion",
+                        column: x => x.Id_SolicitudDeAdopcion,
+                        principalTable: "SolicitudesDeAdopcion",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SeguimientosDeVacunacion_Vacunas_Id_Vacuna",
+                        column: x => x.Id_Vacuna,
+                        principalTable: "Vacunas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SeguimientosDeVacunacion_Veterinarias_Id_Veterinaria",
+                        column: x => x.Id_Veterinaria,
+                        principalTable: "Veterinarias",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Turnos",
                 columns: table => new
                 {
@@ -557,6 +684,7 @@ namespace Patitas.Infrastructure.Migrations
                     Asistio = table.Column<bool>(type: "bit", nullable: false),
                     EstaActivo = table.Column<bool>(type: "bit", nullable: false),
                     PorReprogramar = table.Column<bool>(type: "bit", nullable: false),
+                    MotivoDeReprogramacion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Id_SolicitudDeAdopcion = table.Column<int>(type: "int", nullable: false),
                     Id_Adoptante = table.Column<int>(type: "int", nullable: false),
                     Id_Refugio = table.Column<int>(type: "int", nullable: false)
@@ -582,6 +710,32 @@ namespace Patitas.Infrastructure.Migrations
                         principalTable: "SolicitudesDeAdopcion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VacunasDelPlan",
+                columns: table => new
+                {
+                    Id_PlanDeVacunacion = table.Column<int>(type: "int", nullable: false),
+                    Id_Vacuna = table.Column<int>(type: "int", nullable: false),
+                    NroDosis = table.Column<int>(type: "int", nullable: false),
+                    FechaDeAplicacion = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VacunasDelPlan", x => new { x.Id_PlanDeVacunacion, x.Id_Vacuna });
+                    table.ForeignKey(
+                        name: "FK_VacunasDelPlan_PlanesDeVacunacion_Id_PlanDeVacunacion",
+                        column: x => x.Id_PlanDeVacunacion,
+                        principalTable: "PlanesDeVacunacion",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VacunasDelPlan_Vacunas_Id_Vacuna",
+                        column: x => x.Id_Vacuna,
+                        principalTable: "Vacunas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -612,9 +766,14 @@ namespace Patitas.Infrastructure.Migrations
                 column: "Id_Vacuna");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comentarios_AprobadoPor_IdAdministrador",
-                table: "Comentarios",
-                column: "AprobadoPor_IdAdministrador");
+                name: "IX_CancelacionesDeAdopcion_Id_Solicitud",
+                table: "CancelacionesDeAdopcion",
+                column: "Id_Solicitud");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CancelacionesDeAdopcion_Id_Usuario",
+                table: "CancelacionesDeAdopcion",
+                column: "Id_Usuario");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comentarios_Id_Adoptante",
@@ -647,6 +806,11 @@ namespace Patitas.Infrastructure.Migrations
                 column: "Id_Usuario");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EspecieVacuna_Id_Vacuna",
+                table: "EspecieVacuna",
+                column: "Id_Vacuna");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FormulariosPreAdopcion_Id_Adoptante",
                 table: "FormulariosPreAdopcion",
                 column: "Id_Adoptante",
@@ -656,6 +820,18 @@ namespace Patitas.Infrastructure.Migrations
                 name: "IX_ModeracionDePublicaciones_Id_Administrador",
                 table: "ModeracionDePublicaciones",
                 column: "Id_Administrador");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlanesDeVacunacion_Id_SolicitudDeAdopcion",
+                table: "PlanesDeVacunacion",
+                column: "Id_SolicitudDeAdopcion",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlanesDeVacunacion_Id_Veterinaria",
+                table: "PlanesDeVacunacion",
+                column: "Id_Veterinaria",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Publicaciones_Id_Tema",
@@ -682,6 +858,21 @@ namespace Patitas.Infrastructure.Migrations
                 table: "Refugios",
                 column: "Id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SeguimientosDeVacunacion_Id_SolicitudDeAdopcion",
+                table: "SeguimientosDeVacunacion",
+                column: "Id_SolicitudDeAdopcion");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SeguimientosDeVacunacion_Id_Vacuna",
+                table: "SeguimientosDeVacunacion",
+                column: "Id_Vacuna");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SeguimientosDeVacunacion_Id_Veterinaria",
+                table: "SeguimientosDeVacunacion",
+                column: "Id_Veterinaria");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SolicitudesDeAdopcion_Id_Adoptante",
@@ -719,9 +910,14 @@ namespace Patitas.Infrastructure.Migrations
                 column: "Id_Barrio");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_Id_RolUsuario",
+                name: "IX_Usuarios_Id_Rol",
                 table: "Usuarios",
-                column: "Id_RolUsuario");
+                column: "Id_Rol");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VacunasDelPlan_Id_Vacuna",
+                table: "VacunasDelPlan",
+                column: "Id_Vacuna");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Veterinarias_Id",
@@ -742,10 +938,16 @@ namespace Patitas.Infrastructure.Migrations
                 name: "AnimalVacuna");
 
             migrationBuilder.DropTable(
+                name: "CancelacionesDeAdopcion");
+
+            migrationBuilder.DropTable(
                 name: "Comentarios");
 
             migrationBuilder.DropTable(
                 name: "Denuncias");
+
+            migrationBuilder.DropTable(
+                name: "EspecieVacuna");
 
             migrationBuilder.DropTable(
                 name: "FormulariosPreAdopcion");
@@ -754,13 +956,16 @@ namespace Patitas.Infrastructure.Migrations
                 name: "ModeracionDePublicaciones");
 
             migrationBuilder.DropTable(
+                name: "SeguimientosDeVacunacion");
+
+            migrationBuilder.DropTable(
                 name: "Turnos");
 
             migrationBuilder.DropTable(
-                name: "VeterinariasAsignadasARefugios");
+                name: "VacunasDelPlan");
 
             migrationBuilder.DropTable(
-                name: "Vacunas");
+                name: "VeterinariasAsignadasARefugios");
 
             migrationBuilder.DropTable(
                 name: "DetalleEstrellas");
@@ -775,13 +980,19 @@ namespace Patitas.Infrastructure.Migrations
                 name: "Publicaciones");
 
             migrationBuilder.DropTable(
+                name: "PlanesDeVacunacion");
+
+            migrationBuilder.DropTable(
+                name: "Vacunas");
+
+            migrationBuilder.DropTable(
+                name: "Temas");
+
+            migrationBuilder.DropTable(
                 name: "SolicitudesDeAdopcion");
 
             migrationBuilder.DropTable(
                 name: "Veterinarias");
-
-            migrationBuilder.DropTable(
-                name: "Temas");
 
             migrationBuilder.DropTable(
                 name: "Adoptantes");
@@ -805,7 +1016,7 @@ namespace Patitas.Infrastructure.Migrations
                 name: "Barrios");
 
             migrationBuilder.DropTable(
-                name: "RolesUsuario");
+                name: "Roles");
         }
     }
 }
