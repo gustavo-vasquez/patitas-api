@@ -16,6 +16,13 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetRefugios()
+        {
+            ExplorarRefugiosDTO explorarRefugios = await _serviceManager.RefugioService.ExplorarRefugios();
+            return Ok(explorarRefugios);
+        }
+
+        [HttpGet]
         [Route("{refugioId}")]
         public async Task<IActionResult> GetRefugio([FromRoute] int refugioId)
         {

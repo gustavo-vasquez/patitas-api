@@ -9,6 +9,7 @@ namespace Patitas.Services.Contracts
 {
     public interface IRefugioService
     {
+        Task<ExplorarRefugiosDTO> ExplorarRefugios();
         Task<RefugioInfoBasicaDTO> GetInformacionBasicaDelRefugio(int refugioId);
         Task<RefugioResponseDTO> GetAnimalesDelRefugio(int refugioId);
         Task<RefugioResponseDTO> GetComentariosDelRefugio(int refugioId);

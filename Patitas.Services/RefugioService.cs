@@ -21,6 +21,63 @@ namespace Patitas.Services
             _repositoryManager = repositoryManager;
         }
 
+        public async Task<ExplorarRefugiosDTO> ExplorarRefugios()
+        {
+            try
+            {
+                // Obtengo los refugios
+                IEnumerable<Refugio> refugios = await _repositoryManager.RefugioRepository.GetAllAsync();
+
+                // Inicializo el ExplorarRefugiosDTO a devolver a la UI
+                ExplorarRefugiosDTO explorarRefugios = new ExplorarRefugiosDTO();
+
+                // Inicializo las propiedades que va a devolver ExplorarRefugiosDTO
+                List<string> barriosDTO = new List<string>();
+                List<RefugioDTO> refugiosDTO = new List<RefugioDTO>();
+
+                IEnumerable<Barrio> barrios = await _repositoryManager.BarrioRepository.GetAllAsync();
+
+                foreach (Barrio b in barrios)
+                {
+                    barriosDTO.Add(b.Nombre);
+                }
+
+                foreach (Refugio refugio in refugios)
+                {
+                    // Obtengo la tabla Usuario que corresponde al Refugio y carga el Barrio que le pertenece
+                    Usuario? usuario = await _repositoryManager.UsuarioRepository.GetByIdAsync(refugio.Id, IncludeTypes.REFERENCE_TABLE_NAME, "Barrio");
+                    
+                    // Obtengo todos los comentarios hechos hacia este refugio
+                    IEnumerable<Comentario?> comentarios = await _repositoryManager.ComentarioRepository.FindAllByAsync(c => c.Id_Refugio.Equals(refugio.Id));
+                    double puntaje = 0;
+
+                    if (comentarios != null)
+                    {
+                        puntaje = comentarios.Count() > 0 ? comentarios.Average(c => c!.Nro_Estrellas) : puntaje;
+                    }
+
+                    RefugioDTO refugioDTO = new RefugioDTO();
+                    refugioDTO.Id = refugio.Id;
+                    refugioDTO.Nombre = refugio.Nombre;
+                    refugioDTO.Puntaje = puntaje;
+                    refugioDTO.Fotografia = refugio.Fotografia;
+                    refugioDTO.Direccion = usuario!.Direccion!;
+                    refugioDTO.Barrio = usuario.Barrio.Nombre;
+
+                    refugiosDTO.Add(refugioDTO);
+                }
+
+                explorarRefugios.Barrios = barriosDTO;
+                explorarRefugios.Refugios = refugiosDTO;
+
+                return explorarRefugios;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Ha ocurrido un problema al obtener los datos de los refugios. \nCausa: " + ex.Message);
+            }
+        }
+
         public async Task<RefugioInfoBasicaDTO> GetInformacionBasicaDelRefugio(int refugioId)
         {
             try
