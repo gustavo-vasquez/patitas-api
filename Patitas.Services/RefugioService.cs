@@ -294,6 +294,9 @@ namespace Patitas.Services
             {
                 Refugio? refugio = await _repositoryManager.RefugioRepository.GetByIdAsync(refugioId);
 
+                // Obtengo la tabla Usuario que corresponde al Refugio y carga el Barrio que le pertenece
+                Usuario? usuario = await _repositoryManager.UsuarioRepository.GetByIdAsync(refugioId);
+
                 RefugioInfoCompletaDTO infoCompleta = new RefugioInfoCompletaDTO()
                 {
                     Id = refugio!.Id,
@@ -302,6 +305,8 @@ namespace Patitas.Services
                     Fotografia = refugio.Fotografia,
                     NombreResponsable = refugio.NombreResponsable,
                     ApellidoResponsable = refugio.ApellidoResponsable,
+                    Telefono = usuario!.Telefono,
+                    Email = usuario.Email,
                     SitioWeb = refugio.SitioWeb,
                     Descripcion = refugio.Descripcion,
                     DiasDeAtencion = refugio.DiasDeAtencion,

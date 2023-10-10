@@ -15,6 +15,8 @@ namespace Patitas.Services.DTO.Refugio
         public string? Fotografia { get; set; }
         public string NombreResponsable { get; set; } = string.Empty;
         public string ApellidoResponsable { get; set; } = string.Empty;
+        public string? Telefono { get; set; }
+        public string Email { get; set; } = string.Empty;
         public string? SitioWeb { get; set; }
         public string? Descripcion { get; set; }
         public string DiasDeAtencion { get; set; } = string.Empty;
