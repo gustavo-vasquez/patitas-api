@@ -38,6 +38,14 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
+        [Route("buscar")]
+        public async Task<IActionResult> SearchRefugioBy([FromQuery] string? nombre, [FromQuery] string? barrio)
+        {
+            IEnumerable<RefugioDTO> refugiosDTO = await _serviceManager.RefugioService.BuscarRefugios(nombre, barrio);
+            return Ok(refugiosDTO);
+        }
+
+        [HttpGet]
         [Route("{refugioId}/animales")]
         public async Task<IActionResult> GetAnimales([FromRoute] int refugioId)
         {

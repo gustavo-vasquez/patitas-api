@@ -20,6 +20,7 @@ namespace Patitas.Services.Manager
         private readonly Lazy<IVeterinariaService> _veterinariaService;
         private readonly Lazy<IComentarioService> _comentarioService;
         private readonly Lazy<IAnimalService> _animalService;
+        private readonly Lazy<IBarrioService> _barrioService;
 
         public ServiceManager(IRepositoryManager repositoryManager, IOptions<TokenManagement> tokenManagement)
         {
@@ -29,6 +30,7 @@ namespace Patitas.Services.Manager
             _veterinariaService = new Lazy<IVeterinariaService>(() => new VeterinariaService(repositoryManager));
             _comentarioService = new Lazy<IComentarioService>(() => new ComentarioService(repositoryManager));
             _animalService = new Lazy<IAnimalService>(() => new AnimalService(repositoryManager));
+            _barrioService = new Lazy<IBarrioService>(() => new BarrioService(repositoryManager));
         }
 
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
@@ -37,5 +39,6 @@ namespace Patitas.Services.Manager
         public IVeterinariaService VeterinariaService => _veterinariaService.Value;
         public IComentarioService ComentarioService => _comentarioService.Value;
         public IAnimalService AnimalService => _animalService.Value;
+        public IBarrioService BarrioService => _barrioService.Value;
     }
 }
