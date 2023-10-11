@@ -16,5 +16,6 @@ namespace Patitas.Infrastructure.Contracts.Manager
         IRolRepository RolRepository { get; }
         IComentarioRepository ComentarioRepository { get; }
         IAnimalRepository AnimalRepository { get; }
+        IDetalleEstrellaRepository DetalleEstrellaRepository { get; }
     }
 }

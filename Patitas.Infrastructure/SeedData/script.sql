@@ -109,6 +109,6 @@ values
 SET IDENTITY_INSERT dbo.Comentarios ON
 insert into dbo.Comentarios (Id, Descripcion, FechaCreacion, EstaActivo, FechaEdicion, Nro_Estrellas, Id_Refugio, Id_Adoptante)
 values
-(1, 'Muy buen refugio, tremenda experiencia xD', GETDATE(), 1, null, 4, 3, 2),
+(1, 'Es un buen lugar, los animales se notaban bien cuidados.', GETDATE(), 1, null, 4, 3, 2),
 (2, 'Todo el proceso se dió muy rápido y siempre fueron muy gentiles.', GETDATE(), 1, null, 5, 3, 5);
 SET IDENTITY_INSERT dbo.Comentarios OFF

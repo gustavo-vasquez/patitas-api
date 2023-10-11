@@ -229,6 +229,10 @@ namespace Patitas.Services
 
             foreach (var comentario in comentarios)
                 if (comentario.EstaActivo)
+                {
+                    Usuario? usuario = await _repositoryManager.UsuarioRepository.FindByAsync(u => u.Id.Equals(comentario.Id_Adoptante));
+                    DetalleEstrella? detalleEstrella = await _repositoryManager.DetalleEstrellaRepository.GetByIdAsync(comentario.Nro_Estrellas);
+
                     comentariosDTO.Add(
                         new ComentarioDelRefugioDTO()
                         {
@@ -238,10 +242,14 @@ namespace Patitas.Services
                             EstaActivo = comentario.EstaActivo,
                             FechaEdicion = comentario.FechaEdicion,
                             Nro_Estrellas = comentario.Nro_Estrellas,
+                            DescripcionEstrella = detalleEstrella!.Descripcion,
                             Id_Refugio = comentario.Id_Refugio,
-                            Id_Adoptante = comentario.Id_Adoptante
+                            Id_Adoptante = comentario.Id_Adoptante,
+                            NombreDeUsuario = usuario!.NombreUsuario,
+                            FotoDePerfil = usuario.FotoDePerfil
                         }
                     );
+                }
 
             return new RefugioResponseDTO()
             {
@@ -258,16 +266,23 @@ namespace Patitas.Services
                 List<VeterinariaAsociadaDTO> veterinariasAsociadas = new List<VeterinariaAsociadaDTO>();
 
                 foreach (Veterinaria veterinaria in refugio!.Veterinarias)
+                {
+                    Usuario? usuario = await _repositoryManager.UsuarioRepository.GetByIdAsync(veterinaria.Id, IncludeTypes.REFERENCE_TABLE_NAME, "Barrio");
+
                     veterinariasAsociadas.Add(
                         new VeterinariaAsociadaDTO()
                         {
                             Id = veterinaria.Id,
                             Nombre = veterinaria.Nombre,
                             RazonSocial = veterinaria.RazonSocial,
+                            Direccion = usuario!.Direccion!,
+                            Barrio = usuario.Barrio.Nombre,
                             Fotografia = veterinaria.Fotografia,
                             Especialidades = veterinaria.Especialidades,
                             FechaFundacion = veterinaria.FechaFundacion,
+                            Telefono = usuario.Telefono!,
                             TelefonoAlternativo = veterinaria.TelefonoAlternativo,
+                            Email = usuario.Email,
                             SitioWeb = veterinaria.SitioWeb,
                             Descripcion = veterinaria.Descripcion,
                             DiasDeAtencion = veterinaria.DiasDeAtencion,
@@ -275,6 +290,7 @@ namespace Patitas.Services
                             HorarioCierre = veterinaria.HorarioCierre
                         }
                     );
+                }
 
                 return new RefugioResponseDTO()
                 {

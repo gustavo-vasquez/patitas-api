@@ -18,6 +18,7 @@ namespace Patitas.Infrastructure.Repositories.Manager
         private readonly Lazy<IRolRepository> _rolRepository;
         private readonly Lazy<IComentarioRepository> _comentarioRepository;
         private readonly Lazy<IAnimalRepository> _animalRepository;
+        private readonly Lazy<IDetalleEstrellaRepository> _detalleEstrellaRepository;
 
         public RepositoryManager(PatitasContext context)
         {
@@ -29,6 +30,7 @@ namespace Patitas.Infrastructure.Repositories.Manager
             _rolRepository = new Lazy<IRolRepository>(() => new RolRepository(context));
             _comentarioRepository = new Lazy<IComentarioRepository>(() => new ComentarioRepository(context));
             _animalRepository = new Lazy<IAnimalRepository>(() => new AnimalRepository(context));
+            _detalleEstrellaRepository = new Lazy<IDetalleEstrellaRepository>(() => new DetalleEstrellaRepository(context));
         }
 
         public IUsuarioRepository UsuarioRepository => _usuarioRepository.Value;
@@ -39,5 +41,6 @@ namespace Patitas.Infrastructure.Repositories.Manager
         public IRolRepository RolRepository => _rolRepository.Value;
         public IComentarioRepository ComentarioRepository => _comentarioRepository.Value;
         public IAnimalRepository AnimalRepository => _animalRepository.Value;
+        public IDetalleEstrellaRepository DetalleEstrellaRepository => _detalleEstrellaRepository.Value;
     }
 }
