@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Patitas.Services.Contracts.Manager;
 using Patitas.Services.DTO.Refugio;
 
@@ -9,10 +10,12 @@ namespace Patitas.Presentation.Controllers
     public class RefugioController : Controller
     {
         private readonly IServiceManager _serviceManager;
+        private readonly IWebHostEnvironment _env;
 
-        public RefugioController(IServiceManager serviceManager)
+        public RefugioController(IServiceManager serviceManager, IWebHostEnvironment env)
         {
             _serviceManager = serviceManager;
+            _env = env;
         }
 
         [HttpGet]
@@ -103,6 +106,22 @@ namespace Patitas.Presentation.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("{refugioId}/animales/images/{filename}")]
+        public IActionResult GetAnimalImage([FromRoute] int refugioId, [FromRoute] string filename)
+        {
+            string path = Path.Combine(_env.WebRootPath, $"images/animales/refugios/{refugioId}", filename);
+            //var path = _env.WebRootFileProvider.GetFileInfo($"images/animales/refugios/{refugioId}/{filename}");
+            FileStream imageFileStream = System.IO.File.OpenRead(path);
+
+            FileExtensionContentTypeProvider provider = new FileExtensionContentTypeProvider();
+
+            if (!provider.TryGetContentType(filename, out string? contentType))
+                contentType = "application/octet-stream";
+
+            return File(imageFileStream, contentType);
         }
     }
 }

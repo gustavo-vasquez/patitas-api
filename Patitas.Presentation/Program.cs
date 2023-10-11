@@ -106,6 +106,9 @@ app.UseCors(
 
 app.UseHttpsRedirection();
 
+// Necesario para poder obtener el contenido de la carpeta "wwwroot"
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
