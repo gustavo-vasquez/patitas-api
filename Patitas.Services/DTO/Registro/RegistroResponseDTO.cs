@@ -11,6 +11,6 @@ namespace Patitas.Services.DTO.Registro
     {
         public string Resultado { get; set; } = string.Empty;
         public string Bienvenida { get; set; } = string.Empty;
-        public LoginResponseDTO LoginResponse { get; set; } = null!;
+        public LoginResponseDTO? LoginResponse { get; set; } = null!;
     }
 }

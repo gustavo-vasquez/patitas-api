@@ -6,6 +6,7 @@ using Patitas.Services.DTO.Login;
 using Patitas.Services.DTO.Registro;
 using Patitas.Services.DTO.Registro.Roles;
 using Patitas.Services.Helpers.Enums;
+using System.Net;
 
 namespace Patitas.Presentation.Controllers
 {
@@ -26,12 +27,16 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                LoginResponseDTO userInfo = await _serviceManager.AuthenticationService.Login(loginData.Email, loginData.Password);
+                LoginResponseDTO? userInfo = await _serviceManager.AuthenticationService.Login(loginData.Email, loginData.Password);
+
+                if (userInfo is null)
+                    return NotFound("Usuario y/o contraseña incorrecta.");
+
                 return Ok(userInfo);
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -46,7 +51,7 @@ namespace Patitas.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
