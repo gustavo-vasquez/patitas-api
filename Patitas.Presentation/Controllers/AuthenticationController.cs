@@ -46,7 +46,11 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                RegistroResponseDTO resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.ADOPTANTE);
+                RegistroResponseDTO? resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.ADOPTANTE);
+                
+                if (resultado is null)
+                    return Conflict("El email o nombre de usuario ya se encuentra registrado.");
+
                 return Ok(resultado);
             }
             catch (Exception ex)
@@ -61,12 +65,16 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                RegistroResponseDTO resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.REFUGIO);
+                RegistroResponseDTO? resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.REFUGIO);
+
+                if (resultado is null)
+                    return Conflict("El email o nombre de usuario ya se encuentra registrado.");
+
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -76,12 +84,16 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                RegistroResponseDTO resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.VETERINARIA);
+                RegistroResponseDTO? resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.VETERINARIA);
+
+                if (resultado is null)
+                    return Conflict("El email o nombre de usuario ya se encuentra registrado.");
+
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 

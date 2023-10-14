@@ -12,6 +12,6 @@ namespace Patitas.Services.Contracts
     public interface IAuthenticationService
     {
         Task<LoginResponseDTO?> Login(string email, string password);
-        Task<RegistroResponseDTO> RegistrarCuenta(RegistroRequestDTO datosDeRegistro, RolTypes rolSeleccionado);
+        Task<RegistroResponseDTO?> RegistrarCuenta(RegistroRequestDTO datosDeRegistro, RolTypes rolSeleccionado);
     }
 }

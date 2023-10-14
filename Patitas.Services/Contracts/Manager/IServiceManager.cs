@@ -14,5 +14,6 @@ namespace Patitas.Services.Contracts.Manager
         IVeterinariaService VeterinariaService { get; }
         IComentarioService ComentarioService { get; }
         IAnimalService AnimalService { get; }
+        IBarrioService BarrioService { get; }
     }
 }

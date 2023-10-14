@@ -60,14 +60,14 @@ namespace Patitas.Services
             }
         }
 
-        public async Task<RegistroResponseDTO> RegistrarCuenta(RegistroRequestDTO datosDeRegistro, RolTypes rolSeleccionado)
+        public async Task<RegistroResponseDTO?> RegistrarCuenta(RegistroRequestDTO datosDeRegistro, RolTypes rolSeleccionado)
         {
             Usuario? usuarioNuevo = null;
 
             try
             {
                 if (await _repositoryManager.UsuarioRepository.ExistsAsync(u => u.Email.Equals(datosDeRegistro.Email) || u.NombreUsuario.Equals(datosDeRegistro.NombreDeUsuario)))
-                    throw new Exception("El email o nombre de usuario ya se encuentra registrado.");
+                    return null;
 
                 usuarioNuevo = new Usuario()
                 {
@@ -117,7 +117,7 @@ namespace Patitas.Services
                 return new RegistroResponseDTO()
                 {
                     Resultado = "¡Registro completado con éxito!",
-                    Bienvenida = $"Bienvenido a Patitas, {usuario.NombreUsuario}",
+                    Bienvenida = $"Bienvenido/a, '{usuario.NombreUsuario}'",
                     LoginResponse = loginResponse
                 };
             }
