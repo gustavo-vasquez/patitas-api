@@ -28,6 +28,8 @@ namespace Patitas.Services.DTO.Registro.Roles
         [Required(ErrorMessage = "Este campo es obligatorio.")]
         [MaxLength(50, ErrorMessage = "Máximo 50 caracteres.")]
         public override string? Telefono { get; set; }
+
+        [MaxLength(50, ErrorMessage = "Máximo 50 caracteres.")]
         public string? TelefonoAlternativo { get; set; }
 
         [Required(ErrorMessage = "Este campo es obligatorio.")]
