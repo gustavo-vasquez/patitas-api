@@ -9,6 +9,6 @@ namespace Patitas.Infrastructure.Contracts
 {
     public interface IUsuarioRepository : IRepository<Usuario, int>
     {
-        Task<Usuario> GetUserLoginData(string email, string password);
+        Task<Usuario?> GetUserLoginData(string email, string password);
     }
 }

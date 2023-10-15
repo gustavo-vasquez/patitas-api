@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Patitas.Services.Contracts.Manager;
+using Patitas.Services.DTO.Barrio;
 
 namespace Patitas.Presentation.Controllers
 {
@@ -18,7 +19,7 @@ namespace Patitas.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBarrios()
         {
-            IEnumerable<string> barrios = await _serviceManager.BarrioService.GetBarrios();
+            IEnumerable<BarrioResponseDTO> barrios = await _serviceManager.BarrioService.GetBarrios();
             return Ok(barrios);
         }
     }

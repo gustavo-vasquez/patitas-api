@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Patitas.Services.DTO.Barrio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Patitas.Services.Contracts
 {
     public interface IBarrioService
     {
-        Task<IEnumerable<string>> GetBarrios();
+        Task<IEnumerable<BarrioResponseDTO>> GetBarrios();
     }
 }

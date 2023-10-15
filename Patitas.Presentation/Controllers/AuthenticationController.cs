@@ -6,6 +6,7 @@ using Patitas.Services.DTO.Login;
 using Patitas.Services.DTO.Registro;
 using Patitas.Services.DTO.Registro.Roles;
 using Patitas.Services.Helpers.Enums;
+using System.Net;
 
 namespace Patitas.Presentation.Controllers
 {
@@ -26,12 +27,16 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                LoginResponseDTO userInfo = await _serviceManager.AuthenticationService.Login(loginData.Email, loginData.Password);
+                LoginResponseDTO? userInfo = await _serviceManager.AuthenticationService.Login(loginData.Email, loginData.Password);
+
+                if (userInfo is null)
+                    return NotFound("Usuario y/o contraseña incorrecta.");
+
                 return Ok(userInfo);
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -41,12 +46,16 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                RegistroResponseDTO resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.ADOPTANTE);
+                RegistroResponseDTO? resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.ADOPTANTE);
+                
+                if (resultado is null)
+                    return Conflict("El email o nombre de usuario ya se encuentra registrado.");
+
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -56,12 +65,16 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                RegistroResponseDTO resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.REFUGIO);
+                RegistroResponseDTO? resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.REFUGIO);
+
+                if (resultado is null)
+                    return Conflict("El email o nombre de usuario ya se encuentra registrado.");
+
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -71,12 +84,16 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                RegistroResponseDTO resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.VETERINARIA);
+                RegistroResponseDTO? resultado = await _serviceManager.AuthenticationService.RegistrarCuenta(datosDeRegistro, RolTypes.VETERINARIA);
+
+                if (resultado is null)
+                    return Conflict("El email o nombre de usuario ya se encuentra registrado.");
+
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 

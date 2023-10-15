@@ -1,6 +1,7 @@
 ﻿using Patitas.Domain.Entities;
 using Patitas.Infrastructure.Contracts.Manager;
 using Patitas.Services.Contracts;
+using Patitas.Services.DTO.Barrio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Patitas.Services
 {
-    public class BarrioService : IBarrioService
+    internal sealed class BarrioService : IBarrioService
     {
         private readonly IRepositoryManager _repositoryManager;
 
@@ -18,17 +19,24 @@ namespace Patitas.Services
             _repositoryManager = repositoryManager;
         }
 
-        public async Task<IEnumerable<string>> GetBarrios()
+        public async Task<IEnumerable<BarrioResponseDTO>> GetBarrios()
         {
             List<string> listadoDeBarrios = new List<string>();
             IEnumerable<Barrio> barrios = await _repositoryManager.BarrioRepository.GetAllAsync();
+            List<BarrioResponseDTO> barriosDTO = new List<BarrioResponseDTO>();
 
             foreach(Barrio barrio in barrios)
             {
-                listadoDeBarrios.Add(barrio.Nombre);
+                barriosDTO.Add(
+                    new BarrioResponseDTO()
+                    {
+                        Id = barrio.Id,
+                        Nombre = barrio.Nombre
+                    }
+                );
             }
 
-            return listadoDeBarrios;
+            return barriosDTO;
         }
     }
 }

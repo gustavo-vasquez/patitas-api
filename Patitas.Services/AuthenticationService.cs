@@ -31,33 +31,43 @@ namespace Patitas.Services
             _tokenManagement = tokenManagement.Value;
         }
 
-        public async Task<LoginResponseDTO> Login(string email, string password)
+        public async Task<LoginResponseDTO?> Login(string email, string password)
         {
-            Usuario usuario = await _repositoryManager.UsuarioRepository.GetUserLoginData(email, password);
-            
-            // Establezco los claims que va a contener el token
-            IEnumerable<Claim> claims = this.setClaimsForToken(usuario, usuario.RolUsuario.Nombre);
-            // Token listo para ser enviado
-            string generatedToken = this.GenerateToken(claims);
-
-            return new LoginResponseDTO()
+            try
             {
-                NombreDeUsuario = usuario.NombreUsuario,
-                Email = usuario.Email,
-                FotoDePerfil = usuario.FotoDePerfil,
-                Rol = usuario.RolUsuario.Nombre,
-                AccessToken = generatedToken
-            }; // Esta información es la que va a recibir el navegador
+                Usuario? usuario = await _repositoryManager.UsuarioRepository.GetUserLoginData(email, password);
+
+                if (usuario is null)
+                    return null;
+            
+                // Establezco los claims que va a contener el token
+                IEnumerable<Claim> claims = this.setClaimsForToken(usuario, usuario.RolUsuario.Nombre);
+                // Token listo para ser enviado
+                string generatedToken = this.GenerateToken(claims);
+
+                return new LoginResponseDTO()
+                {
+                    NombreDeUsuario = usuario.NombreUsuario,
+                    Email = usuario.Email,
+                    FotoDePerfil = usuario.FotoDePerfil,
+                    Rol = usuario.RolUsuario.Nombre,
+                    AccessToken = generatedToken
+                }; // Esta información es la que va a recibir el navegador
+            }
+            catch
+            {
+                throw new Exception("Ha ocurrido un error inesperado. Vuelva a intentarlo.");
+            }
         }
 
-        public async Task<RegistroResponseDTO> RegistrarCuenta(RegistroRequestDTO datosDeRegistro, RolTypes rolSeleccionado)
+        public async Task<RegistroResponseDTO?> RegistrarCuenta(RegistroRequestDTO datosDeRegistro, RolTypes rolSeleccionado)
         {
             Usuario? usuarioNuevo = null;
 
             try
             {
                 if (await _repositoryManager.UsuarioRepository.ExistsAsync(u => u.Email.Equals(datosDeRegistro.Email) || u.NombreUsuario.Equals(datosDeRegistro.NombreDeUsuario)))
-                    throw new Exception("El email o nombre de usuario ya se encuentra registrado.");
+                    return null;
 
                 usuarioNuevo = new Usuario()
                 {
@@ -102,16 +112,16 @@ namespace Patitas.Services
                 }
 
                 // auto-login
-                LoginResponseDTO loginResponse = await this.Login(usuarioNuevo.Email, usuarioNuevo.Password);
+                LoginResponseDTO? loginResponse = await this.Login(usuarioNuevo.Email, usuarioNuevo.Password);
 
                 return new RegistroResponseDTO()
                 {
                     Resultado = "¡Registro completado con éxito!",
-                    Bienvenida = $"Bienvenido a Patitas, {usuario.NombreUsuario}",
+                    Bienvenida = $"Bienvenido/a, '{usuario.NombreUsuario}'",
                     LoginResponse = loginResponse
                 };
             }
-            catch (Exception ex)
+            catch
             {
                 /* si después de crear un registro en la tabla Usuario ocurrió un error y, además no se llegó a crear un registro en la tabla
                 (adoptante/refugio/veterinaria), hago un rollback eliminando ese usuario creado que quedaría huérfano
@@ -119,7 +129,7 @@ namespace Patitas.Services
                 if(usuarioNuevo != null)
                     await _repositoryManager.UsuarioRepository.DeleteAsync(usuarioNuevo);
 
-                throw new Exception("Se produjo un error inesperado al crear la cuenta. Inténtelo de nuevo. \nCausa: " + ex.Message);
+                throw new Exception("Se produjo un error inesperado al crear la cuenta. Inténtelo de nuevo.");
             }
         }
 
