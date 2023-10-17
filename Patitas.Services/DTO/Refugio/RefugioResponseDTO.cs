@@ -13,5 +13,7 @@ namespace Patitas.Services.DTO.Refugio
         public IEnumerable<ComentarioDelRefugioDTO> Comentarios { get; set; } = null!;
         public IEnumerable<VeterinariaAsociadaDTO> VeterinariasAsociadas { get; set; } = null!;
         public RefugioInfoCompletaDTO InfoCompleta { get; set; } = null!;
+        public bool PuedeComentar { get; set; }
+        public bool SesionExpirada { get; set; }
     }
 }

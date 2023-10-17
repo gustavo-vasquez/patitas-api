@@ -19,6 +19,8 @@ namespace Patitas.Infrastructure.Repositories.Manager
         private readonly Lazy<IComentarioRepository> _comentarioRepository;
         private readonly Lazy<IAnimalRepository> _animalRepository;
         private readonly Lazy<IDetalleEstrellaRepository> _detalleEstrellaRepository;
+        private readonly Lazy<ISolicitudDeAdopcionRepository> _solicitudDeAdopcionRepository;
+        private readonly Lazy<IRazaRepository> _razaRepository;
 
         public RepositoryManager(PatitasContext context)
         {
@@ -31,6 +33,8 @@ namespace Patitas.Infrastructure.Repositories.Manager
             _comentarioRepository = new Lazy<IComentarioRepository>(() => new ComentarioRepository(context));
             _animalRepository = new Lazy<IAnimalRepository>(() => new AnimalRepository(context));
             _detalleEstrellaRepository = new Lazy<IDetalleEstrellaRepository>(() => new DetalleEstrellaRepository(context));
+            _solicitudDeAdopcionRepository = new Lazy<ISolicitudDeAdopcionRepository>(() => new SolicitudDeAdopcionRepository(context));
+            _razaRepository = new Lazy<IRazaRepository>(() => new RazaRepository(context));
         }
 
         public IUsuarioRepository UsuarioRepository => _usuarioRepository.Value;
@@ -42,5 +46,7 @@ namespace Patitas.Infrastructure.Repositories.Manager
         public IComentarioRepository ComentarioRepository => _comentarioRepository.Value;
         public IAnimalRepository AnimalRepository => _animalRepository.Value;
         public IDetalleEstrellaRepository DetalleEstrellaRepository => _detalleEstrellaRepository.Value;
+        public ISolicitudDeAdopcionRepository SolicitudDeAdopcionRepository => _solicitudDeAdopcionRepository.Value;
+        public IRazaRepository RazaRepository => _razaRepository.Value;
     }
 }

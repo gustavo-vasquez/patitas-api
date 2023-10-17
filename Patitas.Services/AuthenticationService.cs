@@ -50,6 +50,7 @@ namespace Patitas.Services
                     NombreDeUsuario = usuario.NombreUsuario,
                     Email = usuario.Email,
                     FotoDePerfil = usuario.FotoDePerfil,
+                    Barrio = usuario.Barrio.Nombre,
                     Rol = usuario.RolUsuario.Nombre,
                     AccessToken = generatedToken
                 }; // Esta información es la que va a recibir el navegador
@@ -131,6 +132,22 @@ namespace Patitas.Services
 
                 throw new Exception("Se produjo un error inesperado al crear la cuenta. Inténtelo de nuevo.");
             }
+        }
+
+        public ClaimsPrincipal ValidateAndGetClaims(string token)
+        {
+            SecurityToken validatedToken;
+            TokenValidationParameters validationParameters = new TokenValidationParameters();
+
+            validationParameters.ValidateLifetime = true;
+
+            validationParameters.ValidAudience = _tokenManagement.Audience;
+            validationParameters.ValidIssuer = _tokenManagement.Issuer;
+            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.KeySecret));
+
+            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(token, validationParameters, out validatedToken);
+
+            return principal;
         }
 
         private Adoptante GenerarAdoptante<T>(T dto, Usuario usuario) where T : class
@@ -218,6 +235,7 @@ namespace Patitas.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.NombreUsuario),
+                new Claim(ClaimTypes.Locality, user.Barrio.Nombre),
                 new Claim(ClaimTypes.Role, role),
                 new Claim("issued_at", DateTime.Now.ToString())
             };

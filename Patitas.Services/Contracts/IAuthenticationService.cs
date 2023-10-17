@@ -4,6 +4,7 @@ using Patitas.Services.Helpers.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,5 +14,6 @@ namespace Patitas.Services.Contracts
     {
         Task<LoginResponseDTO?> Login(string email, string password);
         Task<RegistroResponseDTO?> RegistrarCuenta(RegistroRequestDTO datosDeRegistro, RolTypes rolSeleccionado);
+        ClaimsPrincipal ValidateAndGetClaims(string token);
     }
 }

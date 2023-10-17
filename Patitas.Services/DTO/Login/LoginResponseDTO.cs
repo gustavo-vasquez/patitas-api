@@ -11,6 +11,7 @@ namespace Patitas.Services.DTO.Login
         public string NombreDeUsuario { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string? FotoDePerfil { get; set; } = string.Empty;
+        public string Barrio { get; set; } = string.Empty;
         public string Rol { get;set; } = string.Empty;
         public string AccessToken { get; set; } = string.Empty;
     }

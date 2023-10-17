@@ -7,6 +7,7 @@ using Patitas.Services.DTO.Refugio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -192,12 +193,16 @@ namespace Patitas.Services
             List<AnimalDelRefugioDTO> animalesDelRefugioDTO = new List<AnimalDelRefugioDTO>();
 
             foreach (Animal animal in animalesDelRefugio)
-                if(!animal.EstaAdoptado)
+                if (!animal.EstaAdoptado)
+                {
+                    Raza? raza = await _repositoryManager.RazaRepository.GetByIdAsync(animal.Id_Raza);
+
                     animalesDelRefugioDTO.Add(
                         new AnimalDelRefugioDTO()
                         {
                             Id = animal.Id,
                             Nombre = animal.Nombre,
+                            Raza = raza!.Nombre,
                             Nacimiento = animal.Nacimiento,
                             Genero = animal.Genero,
                             Fotografia = animal.Fotografia,
@@ -214,6 +219,7 @@ namespace Patitas.Services
                             Id_Refugio = animal.Id_Refugio,
                         }
                     );
+                }
 
             return new RefugioResponseDTO()
             {
@@ -222,7 +228,7 @@ namespace Patitas.Services
             };
         }
 
-        public async Task<RefugioResponseDTO> GetComentariosDelRefugio(int refugioId)
+        public async Task<RefugioResponseDTO> GetComentariosDelRefugio(int refugioId, ClaimsIdentity? identity)
         {
             IEnumerable<Comentario> comentarios = await _repositoryManager.ComentarioRepository.FindAllByAsync(c => c.Id_Refugio.Equals(refugioId));
             List<ComentarioDelRefugioDTO> comentariosDTO = new List<ComentarioDelRefugioDTO>();
@@ -254,7 +260,8 @@ namespace Patitas.Services
             return new RefugioResponseDTO()
             {
                 InfoBasica = await this.GetInformacionBasicaDelRefugio(refugioId),
-                Comentarios = comentariosDTO
+                Comentarios = comentariosDTO,
+                PuedeComentar = await _repositoryManager.SolicitudDeAdopcionRepository.AdoptantePuedeComentar(identity)
             };
         }
 

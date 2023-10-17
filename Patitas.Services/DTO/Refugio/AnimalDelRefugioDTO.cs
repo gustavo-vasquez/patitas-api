@@ -9,7 +9,8 @@ namespace Patitas.Services.DTO.Refugio
     public class AnimalDelRefugioDTO
     {
         public int Id { get; set; }
-        public string Nombre { get; set; } = null!;
+        public string Nombre { get; set; } = string.Empty;
+        public string Raza { get; set; } = string.Empty;
         public int Nacimiento { get; set; }
         public char Genero { get; set; }
         public string Fotografia { get; set; } = string.Empty;

@@ -22,6 +22,7 @@ namespace Patitas.Services.Manager
         private readonly Lazy<IAnimalService> _animalService;
         private readonly Lazy<IBarrioService> _barrioService;
         private readonly Lazy<IDetalleEstrellaService> _detalleEstrellaService;
+        private readonly Lazy<ISolicitudDeAdopcionService> _solicitudDeAdopcionService;
 
         public ServiceManager(IRepositoryManager repositoryManager, IOptions<TokenManagement> tokenManagement)
         {
@@ -33,6 +34,7 @@ namespace Patitas.Services.Manager
             _animalService = new Lazy<IAnimalService>(() => new AnimalService(repositoryManager));
             _barrioService = new Lazy<IBarrioService>(() => new BarrioService(repositoryManager));
             _detalleEstrellaService = new Lazy<IDetalleEstrellaService>(() => new DetalleEstrellaService(repositoryManager));
+            _solicitudDeAdopcionService = new Lazy<ISolicitudDeAdopcionService>(() => new SolicitudDeAdopcionService(repositoryManager));
         }
 
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
@@ -43,5 +45,6 @@ namespace Patitas.Services.Manager
         public IAnimalService AnimalService => _animalService.Value;
         public IBarrioService BarrioService => _barrioService.Value;
         public IDetalleEstrellaService DetalleEstrellaService => _detalleEstrellaService.Value;
+        public ISolicitudDeAdopcionService SolicitudDeAdopcionService => _solicitudDeAdopcionService.Value;
     }
 }

@@ -7,6 +7,7 @@ using Patitas.Services.DTO.Registro;
 using Patitas.Services.DTO.Registro.Roles;
 using Patitas.Services.Helpers.Enums;
 using System.Net;
+using System.Security.Claims;
 
 namespace Patitas.Presentation.Controllers
 {
@@ -97,12 +98,21 @@ namespace Patitas.Presentation.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("prueba")]
+        [Authorize(Roles = "Refugio")]
         public IActionResult Prueba()
         {
-            return Ok("Este es un recurso protegido.");
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var email = string.Empty;
+
+            if(identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                email = identity.FindFirst(ClaimTypes.Email)?.Value;
+            }
+
+            return Ok(email);
         }
     }
 }

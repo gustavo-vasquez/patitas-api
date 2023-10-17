@@ -21,7 +21,7 @@ namespace Patitas.Infrastructure.Repositories
         {
             try
             {
-                Usuario? user = await _context.Usuarios.Include(u => u.RolUsuario).Where(x => x.Email.Equals(email) && x.Password.Equals(password)).FirstOrDefaultAsync();
+                Usuario? user = await _context.Usuarios.Include(u => u.RolUsuario).Include(u => u.Barrio).Where(x => x.Email.Equals(email) && x.Password.Equals(password)).FirstOrDefaultAsync();
 
                 return user;
             }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.StaticFiles;
 using Patitas.Services.Contracts.Manager;
 using Patitas.Services.DTO.Refugio;
+using System.Security.Claims;
 
 namespace Patitas.Presentation.Controllers
 {
@@ -69,7 +70,17 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                RefugioResponseDTO result = await _serviceManager.RefugioService.GetComentariosDelRefugio(refugioId);
+                ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+                RefugioResponseDTO result = await _serviceManager.RefugioService.GetComentariosDelRefugio(refugioId, identity);
+
+                if (HttpContext.Request.Headers.Authorization.Count > 0 && identity is not null && !identity.IsAuthenticated)
+                {
+                    //var authorizationBearer = HttpContext.Request.Headers.Authorization[0];
+                    //string token = authorizationBearer!.Replace("Bearer ", "");
+                    //var asd = _serviceManager.AuthenticationService.ValidateAndGetClaims(token);
+                    result.SesionExpirada = true;
+                }
+
                 return Ok(result);
             }
             catch(Exception ex)

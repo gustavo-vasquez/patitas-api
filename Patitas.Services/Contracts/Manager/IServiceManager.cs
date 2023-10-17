@@ -16,5 +16,6 @@ namespace Patitas.Services.Contracts.Manager
         IAnimalService AnimalService { get; }
         IBarrioService BarrioService { get; }
         IDetalleEstrellaService DetalleEstrellaService { get; }
+        ISolicitudDeAdopcionService SolicitudDeAdopcionService { get; }
     }
 }
