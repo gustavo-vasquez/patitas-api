@@ -20,6 +20,7 @@ namespace Patitas.Services.DTO.Refugio
         public bool Esterilizado { get; set; }
         public bool Desparasitado { get; set; }
         public DateTime FechaIngreso { get; set; }
+        public List<string> Vacunas { get; set; } = new List<string>();
         public string? DescripcionAdicional { get; set; }
         public bool EstaAdoptado { get; set; }
         public DateTime? FechaAdopcion { get; set; }

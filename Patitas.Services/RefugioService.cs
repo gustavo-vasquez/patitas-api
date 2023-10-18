@@ -191,11 +191,17 @@ namespace Patitas.Services
         {
             IEnumerable<Animal> animalesDelRefugio = await _repositoryManager.AnimalRepository.FindAllByAsync(a => a.Id_Refugio.Equals(refugioId));
             List<AnimalDelRefugioDTO> animalesDelRefugioDTO = new List<AnimalDelRefugioDTO>();
+            List<string> vacunasAplicadas = new List<string>();
 
             foreach (Animal animal in animalesDelRefugio)
                 if (!animal.EstaAdoptado)
                 {
                     Raza? raza = await _repositoryManager.RazaRepository.GetByIdAsync(animal.Id_Raza);
+                    Animal? animalConVacunas = await _repositoryManager.AnimalRepository.GetByIdAsync(animal.Id, IncludeTypes.COLLECTION_TABLE_NAME, "Vacunas");
+
+                    if(animalConVacunas is not null)
+                        foreach(var vacuna in animalConVacunas.Vacunas)
+                            vacunasAplicadas.Add(vacuna.Nombre);
 
                     animalesDelRefugioDTO.Add(
                         new AnimalDelRefugioDTO()
@@ -212,6 +218,7 @@ namespace Patitas.Services
                             Esterilizado = animal.Esterilizado,
                             Desparasitado = animal.Desparasitado,
                             FechaIngreso = animal.FechaIngreso,
+                            Vacunas = vacunasAplicadas,
                             DescripcionAdicional = animal.DescripcionAdicional,
                             EstaAdoptado = animal.EstaAdoptado,
                             FechaAdopcion = animal.FechaAdopcion,
