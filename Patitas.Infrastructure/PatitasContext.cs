@@ -90,6 +90,10 @@ namespace Patitas.Infrastructure
                 .HasIndex(pv => pv.Id_SolicitudDeAdopcion)
                 .IsUnique();
 
+            modelBuilder.Entity<FormularioPreAdopcion>()
+                .HasIndex(f => f.Id_SolicitudDeAdopcion)
+                .IsUnique();
+
             modelBuilder.Entity<Veterinaria>()
                 .HasOne(v => v.PlanDeVacunacion)
                 .WithOne(pv => pv.Veterinaria)
@@ -199,9 +203,9 @@ namespace Patitas.Infrastructure
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<FormularioPreAdopcion>()
-                .HasOne(f => f.Refugio)
-                .WithMany(r => r.FormulariosPreAdopcion)
-                .HasForeignKey(f => f.Id_Refugio)
+                .HasOne(f => f.SolicitudDeAdopcion)
+                .WithOne(s => s.FormularioPreAdopcion)
+                .HasForeignKey<FormularioPreAdopcion>(f => f.Id_SolicitudDeAdopcion)
                 .OnDelete(DeleteBehavior.Restrict);
 
             //////////////////////////////////////////////////////////

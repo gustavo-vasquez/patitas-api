@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Patitas.Services.Contracts.Manager;
 using Patitas.Services.DTO.SolicitudDeAdopcion;
+using System.Security.Claims;
 
 namespace Patitas.Presentation.Controllers
 {
@@ -19,11 +20,13 @@ namespace Patitas.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Adoptante")]
-        public async Task<IActionResult> CreateSolicitud([FromBody] FormularioPreAdopcionDTO formularioPreAdopcionDTO)
+        public async Task<IActionResult> CreateSolicitud([FromBody] SolicitudDeAdopcionRequestDTO solicitudDeAdopcionRequestDTO)
         {
             try
             {
-                return Ok();
+                ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+                await _serviceManager.SolicitudDeAdopcionService.CreateSolicitud(solicitudDeAdopcionRequestDTO, identity!);
+                return StatusCode(201);
             }
             catch(Exception ex)
             {

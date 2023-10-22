@@ -41,5 +41,8 @@ namespace Patitas.Domain.Entities
         // 1 a 1
         // 1 solicitud de adopcion <--> 1 plan de vacunacion
         public PlanDeVacunacion PlanDeVacunacion { get; set; } = null!;
+
+        // 1 solicitud de adopción <--> 1 formulario de pre-adopción
+        public FormularioPreAdopcion FormularioPreAdopcion { get; set; } = null!;
     }
 }

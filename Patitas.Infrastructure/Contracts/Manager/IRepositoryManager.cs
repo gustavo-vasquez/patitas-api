@@ -19,5 +19,6 @@ namespace Patitas.Infrastructure.Contracts.Manager
         IDetalleEstrellaRepository DetalleEstrellaRepository { get; }
         ISolicitudDeAdopcionRepository SolicitudDeAdopcionRepository { get; }
         IRazaRepository RazaRepository { get; }
+        IFormularioPreAdopcionRepository FormularioPreAdopcionRepository { get; }
     }
 }

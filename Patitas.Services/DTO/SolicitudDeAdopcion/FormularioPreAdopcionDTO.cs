@@ -13,7 +13,7 @@ namespace Patitas.Services.DTO.SolicitudDeAdopcion
     {
         public int Id { get; set; }
         public int Id_Adoptante { get; set; }
-        public int Id_Refugio { get; set; }
+        public int Id_SolicitudDeAdopcion { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
         [MaxLength(200, ErrorMessage = ValidationMessages.FIELD_MAX_LENGTH_200)]

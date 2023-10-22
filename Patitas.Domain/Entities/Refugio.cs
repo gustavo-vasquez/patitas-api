@@ -53,9 +53,6 @@ namespace Patitas.Domain.Entities
         // 1 refugio <--> N turnos
         public ICollection<Turno> Turnos { get; } = new List<Turno>();
 
-        // 1 refugio <--> N formularios pre-adopción
-        public ICollection<FormularioPreAdopcion> FormulariosPreAdopcion { get; } = new List<FormularioPreAdopcion>();
-
         // Relaciones N a N
         public ICollection<Veterinaria> Veterinarias { get; } = new List<Veterinaria>();
     }

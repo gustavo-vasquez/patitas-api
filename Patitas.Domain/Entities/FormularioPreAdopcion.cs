@@ -9,7 +9,7 @@ namespace Patitas.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int Id_Adoptante { get; set; }
-        public int Id_Refugio { get; set; }
+        public int Id_SolicitudDeAdopcion { get; set; }
 
         [StringLength(200)]
         public string Motivo { get; set; } = string.Empty;
@@ -37,7 +37,7 @@ namespace Patitas.Domain.Entities
         [ForeignKey(nameof(Id_Adoptante))]
         public Adoptante Adoptante { get; set; } = null!;
 
-        [ForeignKey(nameof(Id_Refugio))]
-        public Refugio Refugio { get; set; } = null!;
+        [ForeignKey(nameof(Id_SolicitudDeAdopcion))]
+        public SolicitudDeAdopcion SolicitudDeAdopcion { get; set; } = null!;
     }
 }
