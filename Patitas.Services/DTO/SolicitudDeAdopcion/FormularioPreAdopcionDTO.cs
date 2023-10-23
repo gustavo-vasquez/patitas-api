@@ -20,53 +20,43 @@ namespace Patitas.Services.DTO.SolicitudDeAdopcion
         public string Motivo { get; set; } = string.Empty;
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TuvoMascota { get; set; }
+        public string? TuvoMascota { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TieneMascotas { get; set; }
+        public string? TieneMascotas { get; set; }
 
         [MaxLength(200, ErrorMessage = ValidationMessages.FIELD_MAX_LENGTH_200)]
         public string? DescripcionMascotas { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? ViveSolo { get; set; }
+        public string? ViveSolo { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TieneVeterinariaCerca { get; set; }
+        public string? TieneVeterinariaCerca { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? ViveEnCasa { get; set; }
-
-        [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? ViveEnDepartamento { get; set; }
+        public string? ViveEnCasa { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
         [RegularExpression($"^[2-4]*$", ErrorMessage = ValidationMessages.NUMBER_NOT_VALID)]
         public byte? CantidadDeAmbientes { get; set; }
 
-        [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TienePatio { get; set; }
+        public string[] HogarTiene { get; set; } = new string[2];
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TieneBalcon { get; set; }
-
-        [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TieneRedEnVentanas { get; set; }
-
-        [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? ConoceLeyDeMaltratoAnimal { get; set; }
+        public string? ConoceLeyDeMaltratoAnimal { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
         [MaxLength(50, ErrorMessage = ValidationMessages.FIELD_MAX_LENGTH_50)]
         public string? FrecuenciaAnimalSolo { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TieneConocidosEnCasoDeEmergencia { get; set; }
+        public string? TieneConocidosEnCasoDeEmergencia { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TieneSalarioAcordeAGastos { get; set; }
+        public string? TieneSalarioAcordeAGastos { get; set; }
 
         [Required(ErrorMessage = ValidationMessages.FIELD_REQUIRED)]
-        public bool? TieneConocidosQueLoAconsejen { get; set; }
+        public string? TieneConocidosQueLoAconsejen { get; set; }
     }
 }

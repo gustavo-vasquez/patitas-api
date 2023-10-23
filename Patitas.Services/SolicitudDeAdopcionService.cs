@@ -40,28 +40,26 @@ namespace Patitas.Services
 
                 await _repositoryManager.SolicitudDeAdopcionRepository.CreateAsync(nuevaSolicitud);
 
-                FormularioPreAdopcion nuevoFormulario = new FormularioPreAdopcion
-                {
-                    Id_Adoptante = adoptanteId,
-                    Id_SolicitudDeAdopcion = nuevaSolicitud.Id,
-                    Motivo = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.Motivo,
-                    TuvoMascota = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TuvoMascota ?? false,
-                    TieneMascotas = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneMascotas ?? false,
-                    DescripcionMascotas = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.DescripcionMascotas,
-                    ViveSolo = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.ViveSolo ?? false,
-                    TieneVeterinariaCerca = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneVeterinariaCerca ?? false,
-                    ViveEnCasa = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.ViveEnCasa ?? false,
-                    ViveEnDepartamento = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.ViveEnDepartamento ?? false,
-                    CantidadDeAmbientes = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.CantidadDeAmbientes ?? 0,
-                    TienePatio = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TienePatio ?? false,
-                    TieneBalcon = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneBalcon ?? false,
-                    TieneRedEnVentanas = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneRedEnVentanas ?? false,
-                    ConoceLeyDeMaltratoAnimal = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.ConoceLeyDeMaltratoAnimal ?? false,
-                    FrecuenciaAnimalSolo = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.FrecuenciaAnimalSolo!,
-                    TieneConocidosEnCasoDeEmergencia = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneConocidosEnCasoDeEmergencia ?? false,
-                    TieneSalarioAcordeAGastos = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneSalarioAcordeAGastos ?? false,
-                    TieneConocidosQueLoAconsejen = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneConocidosQueLoAconsejen ?? false
-                };
+                FormularioPreAdopcion nuevoFormulario = new FormularioPreAdopcion();
+                nuevoFormulario.Id_Adoptante = adoptanteId;
+                nuevoFormulario.Id_SolicitudDeAdopcion = nuevaSolicitud.Id;
+                nuevoFormulario.Motivo = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.Motivo;
+                nuevoFormulario.TuvoMascota = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TuvoMascota);
+                nuevoFormulario.TieneMascotas = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneMascotas);
+                nuevoFormulario.DescripcionMascotas = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.DescripcionMascotas;
+                nuevoFormulario.ViveSolo = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.ViveSolo);
+                nuevoFormulario.TieneVeterinariaCerca = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneVeterinariaCerca);
+                nuevoFormulario.ViveEnCasa = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.ViveEnCasa);
+                nuevoFormulario.ViveEnDepartamento = !nuevoFormulario.ViveEnCasa;
+                nuevoFormulario.CantidadDeAmbientes = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.CantidadDeAmbientes ?? 0;
+                nuevoFormulario.TienePatio = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.HogarTiene.Contains("patio");
+                nuevoFormulario.TieneBalcon = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.HogarTiene.Contains("balcon");
+                nuevoFormulario.TieneRedEnVentanas = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.HogarTiene.Contains("redes");
+                nuevoFormulario.ConoceLeyDeMaltratoAnimal = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.ConoceLeyDeMaltratoAnimal);
+                nuevoFormulario.FrecuenciaAnimalSolo = solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.FrecuenciaAnimalSolo!;
+                nuevoFormulario.TieneConocidosEnCasoDeEmergencia = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneConocidosEnCasoDeEmergencia);
+                nuevoFormulario.TieneSalarioAcordeAGastos = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneSalarioAcordeAGastos);
+                nuevoFormulario.TieneConocidosQueLoAconsejen = Convert.ToBoolean(solicitudDeAdopcionRequestDTO.FormularioPreAdopcionDTO.TieneConocidosQueLoAconsejen);
 
                 // creo el formulario de pre-adopción
                 await _repositoryManager.FormularioPreAdopcionRepository.CreateAsync(nuevoFormulario);
