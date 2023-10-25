@@ -187,11 +187,16 @@ namespace Patitas.Services
             }
         }
 
-        public async Task<RefugioResponseDTO> GetAnimalesDelRefugio(int refugioId)
+        public async Task<RefugioResponseDTO> GetAnimalesDelRefugio(int refugioId, ClaimsIdentity? identity)
         {
             IEnumerable<Animal> animalesDelRefugio = await _repositoryManager.AnimalRepository.FindAllByAsync(a => a.Id_Refugio.Equals(refugioId));
             List<AnimalDelRefugioDTO> animalesDelRefugioDTO = new List<AnimalDelRefugioDTO>();
             List<string> vacunasAplicadas = new List<string>();
+            int adoptanteId = 0;
+            bool solicitudActiva = false;
+
+            if (identity != null && identity.IsAuthenticated)
+                adoptanteId = Convert.ToInt32(identity.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
             foreach (Animal animal in animalesDelRefugio)
                 if (!animal.EstaAdoptado)
@@ -202,6 +207,12 @@ namespace Patitas.Services
                     if(animalConVacunas is not null)
                         foreach(var vacuna in animalConVacunas.Vacunas)
                             vacunasAplicadas.Add(vacuna.Nombre);
+
+                    if(adoptanteId > 0)
+                        solicitudActiva = await _repositoryManager.SolicitudDeAdopcionRepository
+                                                                    .ExistsAsync(s => s.EstaActivo == true
+                                                                            && s.Id_Adoptante.Equals(adoptanteId)
+                                                                            && s.Id_Animal.Equals(animal.Id));
 
                     animalesDelRefugioDTO.Add(
                         new AnimalDelRefugioDTO()
@@ -221,6 +232,7 @@ namespace Patitas.Services
                             Vacunas = vacunasAplicadas,
                             DescripcionAdicional = animal.DescripcionAdicional,
                             EstaAdoptado = animal.EstaAdoptado,
+                            SolicitudActiva = solicitudActiva,
                             FechaAdopcion = animal.FechaAdopcion,
                             Id_Raza = animal.Id_Raza,
                             Id_Refugio = animal.Id_Refugio,

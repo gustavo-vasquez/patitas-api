@@ -55,7 +55,8 @@ namespace Patitas.Presentation.Controllers
         {
             try
             {
-                RefugioResponseDTO result = await _serviceManager.RefugioService.GetAnimalesDelRefugio(refugioId);
+                ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+                RefugioResponseDTO result = await _serviceManager.RefugioService.GetAnimalesDelRefugio(refugioId, identity);
                 return Ok(result);
             }
             catch(Exception ex)

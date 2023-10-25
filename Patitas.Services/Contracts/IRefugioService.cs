@@ -13,7 +13,7 @@ namespace Patitas.Services.Contracts
         Task<ExplorarRefugiosDTO> ExplorarRefugios();
         Task<IEnumerable<RefugioDTO>> BuscarRefugios(string? nombre, string? barrio);
         Task<RefugioInfoBasicaDTO> GetInformacionBasicaDelRefugio(int refugioId);
-        Task<RefugioResponseDTO> GetAnimalesDelRefugio(int refugioId);
+        Task<RefugioResponseDTO> GetAnimalesDelRefugio(int refugioId, ClaimsIdentity? identity);
         Task<RefugioResponseDTO> GetComentariosDelRefugio(int refugioId, ClaimsIdentity? identity);
         Task<RefugioResponseDTO> GetVeterinariasAsociadas(int refugioId);
         Task<RefugioResponseDTO> GetInformacionCompleta(int refugioId);

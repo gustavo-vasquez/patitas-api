@@ -23,6 +23,7 @@ namespace Patitas.Services.DTO.Refugio
         public List<string> Vacunas { get; set; } = new List<string>();
         public string? DescripcionAdicional { get; set; }
         public bool EstaAdoptado { get; set; }
+        public bool SolicitudActiva { get; set; }
         public DateTime? FechaAdopcion { get; set; }
         public int Id_Raza { get; set; }
         public int Id_Refugio { get; set; }

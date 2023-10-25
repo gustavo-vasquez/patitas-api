@@ -17,7 +17,7 @@ SET IDENTITY_INSERT dbo.Usuarios ON
 insert into dbo.Usuarios(Id, NombreUsuario, Email, Password, FotoDePerfil, Telefono, Direccion, FechaCreacion, EstaActivo, Id_Barrio, Id_Rol)
 values
 (1, 'administrador', 'admin.patitas@gmail.com', 'asd123', null, null, null, GETDATE(), 1, 4, 1),
-(2, 'adoptante.test', 'adoptante.test@gmail.com', 'asd123', null, null, null, GETDATE(), 1, 3, 2),
+(2, 'adoptante.test', 'adoptante.test@gmail.com', 'asd123', null, null, null, GETDATE(), 1, 2, 2),
 (3, 'san.pedro', 'refugio_sanpedro@gmail.com', 'asd123', null, '555-5555', 'Av. del Libertador 4101', GETDATE(), 0, 2, 3),
 (4, 'cuidado_animal', 'cuidado_animal_oficial@gmail.com', 'asd123', null, '0800-7898-4658', 'Av. Hipólito Yrigoyen 1849', GETDATE(), 0, 1, 4),
 (5, 'lionel-messi', 'messi10@outlook.com', 'asd123', null, null, null, GETDATE(), 1, 2, 2),
