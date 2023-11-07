@@ -1,11 +1,14 @@
-﻿using Patitas.Domain.Entities;
+﻿using Microsoft.AspNetCore.Http;
+using Patitas.Domain.Entities;
 using Patitas.Infrastructure.Contracts.Manager;
 using Patitas.Services.Contracts;
 using Patitas.Services.DTO.SolicitudDeAdopcion;
+using Patitas.Services.Helpers.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,6 +71,80 @@ namespace Patitas.Services
             {
                 throw new Exception("Ocurrió un problema al crear la solicitud de adopción.");
             }
+        }
+
+        public async Task<SolicitudDeAdopcionResponseDTO> GetSolicitudes(IIdentity? identity, RolTypes rolDeUsuario)
+        {
+            // verifico si el usuario es válido
+            if (identity is null || !identity.IsAuthenticated)
+                throw new UnauthorizedAccessException("No tiene los permisos para ver las solicitudes de adopción.");
+
+            // obtengo el id del usuario que estaba en el token
+            ClaimsIdentity? claimsIdentity = identity as ClaimsIdentity;
+            int adoptanteId = Convert.ToInt32(claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            if (!await _repositoryManager.UsuarioRepository.ExistsAsync(u => u.Id.Equals(adoptanteId)))
+                throw new ArgumentException("El adoptante no existe.");
+
+            // obtengo todas las solicitudes de adopción del adoptante
+            IEnumerable<SolicitudDeAdopcion> solicitudes = await _repositoryManager.SolicitudDeAdopcionRepository.FindAllByAsync(s => s.Id_Adoptante.Equals(adoptanteId));
+
+            // inicializo las listas de los tipos de solicitudes que voy a mostrar en el panel "mis solicitudes"
+            List<SolicitudDeAdopcionDTO> pendientesDeAprobacion = new List<SolicitudDeAdopcionDTO>();
+            List<SolicitudDeAdopcionDTO> adopcionesEnCurso = new List<SolicitudDeAdopcionDTO>();
+            List<SolicitudDeAdopcionDTO> adopcionesExitosas = new List<SolicitudDeAdopcionDTO>();
+            List<SolicitudDeAdopcionDTO> adopcionesCanceladas = new List<SolicitudDeAdopcionDTO>();
+
+            foreach (SolicitudDeAdopcion solicitud in solicitudes)
+            {
+                // obtengo el usuario asociado al refugio
+                Usuario? usuarioRefugio = await _repositoryManager.UsuarioRepository.GetByIdAsync(solicitud.Id_Refugio);
+                // obtengo el refugio asociado
+                Refugio? refugio = await _repositoryManager.RefugioRepository.GetByIdAsync(solicitud.Id_Refugio);
+                
+                if (usuarioRefugio is null || refugio is null)
+                    throw new ArgumentNullException($"El refugio de la solicitud Nº {solicitud.Id} no existe.");
+
+                Barrio? barrio = await _repositoryManager.BarrioRepository.GetByIdAsync(usuarioRefugio.Id_Barrio);
+                Animal? animal = await _repositoryManager.AnimalRepository.GetByIdAsync(solicitud.Id_Animal);
+
+                if (solicitud.EstaActivo && !solicitud.Aprobada)
+                {
+                    var solicitudDTO = this.MapSolicitudEntityToDTO(solicitud, usuarioRefugio, refugio.Nombre, barrio!.Nombre, animal!.Nombre);
+                    pendientesDeAprobacion.Add(solicitudDTO);
+                }
+            }
+
+            return new SolicitudDeAdopcionResponseDTO()
+            {
+                PendientesDeAprobacion = pendientesDeAprobacion,
+                AdopcionesEnCurso = adopcionesEnCurso,
+                AdopcionesExitosas = adopcionesExitosas,
+                AdopcionesCanceladas = adopcionesCanceladas
+            };
+        }
+
+        private SolicitudDeAdopcionDTO MapSolicitudEntityToDTO(
+            SolicitudDeAdopcion solicitud,
+            Usuario usuarioRefugio,
+            string nombreRefugio,
+            string nombreBarrio,
+            string nombreAnimal)
+        {
+            SolicitudDeAdopcionDTO solicitudDTO = new SolicitudDeAdopcionDTO();
+            solicitudDTO.Id = solicitud.Id;
+            solicitudDTO.FechaInicio = solicitud.FechaInicio;
+            solicitudDTO.FechaFinalizacion = solicitud.FechaFinalizacion;
+            solicitudDTO.Aprobada = solicitud.Aprobada;
+            solicitudDTO.EstaActivo = solicitud.EstaActivo;
+            solicitudDTO.Id_Adoptante = solicitud.Id_Adoptante;
+            solicitudDTO.Id_Animal = solicitud.Id_Animal;
+            solicitudDTO.Id_Refugio = solicitud.Id_Refugio;
+            solicitudDTO.Nombre = nombreRefugio;
+            solicitudDTO.Ubicacion = string.Join(", ", usuarioRefugio.Direccion, nombreBarrio);
+            solicitudDTO.NombreAnimal = nombreAnimal;
+
+            return solicitudDTO;
         }
     }
 }

@@ -33,5 +33,28 @@ namespace Patitas.Presentation.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("adoptante")]
+        [Authorize(Roles = "Adoptante")]
+        public async Task<IActionResult> GetMisSolicitudes()
+        {
+            try
+            {
+                SolicitudDeAdopcionResponseDTO solicitudesDeAdopcion = await _serviceManager.SolicitudDeAdopcionService
+                    .GetSolicitudes(
+                        HttpContext.User.Identity,
+                        Services.Helpers.Enums.RolTypes.ADOPTANTE);
+
+                return Ok(solicitudesDeAdopcion);
+            }
+            catch (Exception ex)
+            {
+                if (ex is UnauthorizedAccessException)
+                    return Unauthorized(ex.Message);
+
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

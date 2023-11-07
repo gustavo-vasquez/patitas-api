@@ -160,6 +160,9 @@ namespace Patitas.Services
                 // Obtengo la tabla Usuario que corresponde al Refugio y carga el Barrio que le pertenece
                 Usuario? usuario = await _repositoryManager.UsuarioRepository.GetByIdAsync(refugioId, IncludeTypes.REFERENCE_TABLE_NAME, "Barrio");
 
+                if (refugio is null || usuario is null)
+                    throw new ArgumentException("El refugio no existe.");
+
                 // Obtengo todos los comentarios hechos hacia este refugio
                 IEnumerable<Comentario?> comentarios = await _repositoryManager.ComentarioRepository.FindAllByAsync(c => c.Id_Refugio.Equals(refugioId));
                 
@@ -174,7 +177,7 @@ namespace Patitas.Services
 
                 return new RefugioInfoBasicaDTO()
                 {
-                    Nombre = refugio!.Nombre,
+                    Nombre = refugio.Nombre,
                     Direccion = usuario!.Direccion!,
                     Barrio = usuario.Barrio.Nombre,
                     Puntaje = puntaje,

@@ -48,5 +48,10 @@ namespace Patitas.Infrastructure.Repositories
                 throw new ArgumentException("Ocurrió un error al comprobar si el adoptante completó alguna adopción.");
             }
         }
+
+        public void GetAllSolicitudesAdoptante(int adoptanteId)
+        {
+            _context.SolicitudesDeAdopcion.Where(s => s.Id_Adoptante.Equals(adoptanteId));
+        }
     }
 }
