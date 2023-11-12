@@ -15,11 +15,14 @@ namespace Patitas.Services.DTO.Adoptante
         public string Email { get; set; } = string.Empty;
         public string? FotoDePerfil { get; set; }
         public string? Telefono { get; set; }
+        public string NombreBarrio { get; set; } = string.Empty;
         public string? Direccion { get; set; }
-        public DateTime FechaCreacion { get; set; }
+        public string FechaCreacion { get; set; } = string.Empty;
         public string? Nombre { get; set; }
         public string? Apellido { get; set; }
-        public DateTime? FechaNacimiento { get; set; }
+        public string? FechaNacimiento { get; set; }
         public long? DNI { get; set; }
+        public int CantidadAdopcionesExitosas { get; set; }
+        public int CantidadAdopcionesFalladas { get; set; }
     }
 }

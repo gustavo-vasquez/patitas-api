@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,5 +18,6 @@ namespace Patitas.Services.Contracts
         Task<RefugioResponseDTO> GetComentariosDelRefugio(int refugioId, ClaimsIdentity? identity);
         Task<RefugioResponseDTO> GetVeterinariasAsociadas(int refugioId);
         Task<RefugioResponseDTO> GetInformacionCompleta(int refugioId);
+        Task<RefugioPerfilCompletoDTO> GetPerfilDelRefugio(IIdentity? identity);
     }
 }

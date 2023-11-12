@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Patitas.Services.Contracts.Manager;
 using Patitas.Services.DTO.Refugio;
@@ -134,6 +135,22 @@ namespace Patitas.Presentation.Controllers
                 contentType = "application/octet-stream";
 
             return File(imageFileStream, contentType);
+        }
+
+        [HttpGet]
+        [Route("perfil")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> GetPerfil()
+        {
+            try
+            {
+                RefugioPerfilCompletoDTO perfil = await _serviceManager.RefugioService.GetPerfilDelRefugio(HttpContext.User.Identity);
+                return Ok(perfil);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

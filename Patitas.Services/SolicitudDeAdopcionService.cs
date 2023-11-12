@@ -107,12 +107,16 @@ namespace Patitas.Services
 
                 Barrio? barrio = await _repositoryManager.BarrioRepository.GetByIdAsync(usuarioRefugio.Id_Barrio);
                 Animal? animal = await _repositoryManager.AnimalRepository.GetByIdAsync(solicitud.Id_Animal);
+                var solicitudDTO = this.MapSolicitudEntityToDTO(solicitud, usuarioRefugio, refugio.Nombre, barrio!.Nombre, animal!.Nombre);
 
-                if (solicitud.EstaActivo && !solicitud.Aprobada)
-                {
-                    var solicitudDTO = this.MapSolicitudEntityToDTO(solicitud, usuarioRefugio, refugio.Nombre, barrio!.Nombre, animal!.Nombre);
+                if (solicitud.FechaFinalizacion is not null)
+                    adopcionesExitosas.Add(solicitudDTO);
+                else if (solicitud.EstaActivo && !solicitud.Aprobada)
                     pendientesDeAprobacion.Add(solicitudDTO);
-                }
+                else if (solicitud.EstaActivo && solicitud.Aprobada)
+                    adopcionesEnCurso.Add(solicitudDTO);
+                else
+                    adopcionesCanceladas.Add(solicitudDTO);
             }
 
             return new SolicitudDeAdopcionResponseDTO()
@@ -133,8 +137,10 @@ namespace Patitas.Services
         {
             SolicitudDeAdopcionDTO solicitudDTO = new SolicitudDeAdopcionDTO();
             solicitudDTO.Id = solicitud.Id;
-            solicitudDTO.FechaInicio = solicitud.FechaInicio;
-            solicitudDTO.FechaFinalizacion = solicitud.FechaFinalizacion;
+            solicitudDTO.FechaInicio = solicitud.FechaInicio.ToString("d");
+            solicitudDTO.HoraInicio = solicitud.FechaInicio.ToString("t");
+            solicitudDTO.FechaFinalizacion = solicitud.FechaFinalizacion.HasValue ? solicitud.FechaFinalizacion.Value.ToString("d") : null;
+            solicitudDTO.HoraFinalizacion = solicitud.FechaFinalizacion.HasValue ? solicitud.FechaFinalizacion.Value.ToString("t") : null;
             solicitudDTO.Aprobada = solicitud.Aprobada;
             solicitudDTO.EstaActivo = solicitud.EstaActivo;
             solicitudDTO.Id_Adoptante = solicitud.Id_Adoptante;

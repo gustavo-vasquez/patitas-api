@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -369,6 +370,47 @@ namespace Patitas.Services
             {
                 throw new ArgumentException("No se pudo cargar la información del refugio. \nCausa: " + ex.Message);
             }
+        }
+
+        public async Task<RefugioPerfilCompletoDTO> GetPerfilDelRefugio(IIdentity? identity)
+        {
+            // verifico si el usuario es válido
+            if (identity is null || !identity.IsAuthenticated)
+                throw new UnauthorizedAccessException("No tiene los permisos para ver esta sección.");
+
+            // obtengo el id del usuario que estaba en el token
+            ClaimsIdentity? claimsIdentity = identity as ClaimsIdentity;
+            int refugioId = Convert.ToInt32(claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            // obtengo los datos del refugio asociado al id
+            Usuario? usuario = await _repositoryManager.UsuarioRepository.GetByIdAsync(refugioId, IncludeTypes.REFERENCE_TABLE_NAME, "Barrio");
+            Refugio? refugio = await _repositoryManager.RefugioRepository.GetByIdAsync(refugioId);
+
+            if(usuario is not null && refugio is not null)
+            {
+                return new RefugioPerfilCompletoDTO()
+                {
+                    NombreUsuario = usuario.NombreUsuario,
+                    Email = usuario.Email,
+                    FotoDePerfil = usuario.FotoDePerfil,
+                    Telefono = usuario.Telefono!,
+                    Direccion = usuario.Direccion!,
+                    FechaCreacion = usuario.FechaCreacion.ToString("g"),
+                    NombreBarrio = usuario.Barrio.Nombre,
+                    Nombre = refugio.Nombre,
+                    RazonSocial = refugio.RazonSocial,
+                    NombreResponsable = refugio.NombreResponsable,
+                    ApellidoResponsable = refugio.ApellidoResponsable,
+                    FotoDelRefugio = refugio.Fotografia,
+                    SitioWeb = refugio.SitioWeb,
+                    Descripcion = refugio.Descripcion,
+                    DiasDeAtencion = refugio.DiasDeAtencion,
+                    HorarioApertura = refugio.HorarioApertura,
+                    HorarioCierre = refugio.HorarioCierre
+                };
+            }
+
+            throw new ArgumentException("El usuario o perfil de refugio no existe.");
         }
     }
 }

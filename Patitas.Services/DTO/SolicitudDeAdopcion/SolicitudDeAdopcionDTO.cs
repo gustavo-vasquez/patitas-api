@@ -9,8 +9,10 @@ namespace Patitas.Services.DTO.SolicitudDeAdopcion
     public class SolicitudDeAdopcionDTO
     {
         public int Id { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime? FechaFinalizacion { get; set; }
+        public string FechaInicio { get; set; } = string.Empty;
+        public string HoraInicio { get; set; } = string.Empty;
+        public string? FechaFinalizacion { get; set; }
+        public string? HoraFinalizacion { get; set; }
         public bool Aprobada { get; set; }
         public bool EstaActivo { get; set; }
         public int Id_Adoptante { get; set; }
