@@ -67,6 +67,22 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
+        [Route("{refugioId}/animales/{animalId}")]
+        public async Task<IActionResult> GetAnimal([FromRoute] int refugioId, [FromRoute] int animalId)
+        {
+            try
+            {
+                ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+                AnimalDelRefugioDTO result = await _serviceManager.RefugioService.GetAnimalDelRefugio(animalId, identity);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("{refugioId}/comentarios")]
         public async Task<IActionResult> GetComentarios([FromRoute] int refugioId)
         {

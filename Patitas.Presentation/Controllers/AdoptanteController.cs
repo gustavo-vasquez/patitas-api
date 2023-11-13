@@ -28,5 +28,21 @@ namespace Patitas.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("solicitudes/{solicitudId}")]
+        [Authorize(Roles = "Adoptante")]
+        public async Task<IActionResult> GetAdopcionDetalle([FromRoute] int solicitudId)
+        {
+            try
+            {
+                AdopcionDetalleResponseDTO adopcionDetalle = await _serviceManager.AdoptanteService.GetAdopcionDetalle(HttpContext.User.Identity, solicitudId);
+                return Ok(adopcionDetalle);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace Patitas.Services.DTO.Refugio
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Raza { get; set; } = string.Empty;
-        public int Nacimiento { get; set; }
+        public int Edad { get; set; }
         public char Genero { get; set; }
         public string Fotografia { get; set; } = string.Empty;
         public string SituacionPrevia { get; set; } = null!;
@@ -19,7 +19,7 @@ namespace Patitas.Services.DTO.Refugio
         public decimal Altura { get; set; }
         public bool Esterilizado { get; set; }
         public bool Desparasitado { get; set; }
-        public DateTime FechaIngreso { get; set; }
+        public string FechaIngreso { get; set; } = string.Empty;
         public List<string> Vacunas { get; set; } = new List<string>();
         public string? DescripcionAdicional { get; set; }
         public bool EstaAdoptado { get; set; }

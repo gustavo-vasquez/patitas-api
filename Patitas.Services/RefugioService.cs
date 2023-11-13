@@ -224,7 +224,7 @@ namespace Patitas.Services
                             Id = animal.Id,
                             Nombre = animal.Nombre,
                             Raza = raza!.Nombre,
-                            Nacimiento = animal.Nacimiento,
+                            Edad = animal.FechaIngreso.Year - animal.Nacimiento,
                             Genero = animal.Genero,
                             Fotografia = animal.Fotografia,
                             SituacionPrevia = animal.SituacionPrevia,
@@ -232,7 +232,7 @@ namespace Patitas.Services
                             Altura = animal.Altura,
                             Esterilizado = animal.Esterilizado,
                             Desparasitado = animal.Desparasitado,
-                            FechaIngreso = animal.FechaIngreso,
+                            FechaIngreso = animal.FechaIngreso.ToString("d"),
                             Vacunas = vacunasAplicadas,
                             DescripcionAdicional = animal.DescripcionAdicional,
                             EstaAdoptado = animal.EstaAdoptado,
@@ -249,6 +249,64 @@ namespace Patitas.Services
                 InfoBasica = await this.GetInformacionBasicaDelRefugio(refugioId),
                 Animales = animalesDelRefugioDTO
             };
+        }
+
+        public async Task<AnimalDelRefugioDTO> GetAnimalDelRefugio(int animalId, ClaimsIdentity? identity)
+        {
+            try
+            {
+                List<string> vacunasAplicadas = new List<string>();
+                int adoptanteId = 0;
+                bool solicitudActiva = false;
+
+                if (identity != null && identity.IsAuthenticated)
+                    adoptanteId = Convert.ToInt32(identity.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            
+                Animal? animalDelRefugio = await _repositoryManager.AnimalRepository.GetByIdAsync(animalId, IncludeTypes.COLLECTION_TABLE_NAME, "Vacunas");
+
+                if (animalDelRefugio is not null)
+                {
+                    Raza? raza = await _repositoryManager.RazaRepository.GetByIdAsync(animalDelRefugio.Id_Raza);
+                    
+                    foreach (var vacuna in animalDelRefugio.Vacunas)
+                        vacunasAplicadas.Add(vacuna.Nombre);
+
+                    if (adoptanteId > 0)
+                        solicitudActiva = await _repositoryManager.SolicitudDeAdopcionRepository
+                                                                    .ExistsAsync(s => s.EstaActivo == true
+                                                                            && s.Id_Adoptante.Equals(adoptanteId)
+                                                                            && s.Id_Animal.Equals(animalDelRefugio.Id));
+
+                    return new AnimalDelRefugioDTO()
+                    {
+                        Id = animalDelRefugio.Id,
+                        Nombre = animalDelRefugio.Nombre,
+                        Raza = raza!.Nombre,
+                        Edad = animalDelRefugio.FechaIngreso.Year - animalDelRefugio.Nacimiento,
+                        Genero = animalDelRefugio.Genero,
+                        Fotografia = animalDelRefugio.Fotografia,
+                        SituacionPrevia = animalDelRefugio.SituacionPrevia,
+                        Peso = animalDelRefugio.Peso,
+                        Altura = animalDelRefugio.Altura,
+                        Esterilizado = animalDelRefugio.Esterilizado,
+                        Desparasitado = animalDelRefugio.Desparasitado,
+                        FechaIngreso = animalDelRefugio.FechaIngreso.ToString("d"),
+                        Vacunas = vacunasAplicadas,
+                        DescripcionAdicional = animalDelRefugio.DescripcionAdicional,
+                        EstaAdoptado = animalDelRefugio.EstaAdoptado,
+                        SolicitudActiva = solicitudActiva,
+                        FechaAdopcion = animalDelRefugio.FechaAdopcion,
+                        Id_Raza = animalDelRefugio.Id_Raza,
+                        Id_Refugio = animalDelRefugio.Id_Refugio,
+                    };
+                }
+
+                throw new ArgumentException("El animal indicado no existe.");
+            }
+            catch
+            {
+                throw new ArgumentException("Ocurrió un problema al buscar el animal del refugio.");
+            }
         }
 
         public async Task<RefugioResponseDTO> GetComentariosDelRefugio(int refugioId, ClaimsIdentity? identity)

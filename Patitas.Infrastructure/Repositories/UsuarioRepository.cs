@@ -4,6 +4,8 @@ using Patitas.Infrastructure.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +31,23 @@ namespace Patitas.Infrastructure.Repositories
             {
                 throw;
             }
+        }
+
+        public async Task<int> GetUserLoggedId(IIdentity? identity)
+        {
+            // verifico si el usuario es válido
+            if (identity is null || !identity.IsAuthenticated)
+                throw new UnauthorizedAccessException("No tiene los permisos para esta acción.");
+
+            // obtengo el id del usuario que estaba en el token
+            ClaimsIdentity? claimsIdentity = identity as ClaimsIdentity;
+            int userId = Convert.ToInt32(claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            // verifico si el id del usuario existe
+            if (!await _context.Usuarios.AnyAsync(u => u.Id.Equals(userId)))
+                throw new ArgumentException("El usuario no existe.");
+
+            return userId;
         }
     }
 }

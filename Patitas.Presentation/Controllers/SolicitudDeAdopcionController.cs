@@ -56,5 +56,21 @@ namespace Patitas.Presentation.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("aprobacion/{solicitudId}")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> AprobarSolicitud([FromRoute] int solicitudId)
+        {
+            try
+            {
+                await _serviceManager.SolicitudDeAdopcionService.AprobarSolicitudDeAdopcion(HttpContext.User.Identity, solicitudId);
+                return NoContent();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

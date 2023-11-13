@@ -11,6 +11,5 @@ namespace Patitas.Services.Contracts
     public interface IAdoptanteService
     {
         Task<AdoptantePerfilCompletoDTO> GetPerfilDelAdoptante(IIdentity? identity);
-		Task<AdopcionDetalleResponseDTO> GetAdopcionDetalle(IIdentity? identity, int solicitudId);
     }
 }

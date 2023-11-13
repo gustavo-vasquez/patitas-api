@@ -1,5 +1,6 @@
 ﻿using Patitas.Domain.Entities;
 using Patitas.Infrastructure.Contracts.Manager;
+using Patitas.Infrastructure.Enums;
 using Patitas.Services.Contracts;
 using Patitas.Services.DTO.Adoptante;
 using System;
@@ -52,6 +53,65 @@ namespace Patitas.Services
             }
             
             throw new ArgumentException("El usuario o perfil de adoptante no existe.");
+        }
+
+        public async Task<AdopcionDetalleResponseDTO> GetAdopcionDetalle(IIdentity? identity, int solicitudId)
+        {
+            try
+            {
+                // obtengo el id del adoptante del cuál quiero obtener las solicitudes
+                int adoptanteId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                // obtengo la solicitud de adopción que corresponde verificando también el id del adoptante
+                SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository.FindByAsync(s => s.Id.Equals(solicitudId) && s.Id_Adoptante.Equals(adoptanteId));
+
+                if (solicitud is null)
+                    throw new ArgumentException("La solicitud de adopción no existe o no pertenece al adoptante.");
+
+                // obtengo el animal involucrado en la solicitud
+                Animal? animal = await _repositoryManager.AnimalRepository.GetByIdAsync(solicitud.Id_Animal, IncludeTypes.REFERENCE_TABLE_NAME, "Raza");
+
+                Usuario? usuario = await _repositoryManager.UsuarioRepository.GetByIdAsync(solicitud.Id_Refugio, IncludeTypes.REFERENCE_TABLE_NAME, "Barrio");
+                Refugio? refugio = await _repositoryManager.RefugioRepository.GetByIdAsync(solicitud.Id_Refugio);
+
+                // verifico si existe al menos un turno, seguimiento y plan de vacunación para la solicitud indicada
+                bool tieneTurnos = await _repositoryManager.TurnoRepository.ExistsAsync(
+                    t => t.Id_Adoptante.Equals(adoptanteId) &&
+                    t.Id_Refugio.Equals(refugio!.Id) &&
+                    t.Id_SolicitudDeAdopcion.Equals(solicitud.Id));
+
+                bool tieneSeguimientos = await _repositoryManager.SeguimientoRepository.ExistsAsync(seg => seg.Id_SolicitudDeAdopcion.Equals(solicitud.Id));
+                bool tienePlanes = await _repositoryManager.PlanDeVacunacionRepository.ExistsAsync(plan => plan.Id_SolicitudDeAdopcion.Equals(solicitud.Id));
+
+                return new AdopcionDetalleResponseDTO()
+                {
+                    NroSolicitud = solicitud.Id,
+                    SnAprobada = solicitud.Aprobada,
+                    FechaInicio = solicitud.FechaInicio.ToString("d"),
+                    HoraInicio = solicitud.FechaInicio.ToString("t"),
+                    AnimalId = animal!.Id,
+                    NombreAnimal = animal.Nombre,
+                    RazaAnimal = animal.Raza.Nombre,
+                    GeneroAnimal = animal.Genero,
+                    ImgAnimal = animal.Fotografia,
+                    RefugioId = refugio!.Id,
+                    NombreRefugio = refugio.Nombre,
+                    DireccionRefugio = usuario!.Direccion!,
+                    BarrioRefugio = usuario.Barrio.Nombre,
+                    TxtResponsable = string.Join(" ", refugio!.NombreResponsable, refugio.ApellidoResponsable),
+                    SnTurnos = tieneTurnos,
+                    LnkTurnos = "/adoptantes/1/mis-turnos?refugio_id=1",
+                    SnSeguimiento = tieneSeguimientos,
+                    LnkSeguimiento = "/adoptantes/1/seguimientos?veterinaria_id=1",
+                    SnCalificarRefugio = solicitud.FechaFinalizacion is not null,
+                    LnkCalificarRefugio = "/refugios/1/comentarios",
+                    SnPlanVacunacion = tienePlanes
+                };
+            }
+            catch
+            {
+                throw new ArgumentException("Ocurrió un problema al consultar las solicitudes de adopción del adoptante.");
+            }
         }
     }
 }

@@ -79,14 +79,14 @@ SET IDENTITY_INSERT dbo.Razas OFF
 SET IDENTITY_INSERT dbo.Animales ON
 insert into dbo.Animales(Id, Nombre, Nacimiento, Genero, Fotografia, SituacionPrevia, Peso, Altura, Esterilizado, Desparasitado, FechaIngreso, EstaAdoptado, Id_Raza, Id_Refugio)
 values
-(1, 'Coco', 2022, 'M', '', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 1, 3),
-(2, 'Toby', 2022, 'M', '', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 10, 3),
-(3, 'Simba', 2022, 'M', '', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 5, 3),
-(4, 'Max', 2022, 'M', '', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 14, 3),
-(5, 'Mia', 2022, 'H', '', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 3, 3),
-(6, 'Uma', 2022, 'H', '', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 8, 3),
-(7, 'Morena', 2022, 'H', '', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 15, 3),
-(8, 'Luna', 2022, 'H', '', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 12, 3);
+(1, 'Coco', 2022, 'M', 'https://localhost:7277/api/refugios/3/animales/images/animal_1.jpg', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 1, 3),
+(2, 'Toby', 2022, 'M', 'https://localhost:7277/api/refugios/3/animales/images/animal_2.jpg', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 10, 3),
+(3, 'Simba', 2022, 'M', 'https://localhost:7277/api/refugios/3/animales/images/animal_3.jpg', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 5, 3),
+(4, 'Max', 2022, 'M', 'https://localhost:7277/api/refugios/3/animales/images/animal_4.jpg', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 14, 3),
+(5, 'Mia', 2022, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_5.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 3, 3),
+(6, 'Uma', 2022, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_6.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 8, 3),
+(7, 'Morena', 2022, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_7.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 15, 3),
+(8, 'Luna', 2022, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_8.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 12, 3);
 SET IDENTITY_INSERT dbo.Animales OFF
 
 -- Refugios asociados a Veterinarias

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Patitas.Infrastructure;
+using Patitas.Infrastructure.Contracts;
 using Patitas.Infrastructure.Contracts.Manager;
 using Patitas.Services.Contracts;
 using Patitas.Services.Contracts.Manager;
@@ -23,6 +24,9 @@ namespace Patitas.Services.Manager
         private readonly Lazy<IBarrioService> _barrioService;
         private readonly Lazy<IDetalleEstrellaService> _detalleEstrellaService;
         private readonly Lazy<ISolicitudDeAdopcionService> _solicitudDeAdopcionService;
+        private readonly Lazy<ITurnoService> _turnoService;
+        private readonly Lazy<ISeguimientoService> _seguimientoService;
+        private readonly Lazy<IPlanDeVacunacionService> _planDeVacunacionService;
 
         public ServiceManager(IRepositoryManager repositoryManager, IOptions<TokenManagement> tokenManagement)
         {
@@ -35,6 +39,9 @@ namespace Patitas.Services.Manager
             _barrioService = new Lazy<IBarrioService>(() => new BarrioService(repositoryManager));
             _detalleEstrellaService = new Lazy<IDetalleEstrellaService>(() => new DetalleEstrellaService(repositoryManager));
             _solicitudDeAdopcionService = new Lazy<ISolicitudDeAdopcionService>(() => new SolicitudDeAdopcionService(repositoryManager));
+            _turnoService = new Lazy<ITurnoService>(() => new TurnoService(repositoryManager));
+            _seguimientoService = new Lazy<ISeguimientoService>(() => new SeguimientoService(repositoryManager));
+            _planDeVacunacionService = new Lazy<IPlanDeVacunacionService>(() => new PlanDeVacunacionService(repositoryManager));
         }
 
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
@@ -46,5 +53,8 @@ namespace Patitas.Services.Manager
         public IBarrioService BarrioService => _barrioService.Value;
         public IDetalleEstrellaService DetalleEstrellaService => _detalleEstrellaService.Value;
         public ISolicitudDeAdopcionService SolicitudDeAdopcionService => _solicitudDeAdopcionService.Value;
+        public ITurnoService TurnoService => _turnoService.Value;
+        public ISeguimientoService SeguimientoService => _seguimientoService.Value;
+        public IPlanDeVacunacionService PlanDeVacunacionService => _planDeVacunacionService.Value;
     }
 }

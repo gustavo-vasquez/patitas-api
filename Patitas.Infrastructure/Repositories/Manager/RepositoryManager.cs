@@ -22,6 +22,10 @@ namespace Patitas.Infrastructure.Repositories.Manager
         private readonly Lazy<ISolicitudDeAdopcionRepository> _solicitudDeAdopcionRepository;
         private readonly Lazy<IRazaRepository> _razaRepository;
         private readonly Lazy<IFormularioPreAdopcionRepository> _formularioPreAdopcionRepository;
+        private readonly Lazy<ITurnoRepository> _turnoRepository;
+        private readonly Lazy<ICancelacionDeAdopcionRepository> _cancelacionDeAdopcionRepository;
+        private readonly Lazy<ISeguimientoRepository> _seguimientoRepository;
+        private readonly Lazy<IPlanDeVacunacionRepository> _planDeVacunacionRepository;
 
         public RepositoryManager(PatitasContext context)
         {
@@ -37,6 +41,10 @@ namespace Patitas.Infrastructure.Repositories.Manager
             _solicitudDeAdopcionRepository = new Lazy<ISolicitudDeAdopcionRepository>(() => new SolicitudDeAdopcionRepository(context));
             _razaRepository = new Lazy<IRazaRepository>(() => new RazaRepository(context));
             _formularioPreAdopcionRepository = new Lazy<IFormularioPreAdopcionRepository>(() => new FormularioPreAdopcionRepository(context));
+            _turnoRepository = new Lazy<ITurnoRepository>(() => new TurnoRepository(context));
+            _cancelacionDeAdopcionRepository = new Lazy<ICancelacionDeAdopcionRepository>(() => new CancelacionDeAdopcionRepository(context));
+            _seguimientoRepository = new Lazy<ISeguimientoRepository>(() => new SeguimientoRepository(context));
+            _planDeVacunacionRepository = new Lazy<IPlanDeVacunacionRepository>(() => new PlandeVacunacionRepository(context));
         }
 
         public IUsuarioRepository UsuarioRepository => _usuarioRepository.Value;
@@ -51,5 +59,9 @@ namespace Patitas.Infrastructure.Repositories.Manager
         public ISolicitudDeAdopcionRepository SolicitudDeAdopcionRepository => _solicitudDeAdopcionRepository.Value;
         public IRazaRepository RazaRepository => _razaRepository.Value;
         public IFormularioPreAdopcionRepository FormularioPreAdopcionRepository => _formularioPreAdopcionRepository.Value;
+        public ITurnoRepository TurnoRepository => _turnoRepository.Value;
+        public ICancelacionDeAdopcionRepository CancelacionDeAdopcionRepository => _cancelacionDeAdopcionRepository.Value;
+        public ISeguimientoRepository SeguimientoRepository => _seguimientoRepository.Value;
+        public IPlanDeVacunacionRepository PlanDeVacunacionRepository => _planDeVacunacionRepository.Value;
     }
 }

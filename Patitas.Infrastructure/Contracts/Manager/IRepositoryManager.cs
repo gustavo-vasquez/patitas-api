@@ -20,5 +20,9 @@ namespace Patitas.Infrastructure.Contracts.Manager
         ISolicitudDeAdopcionRepository SolicitudDeAdopcionRepository { get; }
         IRazaRepository RazaRepository { get; }
         IFormularioPreAdopcionRepository FormularioPreAdopcionRepository { get; }
+        ITurnoRepository TurnoRepository { get; }
+        ICancelacionDeAdopcionRepository CancelacionDeAdopcionRepository { get; }
+        ISeguimientoRepository SeguimientoRepository { get; }
+        IPlanDeVacunacionRepository PlanDeVacunacionRepository { get; }
     }
 }

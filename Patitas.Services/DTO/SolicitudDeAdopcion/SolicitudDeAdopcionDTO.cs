@@ -22,5 +22,8 @@ namespace Patitas.Services.DTO.SolicitudDeAdopcion
         public string Ubicacion { get; set; } = string.Empty;
         public string NombreAnimal { get; set; } = string.Empty;
         public string FotoAnimal { get; set; } = string.Empty;
+        public bool ExisteAlgunTurno { get; set; }
+        public string? FechaCancelacion { get; set; }
+        public string? HoraCancelacion { get; set; }
     }
 }
