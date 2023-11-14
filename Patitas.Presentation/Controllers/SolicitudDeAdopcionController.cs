@@ -57,7 +57,28 @@ namespace Patitas.Presentation.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Route("refugio")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> GetSolicitudes()
+        {
+            try
+            {
+                SolicitudDeAdopcionResponseDTO solicitudesDeAdopcion = await _serviceManager.SolicitudDeAdopcionService
+                    .GetSolicitudesRefugio(HttpContext.User.Identity);
+
+                return Ok(solicitudesDeAdopcion);
+            }
+            catch (Exception ex)
+            {
+                if (ex is UnauthorizedAccessException)
+                    return Unauthorized(ex.Message);
+
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPut]
         [Route("aprobacion/{solicitudId}")]
         [Authorize(Roles = "Refugio")]
         public async Task<IActionResult> AprobarSolicitud([FromRoute] int solicitudId)

@@ -28,6 +28,7 @@ namespace Patitas.Services
             IEnumerable<Turno> turnos = await _repositoryManager.TurnoRepository.FindAllByAsync(t => t.Id_Adoptante.Equals(adoptanteId));
             List<TurnoTarjetaDTO> turnosActivos = new List<TurnoTarjetaDTO>();
             List<TurnoTarjetaDTO> turnosPasados = new List<TurnoTarjetaDTO>();
+            List<FiltroRefugiosDTO> filtroRefugios = new List<FiltroRefugiosDTO>();
 
             foreach (Turno turno in turnos)
             {
@@ -36,9 +37,42 @@ namespace Patitas.Services
                 if (refugio is null)
                     throw new ArgumentException("El refugio asociado al turno no existe.");
 
+                if (!filtroRefugios.Any(f => f.Id.Equals(refugio.Id) && f.Nombre.Equals(refugio.Nombre)))
+                    filtroRefugios.Add(new FiltroRefugiosDTO { Id = refugio.Id, Nombre = refugio.Nombre });
+
                 TurnoTarjetaDTO turnoDTO = this.MapTurnoEntityToDTO(turno, refugio.Nombre);
 
-                if (turno.EstaActivo && turno.FechaProgramada <= DateTime.Now)
+                if (turno.EstaActivo && turno.FechaProgramada > DateTime.Now)
+                    turnosActivos.Add(turnoDTO);
+                else
+                    turnosPasados.Add(turnoDTO);
+            }
+
+            return new TurnoResponseDTO
+            {
+                TurnosActivos = turnosActivos,
+                TurnosPasados = turnosPasados
+            };
+        }
+
+        public async Task<TurnoResponseDTO> GetTurnosRefugio(IIdentity? identity)
+        {
+            int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+            IEnumerable<Turno> turnos = await _repositoryManager.TurnoRepository.FindAllByAsync(t => t.Id_Refugio.Equals(refugioId));
+            List<TurnoTarjetaDTO> turnosActivos = new List<TurnoTarjetaDTO>();
+            List<TurnoTarjetaDTO> turnosPasados = new List<TurnoTarjetaDTO>();
+
+            foreach (Turno turno in turnos)
+            {
+                Usuario? usuarioAdoptante = await _repositoryManager.UsuarioRepository.GetByIdAsync(turno.Id_Adoptante);
+
+                if (usuarioAdoptante is null)
+                    throw new ArgumentException("El adoptante asociado al turno no existe.");
+
+                TurnoTarjetaDTO turnoDTO = this.MapTurnoEntityToDTO(turno, usuarioAdoptante.NombreUsuario);
+
+                if (turno.EstaActivo && turno.FechaProgramada > DateTime.Now)
                     turnosActivos.Add(turnoDTO);
                 else
                     turnosPasados.Add(turnoDTO);
@@ -59,6 +93,7 @@ namespace Patitas.Services
             turnoDTO.HoraProgramada = turno.FechaProgramada.ToString("t");
             turnoDTO.EstaConfirmado = turno.EstaConfirmado;
             turnoDTO.Asistio = turno.Asistio;
+            turnoDTO.EstaVencido = DateTime.Now > turno.FechaProgramada;
             turnoDTO.PorReprogramar = turno.PorReprogramar;
             turnoDTO.EstaActivo = turno.EstaActivo;
             turnoDTO.Nombre = nombre;

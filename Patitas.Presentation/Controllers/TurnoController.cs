@@ -39,5 +39,21 @@ namespace Patitas.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("refugio")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> GetTurnos()
+        {
+            try
+            {
+                TurnoResponseDTO turnos = await _serviceManager.TurnoService.GetTurnosRefugio(HttpContext.User.Identity);
+                return Ok(turnos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

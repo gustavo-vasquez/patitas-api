@@ -13,6 +13,7 @@ namespace Patitas.Services.DTO.Turno
         public string HoraProgramada { get; set; } = string.Empty;
         public bool EstaConfirmado { get; set; }
         public bool Asistio { get; set; }
+        public bool EstaVencido { get; set; }
         public bool EstaActivo { get; set; }
         public bool PorReprogramar { get; set; }
         public string Nombre { get; set; } = string.Empty;
