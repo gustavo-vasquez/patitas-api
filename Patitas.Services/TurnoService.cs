@@ -5,6 +5,7 @@ using Patitas.Services.DTO.Turno;
 using Patitas.Services.Helpers.Enums;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -99,6 +100,49 @@ namespace Patitas.Services
             turnoDTO.Nombre = nombre;
 
             return turnoDTO;
+        }
+
+        public async Task CreateTurno(IIdentity? identity, TurnoCreateDTO turnoDTO)
+        {
+            try
+            {
+                // obtengo el id del refugio que va a crear el turno
+                int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                CultureInfo provider = CultureInfo.InvariantCulture; // cultura universal para la fecha
+                DateTime fechaDelTurno = Convert.ToDateTime(turnoDTO.Fecha, provider);
+
+                if (turnoDTO.Hora is not null && turnoDTO.Minuto is not null && turnoDTO.SolicitudDeAdopcionId is not null)
+                {
+                    // obtengo la solicitud para extraer el id del adoptante
+                    SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository.GetByIdAsync(turnoDTO.SolicitudDeAdopcionId.Value);
+
+                    if (solicitud is null)
+                        throw new ArgumentException("La solicitud de adopción no es válida.");
+                    
+                    // genero el nuevo turno
+                    Turno nuevoTurno = new Turno()
+                    {
+                        FechaProgramada = new DateTime(fechaDelTurno.Year, fechaDelTurno.Month, fechaDelTurno.Day, turnoDTO.Hora.Value, turnoDTO.Minuto.Value, 00),
+                        EstaConfirmado = false,
+                        Asistio = false,
+                        EstaActivo = true,
+                        PorReprogramar = false,
+                        MotivoDeReprogramacion = string.Empty,
+                        Id_SolicitudDeAdopcion = turnoDTO.SolicitudDeAdopcionId.Value,
+                        Id_Adoptante = solicitud.Id_Adoptante,
+                        Id_Refugio = refugioId,
+                    };
+
+                    await _repositoryManager.TurnoRepository.CreateAsync(nuevoTurno);
+                }
+                else
+                    throw new ArgumentException("Ha enviado datos no válidos para el turno.");
+            }
+            catch
+            {
+                throw new Exception("Ocurrió un problema inesperado al crear el turno.");
+            }
         }
     }
 }

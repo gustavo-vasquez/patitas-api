@@ -13,5 +13,6 @@ namespace Patitas.Services.Contracts
     {
         Task<TurnoResponseDTO> GetTurnos(IIdentity? identity, RolTypes rol);
         Task<TurnoResponseDTO> GetTurnosRefugio(IIdentity? identity);
+        Task CreateTurno(IIdentity? identity, TurnoCreateDTO turnoDTO);
     }
 }

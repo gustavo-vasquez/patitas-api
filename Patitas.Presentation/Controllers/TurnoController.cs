@@ -19,9 +19,17 @@ namespace Patitas.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Refugio")]
-        public IActionResult CreateTurno()
+        public async Task<IActionResult> CreateTurno(TurnoCreateDTO turnoDTO)
         {
-            return Ok();
+            try
+            {
+                await _serviceManager.TurnoService.CreateTurno(HttpContext.User.Identity, turnoDTO);
+                return StatusCode(201);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Patitas.Services.Contracts.Manager;
 using Patitas.Services.DTO.Adoptante;
+using Patitas.Services.DTO.Turno;
 
 namespace Patitas.Presentation.Controllers
 {   
@@ -38,6 +39,38 @@ namespace Patitas.Presentation.Controllers
             {
                 AdopcionDetalleResponseDTO adopcionDetalle = await _serviceManager.AdoptanteService.GetAdopcionDetalle(HttpContext.User.Identity, solicitudId);
                 return Ok(adopcionDetalle);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("turnos/{turnoId}")]
+        [Authorize(Roles = "Adoptante")]
+        public async Task<IActionResult> GetTurno([FromRoute] int turnoId)
+        {
+            try
+            {
+                TurnoDetalleAdoptanteDTO turnoDetalle = await _serviceManager.AdoptanteService.GetTurnoDetalle(HttpContext.User.Identity, turnoId);
+                return Ok(turnoDetalle);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("turnos")]
+        [Authorize(Roles = "Adoptante")]
+        public async Task<IActionResult> ConfirmarTurno([FromBody] int turnoId)
+        {
+            try
+            {
+                await _serviceManager.AdoptanteService.ConfirmarMiTurno(HttpContext.User.Identity, turnoId);
+                return NoContent();
             }
             catch (Exception ex)
             {

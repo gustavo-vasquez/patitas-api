@@ -3,6 +3,7 @@ using Patitas.Infrastructure.Contracts.Manager;
 using Patitas.Infrastructure.Enums;
 using Patitas.Services.Contracts;
 using Patitas.Services.DTO.Adoptante;
+using Patitas.Services.DTO.Turno;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,6 +112,56 @@ namespace Patitas.Services
             catch
             {
                 throw new ArgumentException("Ocurrió un problema al consultar las solicitudes de adopción del adoptante.");
+            }
+        }
+
+        public async Task<TurnoDetalleAdoptanteDTO> GetTurnoDetalle(IIdentity? identity, int turnoId)
+        {
+            // obtengo el id del adoptante que consulta el turno
+            int adoptanteId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+            Turno? turno = await _repositoryManager.TurnoRepository.GetByIdAsync(turnoId);
+
+            if (turno is null)
+                throw new ArgumentException("El turno solicitado no existe.");
+
+            Refugio? refugio = await _repositoryManager.RefugioRepository.GetByIdAsync(turno.Id_Refugio);
+
+            if (refugio is null)
+                throw new ArgumentException("El refugio asociado al turno no existe.");
+
+            return new TurnoDetalleAdoptanteDTO()
+            {
+                Id = turno.Id,
+                FechaTurno = turno.FechaProgramada.ToString("d"),
+                HoraTurno = turno.FechaProgramada.ToString("t"),
+                SolicitudId = turno.Id_SolicitudDeAdopcion,
+                RefugioId = refugio.Id,
+                NombreRefugio = refugio.Nombre,
+                Asistio = turno.Asistio,
+                EstaActivo = turno.EstaActivo,
+                EstaConfirmado = turno.EstaConfirmado,
+                PorReprogramar = turno.PorReprogramar,
+                MotivoDeReprogramacion = turno.MotivoDeReprogramacion
+            };
+        }
+
+        public async Task ConfirmarMiTurno(IIdentity? identity, int turnoId)
+        {
+            try
+            {
+                int adoptanteId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+                Turno? turno = await _repositoryManager.TurnoRepository.FindByAsync(t => t.Id.Equals(turnoId) && t.Id_Adoptante.Equals(adoptanteId));
+
+                if (turno is null)
+                    throw new ArgumentException("El turno no existe.");
+
+                turno.EstaConfirmado = true;
+                await _repositoryManager.TurnoRepository.UpdateAsync(turno);
+            }
+            catch
+            {
+                throw new ArgumentException("No se pudo confirmar el turno debido a un problema inesperado.");
             }
         }
     }
