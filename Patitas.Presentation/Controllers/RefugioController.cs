@@ -171,6 +171,22 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
+        [Route("solicitudes/{solicitudId}")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> GetSolicitudDetalle([FromRoute] int solicitudId)
+        {
+            try
+            {
+                SolicitudDetalleResponseDTO solicitudDetalle = await _serviceManager.RefugioService.GetSolicitudDetalle(HttpContext.User.Identity, solicitudId);
+                return Ok(solicitudDetalle);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("turnos/{turnoId}")]
         [Authorize(Roles = "Refugio")]
         public async Task<IActionResult> GetTurno([FromRoute] int turnoId)

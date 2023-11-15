@@ -21,6 +21,7 @@ namespace Patitas.Services.Contracts
         Task<RefugioResponseDTO> GetVeterinariasAsociadas(int refugioId);
         Task<RefugioResponseDTO> GetInformacionCompleta(int refugioId);
         Task<RefugioPerfilCompletoDTO> GetPerfilDelRefugio(IIdentity? identity);
+        Task<SolicitudDetalleResponseDTO> GetSolicitudDetalle(IIdentity? identity, int solicitudId);
         Task<TurnoDetalleRefugioDTO> GetTurnoDetalle(IIdentity? identity, int turnoId);
         Task MarcarAsistenciaDeTurno(IIdentity? identity, int turnoId);
     }

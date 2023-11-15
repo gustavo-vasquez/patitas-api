@@ -472,6 +472,106 @@ namespace Patitas.Services
             throw new ArgumentException("El usuario o perfil de refugio no existe.");
         }
 
+        public async Task<SolicitudDetalleResponseDTO> GetSolicitudDetalle(IIdentity? identity, int solicitudId)
+        {
+            try
+            {
+                // obtengo el id del adoptante del cuál quiero obtener las solicitudes
+                int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                // obtengo la solicitud de adopción que corresponde verificando también el id del adoptante
+                SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository.FindByAsync(s => s.Id.Equals(solicitudId) && s.Id_Refugio.Equals(refugioId));
+
+                if (solicitud is null)
+                    throw new ArgumentException("La solicitud no existe o no está asociada contigo.");
+
+                Usuario? usuarioAdoptante = await _repositoryManager.UsuarioRepository.GetByIdAsync(solicitud.Id_Adoptante, IncludeTypes.REFERENCE_TABLE_NAME, "Barrio");
+                Adoptante? adoptante = await _repositoryManager.AdoptanteRepository.GetByIdAsync(solicitud.Id_Adoptante);
+
+                if (usuarioAdoptante is null || adoptante is null)
+                    throw new ArgumentException("El adoptante asociado a la solicitud no existe.");
+
+                Animal? animal = await _repositoryManager.AnimalRepository.GetByIdAsync(solicitud.Id_Animal, IncludeTypes.REFERENCE_TABLE_NAME, "Raza");
+                FormularioPreAdopcion? formularioPreAdopcion = await _repositoryManager.FormularioPreAdopcionRepository
+                    .FindByAsync(f => f.Id_SolicitudDeAdopcion.Equals(solicitud.Id) && f.Id_Adoptante.Equals(adoptante.Id));
+
+                if(animal is null || formularioPreAdopcion is null)
+                    throw new ArgumentException("El animal o el formulario de pre-adopción asociado a la solicitud no existe.");
+
+                IEnumerable<Turno> turnos = await _repositoryManager.TurnoRepository.FindAllByAsync(t => t.Id_SolicitudDeAdopcion.Equals(solicitud.Id));
+
+                SolicitudDetalleResponseDTO solicitudDetalle = new SolicitudDetalleResponseDTO()
+                {
+                    NroSolicitud = solicitud.Id,
+                    FechaInicioSolicitud = solicitud.FechaInicio.ToString("d"),
+                    HoraInicioSolicitud = solicitud.FechaInicio.ToString("t"),
+                    FechaFinSolicitud = solicitud.FechaFinalizacion?.ToString("d"),
+                    HoraFinSolicitud = solicitud.FechaFinalizacion?.ToString("t"),
+                    Aprobada = solicitud.Aprobada,
+                    EstaActivo = solicitud.EstaActivo,
+                    Id_Adoptante = solicitud.Id_Adoptante,
+                    Id_Animal = solicitud.Id_Animal,
+                    Id_Refugio = solicitud.Id_Refugio,
+                    NombreUsuario = usuarioAdoptante.NombreUsuario,
+                    EmailUsuario = usuarioAdoptante.Email,
+                    FechaRegistroAdoptante = usuarioAdoptante.FechaCreacion.ToString("d"),
+                    HoraRegistroAdoptante = usuarioAdoptante.FechaCreacion.ToString("t"),
+                    TxtNombre = adoptante.Nombre,
+                    TxtApellido = adoptante.Apellido,
+                    TxtBarrio = usuarioAdoptante.Barrio.Nombre,
+                    TxtDireccion = usuarioAdoptante.Direccion,
+                    TxtFechaNacimiento = adoptante.FechaNacimiento?.ToString("d"),
+                    TxtDocumento = adoptante.DNI,
+                    TxtTelefono = usuarioAdoptante.Telefono,
+                    AdopcionesExitosas = 0,
+                    AdopcionesInterrumpidas = 0,
+                    ImgAnimal = animal.Fotografia,
+                    NombreAnimal = animal.Nombre,
+                    RazaAnimal = animal.Raza.Nombre,
+                    GeneroAnimal = animal.Genero == 'M' ? "Macho" : "Hembra",
+                    LnkVerFichaCompleta = "/refugios/1/animales/4",
+                    SnVerFichaCompleta = true,
+                    LnkTurnos = "/refugio/turnos",
+                    TieneTurnoActivo = turnos.Any(t => t.EstaActivo == true),
+                    SnTurnos = turnos.Count() > 0,
+                    LnkSeguimiento = "/refugio/seguimientos",
+                    SnSeguimiento = false,
+                    SnPlanVacunacion = false,
+                    TxtMotivo = formularioPreAdopcion.Motivo,
+                    SnTuvoMascota = formularioPreAdopcion.TuvoMascota,
+                    SnTieneMascotas = formularioPreAdopcion.TieneMascotas,
+                    SnViveSolo = formularioPreAdopcion.ViveSolo,
+                    SnTieneVeterinariaCerca = formularioPreAdopcion.TieneVeterinariaCerca,
+                    SnViveEnCasa = formularioPreAdopcion.ViveEnCasa,
+                    SnViveEnDepartamento = formularioPreAdopcion.ViveEnDepartamento,
+                    CantidadAmbientes = formularioPreAdopcion.CantidadDeAmbientes,
+                    SnTienePatio = formularioPreAdopcion.TienePatio,
+                    SnTieneBalcon = formularioPreAdopcion.TieneBalcon,
+                    SnTieneRedEnVentanas = formularioPreAdopcion.TieneRedEnVentanas,
+                    SnConoceLeyMaltratoAnimal = formularioPreAdopcion.ConoceLeyDeMaltratoAnimal,
+                    FrecuenciaAnimalSolo = formularioPreAdopcion.FrecuenciaAnimalSolo,
+                    SnTieneConocidosEnCasoDeEmergencia = formularioPreAdopcion.TieneConocidosEnCasoDeEmergencia,
+                    SnTieneSalarioAcordeAGastos = formularioPreAdopcion.TieneSalarioAcordeAGastos,
+                    SnTieneConocidosQueLoAconsejen = formularioPreAdopcion.TieneConocidosQueLoAconsejen
+                };
+
+                if (solicitud.FechaFinalizacion is not null)
+                    solicitudDetalle.AdopcionExitosa = true;
+                else if (solicitud.EstaActivo && !solicitud.Aprobada)
+                    solicitudDetalle.PendienteDeAprobacion = true;
+                else if (solicitud.EstaActivo && solicitud.Aprobada)
+                    solicitudDetalle.AdopcionEnCurso = true;
+                else
+                    solicitudDetalle.AdopcionCancelada = true;
+
+                return solicitudDetalle;
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException("Ocurrió un problema al consultar el detalle de las solicitudes de adopción del refugio. Causa: ", ex.Message);
+            }
+        }
+
         public async Task<TurnoDetalleRefugioDTO> GetTurnoDetalle(IIdentity? identity, int turnoId)
         {
             try
