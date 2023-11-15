@@ -1,4 +1,5 @@
 ﻿using Patitas.Services.DTO.Refugio;
+using Patitas.Services.DTO.Turno;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,7 @@ namespace Patitas.Services.Contracts
         Task<RefugioResponseDTO> GetVeterinariasAsociadas(int refugioId);
         Task<RefugioResponseDTO> GetInformacionCompleta(int refugioId);
         Task<RefugioPerfilCompletoDTO> GetPerfilDelRefugio(IIdentity? identity);
+        Task<TurnoDetalleRefugioDTO> GetTurnoDetalle(IIdentity? identity, int turnoId);
+        Task MarcarAsistenciaDeTurno(IIdentity? identity, int turnoId);
     }
 }

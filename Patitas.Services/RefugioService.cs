@@ -4,6 +4,7 @@ using Patitas.Infrastructure.Contracts.Manager;
 using Patitas.Infrastructure.Enums;
 using Patitas.Services.Contracts;
 using Patitas.Services.DTO.Refugio;
+using Patitas.Services.DTO.Turno;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -469,6 +470,66 @@ namespace Patitas.Services
             }
 
             throw new ArgumentException("El usuario o perfil de refugio no existe.");
+        }
+
+        public async Task<TurnoDetalleRefugioDTO> GetTurnoDetalle(IIdentity? identity, int turnoId)
+        {
+            try
+            {
+                int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                Turno? turno = await _repositoryManager.TurnoRepository.GetByIdAsync(turnoId);
+
+                if (turno is null)
+                    throw new ArgumentException("El turno solicitado no existe.");
+
+                Usuario? usuarioAdoptante = await _repositoryManager.UsuarioRepository.GetByIdAsync(turno.Id_Adoptante);
+
+                if (usuarioAdoptante is null)
+                    throw new ArgumentException("El adoptante asociado al turno no existe.");
+
+                return new TurnoDetalleRefugioDTO()
+                {
+                    Id = turno.Id,
+                    FechaTurno = turno.FechaProgramada.ToString("d"),
+                    HoraTurno = turno.FechaProgramada.ToString("t"),
+                    SolicitudId = turno.Id_SolicitudDeAdopcion,
+                    AdoptanteId = usuarioAdoptante.Id,
+                    NombreAdoptante = usuarioAdoptante.NombreUsuario,
+                    EmailAdoptante = usuarioAdoptante.Email,
+                    Telefono = usuarioAdoptante.Telefono,
+                    Asistio = turno.Asistio,
+                    EstaActivo = turno.EstaActivo,
+                    EstaConfirmado = turno.EstaConfirmado,
+                    PorReprogramar = turno.PorReprogramar,
+                    MotivoDeReprogramacion = turno.MotivoDeReprogramacion
+                };
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task MarcarAsistenciaDeTurno(IIdentity? identity, int turnoId)
+        {
+            try
+            {
+                int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+                Turno? turno = await _repositoryManager.TurnoRepository.FindByAsync(t => t.Id.Equals(turnoId) && t.Id_Refugio.Equals(refugioId));
+
+                if (turno is null)
+                    throw new DirectoryNotFoundException("El turno no existe.");
+
+                turno.Asistio = true;
+                turno.EstaActivo = false;
+
+                await _repositoryManager.TurnoRepository.UpdateAsync(turno);
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

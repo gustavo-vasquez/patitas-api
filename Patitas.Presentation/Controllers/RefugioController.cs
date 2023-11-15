@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Patitas.Services.Contracts.Manager;
 using Patitas.Services.DTO.Refugio;
+using Patitas.Services.DTO.Turno;
 using System.Security.Claims;
 
 namespace Patitas.Presentation.Controllers
@@ -166,6 +167,41 @@ namespace Patitas.Presentation.Controllers
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("turnos/{turnoId}")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> GetTurno([FromRoute] int turnoId)
+        {
+            try
+            {
+                TurnoDetalleRefugioDTO turnoDetalle = await _serviceManager.RefugioService.GetTurnoDetalle(HttpContext.User.Identity, turnoId);
+                return Ok(turnoDetalle);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("turnos")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> MarcarAsistencia([FromBody] int turnoId)
+        {
+            try
+            {
+                await _serviceManager.RefugioService.MarcarAsistenciaDeTurno(HttpContext.User.Identity, turnoId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                if (ex is DirectoryNotFoundException)
+                    return NotFound(ex.Message);
+
+                return BadRequest("No se pudo marcar asistencia del turno. Inténtelo más tarde. Causa: " + ex.Message);
             }
         }
     }
