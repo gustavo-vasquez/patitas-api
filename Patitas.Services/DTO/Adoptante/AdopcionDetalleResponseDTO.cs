@@ -12,10 +12,17 @@ namespace Patitas.Services.DTO.Adoptante
         public bool SnAprobada { get; set; }
         public string? FechaInicio { get; set; }
         public string? HoraInicio { get; set; }
+        public string? FechaFinSolicitud { get; set; }
+        public string? HoraFinSolicitud { get; set; }
+        public bool PendienteDeAprobacion { get; set; }
+        public bool AdopcionEnCurso { get; set; }
+        public bool AdopcionExitosa { get; set; }
+        public bool AdopcionCancelada { get; set; }
         public int AnimalId { get; set; }
         public string NombreAnimal { get; set; } = string.Empty;
         public string RazaAnimal { get; set; } = string.Empty;
         public int RefugioId { get; set; }
+        public bool EnEtapaDeSeguimiento { get; set; }
         public string NombreRefugio { get; set; } = string.Empty;
         public string DireccionRefugio { get; set; } = string.Empty;
         public string BarrioRefugio { get; set; } = string.Empty;

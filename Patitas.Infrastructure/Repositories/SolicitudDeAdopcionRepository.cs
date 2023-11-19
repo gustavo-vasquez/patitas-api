@@ -49,9 +49,14 @@ namespace Patitas.Infrastructure.Repositories
             }
         }
 
-        public void GetAllSolicitudesAdoptante(int adoptanteId)
+        public async Task<bool> EstaEnSeguimiento(int solicitudId)
         {
-            _context.SolicitudesDeAdopcion.Where(s => s.Id_Adoptante.Equals(adoptanteId));
+            SolicitudDeAdopcion? solicitud = await _context.SolicitudesDeAdopcion.FindAsync(solicitudId);
+
+            if (solicitud is null)
+                throw new ArgumentException("La solicitud consultada no existe.");
+
+            return solicitud.EnEtapaDeSeguimiento;
         }
     }
 }

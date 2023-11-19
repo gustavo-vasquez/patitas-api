@@ -512,6 +512,7 @@ namespace Patitas.Services
                     Id_Adoptante = solicitud.Id_Adoptante,
                     Id_Animal = solicitud.Id_Animal,
                     Id_Refugio = solicitud.Id_Refugio,
+                    EnEtapaDeSeguimiento = solicitud.EnEtapaDeSeguimiento,
                     NombreUsuario = usuarioAdoptante.NombreUsuario,
                     EmailUsuario = usuarioAdoptante.Email,
                     FechaRegistroAdoptante = usuarioAdoptante.FechaCreacion.ToString("d"),
@@ -578,10 +579,11 @@ namespace Patitas.Services
             {
                 int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
 
-                Turno? turno = await _repositoryManager.TurnoRepository.GetByIdAsync(turnoId);
+                Turno? turno = await _repositoryManager.TurnoRepository
+                    .FindByAsync(t => t.Id.Equals(turnoId) && t.Id_Refugio.Equals(refugioId));
 
                 if (turno is null)
-                    throw new ArgumentException("El turno solicitado no existe.");
+                    throw new ArgumentException("El turno solicitado no existe o no está asociado a su refugio.");
 
                 Usuario? usuarioAdoptante = await _repositoryManager.UsuarioRepository.GetByIdAsync(turno.Id_Adoptante);
 
@@ -594,11 +596,13 @@ namespace Patitas.Services
                     FechaTurno = turno.FechaProgramada.ToString("d"),
                     HoraTurno = turno.FechaProgramada.ToString("t"),
                     SolicitudId = turno.Id_SolicitudDeAdopcion,
+                    SolicitudEnEtapaDeSeguimiento = await _repositoryManager.SolicitudDeAdopcionRepository.EstaEnSeguimiento(turno.Id_SolicitudDeAdopcion),
                     AdoptanteId = usuarioAdoptante.Id,
                     NombreAdoptante = usuarioAdoptante.NombreUsuario,
                     EmailAdoptante = usuarioAdoptante.Email,
                     Telefono = usuarioAdoptante.Telefono,
                     Asistio = turno.Asistio,
+                    InformeDeVisita = turno.InformeDeVisita,
                     EstaActivo = turno.EstaActivo,
                     EstaConfirmado = turno.EstaConfirmado,
                     PorReprogramar = turno.PorReprogramar,
@@ -611,17 +615,18 @@ namespace Patitas.Services
             }
         }
 
-        public async Task MarcarAsistenciaDeTurno(IIdentity? identity, int turnoId)
+        public async Task MarcarAsistenciaDeTurno(IIdentity? identity, TurnoMarcarAsistenciaDTO marcarAsistenciaDTO)
         {
             try
             {
                 int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
-                Turno? turno = await _repositoryManager.TurnoRepository.FindByAsync(t => t.Id.Equals(turnoId) && t.Id_Refugio.Equals(refugioId));
+                Turno? turno = await _repositoryManager.TurnoRepository.FindByAsync(t => t.Id.Equals(marcarAsistenciaDTO.TurnoId) && t.Id_Refugio.Equals(refugioId));
 
                 if (turno is null)
                     throw new DirectoryNotFoundException("El turno no existe.");
 
                 turno.Asistio = true;
+                turno.InformeDeVisita = marcarAsistenciaDTO.InformeDeVisita;
                 turno.EstaActivo = false;
 
                 await _repositoryManager.TurnoRepository.UpdateAsync(turno);
@@ -629,6 +634,28 @@ namespace Patitas.Services
             catch
             {
                 throw;
+            }
+        }
+        public async Task HabilitarSeguimientoDeVacunaciones(IIdentity? identity, int solicitudId)
+        {
+            try
+            {
+                // obtengo el id del refugio logueado
+                int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                // obtengo la solicitud verificando que corresponde al refugio logueado
+                SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository
+                    .FindByAsync(s => s.Id.Equals(solicitudId) && s.Id_Refugio.Equals(refugioId));
+
+                if (solicitud is null)
+                    throw new ArgumentException("La solicitud indicada es incorrecta o no existe.");
+
+                solicitud.EnEtapaDeSeguimiento = true;
+                await _repositoryManager.SolicitudDeAdopcionRepository.UpdateAsync(solicitud);
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException("No se pudo habilitar la solicitud para seguimiento. Causa: " + ex.Message);
             }
         }
     }

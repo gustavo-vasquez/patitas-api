@@ -18,6 +18,7 @@ namespace Patitas.Services.DTO.SolicitudDeAdopcion
         public int Id_Adoptante { get; set; }
         public int Id_Animal { get; set; }
         public int Id_Refugio { get; set; }
+        public bool EnEtapaDeSeguimiento { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Ubicacion { get; set; } = string.Empty;
         public string NombreAnimal { get; set; } = string.Empty;

@@ -12,5 +12,6 @@ namespace Patitas.Infrastructure.Contracts
     public interface ISolicitudDeAdopcionRepository : IRepository<SolicitudDeAdopcion, int>
     {
         Task<bool> AdoptantePuedeComentar(ClaimsIdentity? identity);
+        Task<bool> EstaEnSeguimiento(int solicitudId);
     }
 }

@@ -113,6 +113,7 @@ namespace Patitas.Services
                 solicitudDTO.Nombre = refugio.Nombre;
                 solicitudDTO.Ubicacion = string.Join(", ", usuarioRefugio.Direccion, usuarioRefugio.Barrio.Nombre);
                 solicitudDTO.NombreAnimal = animal!.Nombre;
+                solicitudDTO.FotoAnimal = animal.Fotografia;
 
                 if (solicitud.FechaFinalizacion is not null)
                     adopcionesExitosas.Add(solicitudDTO);
@@ -121,7 +122,17 @@ namespace Patitas.Services
                 else if (solicitud.EstaActivo && solicitud.Aprobada)
                 {
                     // verifico si tiene al menos un turno
-                    bool existeAlgunTurno = await _repositoryManager.TurnoRepository.ExistsAsync(t => t.Id_SolicitudDeAdopcion.Equals(solicitud.Id));
+                    bool existeAlgunTurno;
+                    if (!solicitudDTO.EnEtapaDeSeguimiento)
+                    {
+                        existeAlgunTurno = await _repositoryManager.TurnoRepository
+                        .ExistsAsync(t => t.Id_SolicitudDeAdopcion.Equals(solicitud.Id) && t.EstaActivo);
+                    }
+                    else
+                    {
+                        existeAlgunTurno = await _repositoryManager.SeguimientoRepository
+                        .ExistsAsync(seg => seg.Id_SolicitudDeAdopcion.Equals(solicitud.Id) && seg.EstaActivo);
+                    }
                     solicitudDTO.ExisteAlgunTurno = existeAlgunTurno;
                     adopcionesEnCurso.Add(solicitudDTO);
                 }
@@ -183,6 +194,7 @@ namespace Patitas.Services
                 solicitudDTO.Nombre = usuarioAdoptante.NombreUsuario;
                 solicitudDTO.Ubicacion = usuarioAdoptante.Barrio.Nombre;
                 solicitudDTO.NombreAnimal = animal!.Nombre;
+                solicitudDTO.FotoAnimal = animal.Fotografia;
 
                 if (solicitud.FechaFinalizacion is not null)
                     adopcionesExitosas.Add(solicitudDTO);
@@ -191,7 +203,17 @@ namespace Patitas.Services
                 else if (solicitud.EstaActivo && solicitud.Aprobada)
                 {
                     // verifico si tiene al menos un turno
-                    bool existeAlgunTurno = await _repositoryManager.TurnoRepository.ExistsAsync(t => t.Id_SolicitudDeAdopcion.Equals(solicitud.Id));
+                    bool existeAlgunTurno;
+                    if (!solicitudDTO.EnEtapaDeSeguimiento)
+                    {
+                        existeAlgunTurno = await _repositoryManager.TurnoRepository
+                        .ExistsAsync(t => t.Id_SolicitudDeAdopcion.Equals(solicitud.Id) && t.EstaActivo);
+                    }
+                    else
+                    {
+                        existeAlgunTurno = await _repositoryManager.SeguimientoRepository
+                        .ExistsAsync(seg => seg.Id_SolicitudDeAdopcion.Equals(solicitud.Id) && seg.EstaActivo);
+                    }
                     solicitudDTO.ExisteAlgunTurno = existeAlgunTurno;
                     adopcionesEnCurso.Add(solicitudDTO);
                 }
@@ -227,6 +249,7 @@ namespace Patitas.Services
             solicitudDTO.Id_Adoptante = solicitud.Id_Adoptante;
             solicitudDTO.Id_Animal = solicitud.Id_Animal;
             solicitudDTO.Id_Refugio = solicitud.Id_Refugio;
+            solicitudDTO.EnEtapaDeSeguimiento = solicitud.EnEtapaDeSeguimiento;
 
             return solicitudDTO;
         }
@@ -251,6 +274,29 @@ namespace Patitas.Services
 
             solicitud.Aprobada = true;
             await _repositoryManager.SolicitudDeAdopcionRepository.UpdateAsync(solicitud);
+        }
+
+        public async Task HabilitarSeguimientoDeVacunaciones(IIdentity? identity, int solicitudId)
+        {
+            try
+            {
+                // obtengo el id del refugio logueado
+                int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                // obtengo la solicitud verificando que corresponde al refugio logueado
+                SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository
+                    .FindByAsync(s => s.Id.Equals(solicitudId) && s.Id_Refugio.Equals(refugioId));
+
+                if (solicitud is null)
+                    throw new ArgumentException("La solicitud indicada es incorrecta o no existe.");
+
+                solicitud.EnEtapaDeSeguimiento = true;
+                await _repositoryManager.SolicitudDeAdopcionRepository.UpdateAsync(solicitud);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("No se pudo habilitar la solicitud para seguimiento. Causa: " + ex.Message);
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Patitas.Domain.Entities
         public int Id_Adoptante { get; set; }
         public int Id_Animal { get; set; }
         public int Id_Refugio { get; set; }
+        public bool EnEtapaDeSeguimiento { get; set; }
 
         // 1 a N
         // 1 adoptante <--> N solicitudes

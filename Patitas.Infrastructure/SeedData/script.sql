@@ -34,23 +34,26 @@ insert into dbo.Administradores(Id, EsFundador)
 values (1, 1);
 
 -- Adoptantes
-insert into dbo.Adoptantes(Id, Nombre, Apellido)
-values (2, 'Adoptante', 'Test'), (5, 'Lionel', 'Messi'), (10, 'Paola', 'Fernandez');
+insert into dbo.Adoptantes(Id, Nombre, Apellido, FechaNacimiento, DNI)
+values
+(2, 'Adoptante', 'Test', '1995-10-08', 38489831),
+(5, 'Lionel', 'Messi', '1988-04-25', 32449778),
+(10, 'Paola', 'Fernandez', '1992-12-18', 36118749);
 
 -- Refugios
-insert into dbo.Refugios(Id, Nombre, RazonSocial, NombreResponsable, ApellidoResponsable, DiasDeAtencion, HorarioApertura, HorarioCierre)
+insert into dbo.Refugios(Id, Nombre, RazonSocial, Fotografia, NombreResponsable, ApellidoResponsable, DiasDeAtencion, HorarioApertura, HorarioCierre)
 values
-(3, 'San Pedro', 'Refugio San Pedro S.A.', 'José', 'Paradela', 'Lunes a Viernes', '09', '12'),
-(6, 'El Arca de Noé', 'El Arca de Noé S.A.', 'Paola', 'Martínez', 'Martes, Miércoles, Jueves', '11', '14'),
-(7, 'Patas Unidas', 'Patas Unidas S.A.', 'Esteban', 'Fernandez', 'Jueves, Viernes, Sábado', '10', '14'),
-(8, 'Santuario Animal', 'Santuario Animal S.A.', 'Raúl', 'Pereira', 'Lunes a Viernes', '15', '18'),
-(9, 'Nuevas Oportunidades', 'Nuevas Oportunidades S.A.', 'Josefina', 'Alsina', 'Domingo, Lunes, Martes', '09', '15')
+(3, 'San Pedro', 'Refugio San Pedro S.A.', 'https://localhost:7277/api/refugios/images/portada_refugio_3.jpg', 'José', 'Paradela', 'Lunes a Viernes', '09', '12'),
+(6, 'El Arca de Noé', 'El Arca de Noé S.A.', 'https://localhost:7277/api/refugios/images/portada_refugio_6.jpg', 'Paola', 'Martínez', 'Martes, Miércoles, Jueves', '11', '14'),
+(7, 'Patas Unidas', 'Patas Unidas S.A.', 'https://localhost:7277/api/refugios/images/portada_refugio_7.jpg', 'Esteban', 'Fernandez', 'Jueves, Viernes, Sábado', '10', '14'),
+(8, 'Santuario Animal', 'Santuario Animal S.A.', 'https://localhost:7277/api/refugios/images/portada_refugio_8.jpg', 'Raúl', 'Pereira', 'Lunes a Viernes', '15', '18'),
+(9, 'Nuevas Oportunidades', 'Nuevas Oportunidades S.A.', 'https://localhost:7277/api/refugios/images/portada_refugio_9.jpg', 'Josefina', 'Alsina', 'Domingo, Lunes, Martes', '09', '15')
 
 -- Veterinarias
-insert into dbo.Veterinarias(Id, Nombre, RazonSocial, Especialidades, FechaFundacion, DiasDeAtencion, HorarioApertura, HorarioCierre)
+insert into dbo.Veterinarias(Id, Nombre, RazonSocial, Fotografia, Especialidades, FechaFundacion, DiasDeAtencion, HorarioApertura, HorarioCierre)
 values
-(4, 'ZooLand', 'ZooLand  S.L.', 'Vacunación, Cirugía, Alimentos, Juguetes', '2018-01-10', 'Lunes a viernes', 09, 17),
-(11, 'Natural Life', 'Natural Life S.A.', 'Vacunación, Alimentos, Cirugía, Ecografía, Peluquería', '2012-10-28', 'Lunes a sábados', 10, 20);
+(4, 'ZooLand', 'ZooLand  S.L.', 'https://localhost:7277/api/veterinaria/images/foto_veterinaria_4.jpg', 'Vacunación, Cirugía, Alimentos, Juguetes', '2018-01-10', 'Lunes a viernes', 09, 17),
+(11, 'Natural Life', 'Natural Life S.A.', 'https://localhost:7277/api/veterinaria/images/foto_veterinaria_11.jpg', 'Vacunación, Alimentos, Cirugía, Ecografía, Peluquería', '2012-10-28', 'Lunes a sábados', 10, 20);
 
 -- Especies
 SET IDENTITY_INSERT dbo.Especies ON
@@ -70,9 +73,9 @@ values
 (6, 'Dogo', 1),
 (7, 'Pug', 1),
 (8, 'Beagle', 1),
-(9, 'Persa', 2),
-(10, 'Siamés', 2),
-(11, 'Ragdoll', 2),
+(9, 'Mixta', 2),
+(10, 'Persa', 2),
+(11, 'Siamés', 2),
 (12, 'Maine coon', 2),
 (13, 'Gato Andino', 2),
 (14, 'Gato Montés', 2),
@@ -87,7 +90,7 @@ values
 (2, 'Toby', 2022, 'M', 'https://localhost:7277/api/refugios/3/animales/images/animal_2.jpg', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 1, 3),
 (3, 'Simba', 2019, 'M', 'https://localhost:7277/api/refugios/3/animales/images/animal_3.jpg', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 3, 3),
 (4, 'Max', 2020, 'M', 'https://localhost:7277/api/refugios/3/animales/images/animal_4.jpg', 'Fue rescatado de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 15, 3),
-(5, 'Mia', 2022, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_5.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 3, 3),
+(5, 'Mia', 2022, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_5.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 9, 3),
 (6, 'Uma', 2022, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_6.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 7, 3),
 (7, 'Morena', 2020, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_7.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 5, 3),
 (8, 'Luna', 2019, 'H', 'https://localhost:7277/api/refugios/3/animales/images/animal_8.jpg', 'Fue rescatada de la calle', 25, 0.55, 0, 1, GETDATE(), 0, 12, 3);
@@ -121,8 +124,16 @@ SET IDENTITY_INSERT dbo.Comentarios OFF
 SET IDENTITY_INSERT dbo.Vacunas ON
 insert into dbo.Vacunas (Id, Nombre, CantidadDeDosis, EdadIndicada)
 values
-(1, 'Moquillo', 2, '6 a 9 semanas de edad (aplicar refuerzo a partir de las 11 semanas).'),
-(2, 'Hepatitis infecciosa canina', 3, 'A partir de las 6 semanas (2º dosis a partir de las 9 semanas y 3º dosis a partir de las 12 semanas).')
+(1, 'Moquillo', 2, '6 semanas (2º dosis a las 11 semanas).'),
+(2, 'Hepatitis canina', 3, '6 semanas, 9 semanas (2º), 12 semanas (3º).'),
+(3, 'Parvovirus', 3, '6 semanas, 10 semanas (2º), 14 semanas (3º).'),
+(4, 'Rabia canina', 1, '4 meses.'),
+(5, 'Trivalente', 3, '8 semanas, 12 semanas (2º), 16 semanas (3º).'),
+(6, 'Leucemia felina', 2, '8 semanas (2º dosis 3 semanas después).'),
+(7, 'Peritonitis infecciosa felina', 2, '16 semanas (2º dosis a las 20 semanas).'),
+(8, 'Rabia felina', 1, '4 meses.')
 SET IDENTITY_INSERT dbo.Vacunas OFF
 
--- Vacuna contra el parvovirus canino / Vacuna contra la rabia
+-- Asignación de vacuna a cada especie
+insert into dbo.EspecieVacuna (Id_Especie, Id_Vacuna)
+values (1, 1), (1, 2), (1, 3), (1, 4), (2, 5), (2, 6), (2, 7), (2, 8);

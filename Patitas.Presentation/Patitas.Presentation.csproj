@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Patitas.Services\Patitas.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\usuarios\refugios\" />
+  </ItemGroup>
+
 </Project>

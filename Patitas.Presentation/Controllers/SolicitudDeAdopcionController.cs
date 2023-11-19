@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Patitas.Presentation.Controllers
 {
-    [Route("api/solicitudes-adopcion")]
+    [Route("api/solicitudes")]
     [ApiController]
     public class SolicitudDeAdopcionController : ControllerBase
     {
@@ -89,6 +89,22 @@ namespace Patitas.Presentation.Controllers
                 return NoContent();
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("{solicitudId}")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> MarcarParaSeguimiento([FromRoute] int solicitudId)
+        {
+            try
+            {
+                await _serviceManager.SolicitudDeAdopcionService.HabilitarSeguimientoDeVacunaciones(HttpContext.User.Identity, solicitudId);
+                return NoContent();
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

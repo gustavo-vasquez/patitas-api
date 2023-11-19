@@ -17,5 +17,6 @@ namespace Patitas.Services.Contracts
         Task<SolicitudDeAdopcionResponseDTO> GetSolicitudes(IIdentity? identity, RolTypes rolDeUsuario);
         Task<SolicitudDeAdopcionResponseDTO> GetSolicitudesRefugio(IIdentity? identity);
         Task AprobarSolicitudDeAdopcion(IIdentity? identity, int solicitudId);
+        Task HabilitarSeguimientoDeVacunaciones(IIdentity? identity, int solicitudId);
     }
 }

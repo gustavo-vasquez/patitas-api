@@ -155,6 +155,21 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
+        [Route("images/{filename}")]
+        public IActionResult GetVeterinariaImage([FromRoute] string filename)
+        {
+            string path = Path.Combine(_env.WebRootPath, $"images/usuarios/refugios", filename);
+            FileStream imageFileStream = System.IO.File.OpenRead(path);
+
+            FileExtensionContentTypeProvider provider = new FileExtensionContentTypeProvider();
+
+            if (!provider.TryGetContentType(filename, out string? contentType))
+                contentType = "application/octet-stream";
+
+            return File(imageFileStream, contentType);
+        }
+
+        [HttpGet]
         [Route("perfil")]
         [Authorize(Roles = "Refugio")]
         public async Task<IActionResult> GetPerfil()
@@ -205,11 +220,11 @@ namespace Patitas.Presentation.Controllers
         [HttpPut]
         [Route("turnos")]
         [Authorize(Roles = "Refugio")]
-        public async Task<IActionResult> MarcarAsistencia([FromBody] int turnoId)
+        public async Task<IActionResult> MarcarAsistencia(TurnoMarcarAsistenciaDTO marcarAsistenciaDTO)
         {
             try
             {
-                await _serviceManager.RefugioService.MarcarAsistenciaDeTurno(HttpContext.User.Identity, turnoId);
+                await _serviceManager.RefugioService.MarcarAsistenciaDeTurno(HttpContext.User.Identity, marcarAsistenciaDTO);
                 return NoContent();
             }
             catch (Exception ex)

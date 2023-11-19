@@ -19,6 +19,9 @@ namespace Patitas.Domain.Entities
         public int Id_SolicitudDeAdopcion { get; set; }
         public int Id_Adoptante { get; set; }
         public int Id_Refugio { get; set; }
+        
+        [StringLength(200)]
+        public string InformeDeVisita { get; set; } = string.Empty;
 
         // 1 a N
         // 1 solicitud <--> N turnos
