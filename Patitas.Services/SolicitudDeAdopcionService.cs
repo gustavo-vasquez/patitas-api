@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Patitas.Domain.Entities;
 using Patitas.Infrastructure.Contracts.Manager;
+using Patitas.Infrastructure.Enums;
 using Patitas.Services.Contracts;
 using Patitas.Services.DTO.SolicitudDeAdopcion;
 using Patitas.Services.Helpers.Enums;
@@ -236,6 +237,72 @@ namespace Patitas.Services
             };
         }
 
+        public async Task<SolicitudDeAdopcionResponseVeterinariaDTO> GetSolicitudesVeterinaria(IIdentity? identity)
+        {
+            try
+            {
+                // obtengo el id de la veterinaria
+                int veterinariaId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                // obtengo todos los planes de la veterinaria (para después obtener las solicitudes vinculadas a los seguimientos)
+                IEnumerable<PlanDeVacunacion> planesDeVacunacion = await _repositoryManager.PlanDeVacunacionRepository
+                    .FindAllByAsync(plan => plan.Id_Veterinaria.Equals(veterinariaId));
+
+                List<SolicitudDeAdopcion> solicitudes = new List<SolicitudDeAdopcion>();
+
+                foreach (PlanDeVacunacion plan in planesDeVacunacion)
+                {
+                    SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository
+                        .GetByIdAsync(plan.Id_SolicitudDeAdopcion, IncludeTypes.REFERENCE_TABLE_NAME, "Animal");
+
+                    if(solicitud is not null)
+                        solicitudes.Add(solicitud); // agrego la solicitud vinculada a la veterinaria a la lista
+                }
+
+                // instancio las listas para catalogar las solicitudes en actuales o pasadas
+                List<SolicitudDeAdopcionDTO> solicitudesActuales = new List<SolicitudDeAdopcionDTO>();
+                List<SolicitudDeAdopcionDTO> solicitudesPasadas = new List<SolicitudDeAdopcionDTO>();
+
+                foreach (SolicitudDeAdopcion solicitud in solicitudes)
+                {
+                    Adoptante? adoptante = await _repositoryManager.AdoptanteRepository
+                        .GetByIdAsync(solicitud.Id_Adoptante, IncludeTypes.REFERENCE_TABLE_NAME, "Usuario");
+
+                    Refugio? refugio = await _repositoryManager.RefugioRepository
+                        .GetByIdAsync(solicitud.Id_Refugio, IncludeTypes.REFERENCE_TABLE_NAME, "Usuario");
+
+                    if (adoptante is null || refugio is null)
+                        throw new ArgumentException("El adoptante o el refugio de la solicitud no existe.");
+
+                    // obtengo los barrios tanto del adoptante como del refugio
+                    Barrio? adoptanteBarrio = await _repositoryManager.BarrioRepository.GetByIdAsync(adoptante.Usuario.Id_Barrio);
+                    Barrio? refugioBarrio = await _repositoryManager.BarrioRepository.GetByIdAsync(refugio.Usuario.Id_Barrio);
+
+                    SolicitudDeAdopcionDTO solicitudDTO = this.MapSolicitudEntityToDTO(solicitud);
+                    string ubicacionRefugio = string.Join(", ", refugio.Usuario.Direccion, refugioBarrio?.Nombre);
+                    solicitudDTO.Nombre = string.Concat(adoptante.Usuario.NombreUsuario, "*", refugio.Usuario.NombreUsuario);
+                    solicitudDTO.Ubicacion = string.Concat(adoptanteBarrio?.Nombre, "*", ubicacionRefugio);
+                    solicitudDTO.NombreAnimal = solicitud.Animal.Nombre;
+                    solicitudDTO.FotoAnimal = solicitud.Animal.Fotografia;
+
+                    if(solicitud.EstaActivo)
+                        solicitudesActuales.Add(solicitudDTO);
+                    else
+                        solicitudesPasadas.Add(solicitudDTO);
+                }
+
+                return new SolicitudDeAdopcionResponseVeterinariaDTO()
+                {
+                    SolicitudesActuales = solicitudesActuales,
+                    SolicitudesPasadas = solicitudesPasadas
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrió un problema al obtener las solicitudes vinculadas a la veterinaria. Causa: " + ex.Message);
+            }
+        }
+
         private SolicitudDeAdopcionDTO MapSolicitudEntityToDTO(SolicitudDeAdopcion solicitud)
         {
             SolicitudDeAdopcionDTO solicitudDTO = new SolicitudDeAdopcionDTO();
@@ -276,7 +343,7 @@ namespace Patitas.Services
             await _repositoryManager.SolicitudDeAdopcionRepository.UpdateAsync(solicitud);
         }
 
-        public async Task HabilitarSeguimientoDeVacunaciones(IIdentity? identity, int solicitudId)
+        public async Task HabilitarSeguimientoDeVacunaciones(IIdentity? identity, int solicitudId, string nombreVeterinaria)
         {
             try
             {
@@ -290,6 +357,22 @@ namespace Patitas.Services
                 if (solicitud is null)
                     throw new ArgumentException("La solicitud indicada es incorrecta o no existe.");
 
+                Veterinaria? veterinaria = await _repositoryManager.VeterinariaRepository
+                    .FindByAsync(v => v.Nombre.Equals(nombreVeterinaria));
+
+                if (veterinaria is null)
+                    throw new ArgumentException("La veterinaria elegida es incorrecta o no existe.");
+
+                // creo el enlace entre la solicitud y la veterinaria elegida
+                await _repositoryManager.PlanDeVacunacionRepository
+                    .CreateAsync(new PlanDeVacunacion()
+                    {
+                        Id_SolicitudDeAdopcion = solicitudId,
+                        Id_Veterinaria = veterinaria.Id,
+                        EstaActivo = true
+                    });
+
+                // actualizo la solicitud para marcarla como "en etapa de seguimiento"
                 solicitud.EnEtapaDeSeguimiento = true;
                 await _repositoryManager.SolicitudDeAdopcionRepository.UpdateAsync(solicitud);
             }

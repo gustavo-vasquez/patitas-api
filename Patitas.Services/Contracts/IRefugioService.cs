@@ -24,5 +24,6 @@ namespace Patitas.Services.Contracts
         Task<SolicitudDetalleResponseDTO> GetSolicitudDetalle(IIdentity? identity, int solicitudId);
         Task<TurnoDetalleRefugioDTO> GetTurnoDetalle(IIdentity? identity, int turnoId);
         Task MarcarAsistenciaDeTurno(IIdentity? identity, TurnoMarcarAsistenciaDTO marcarAsistenciaDTO);
+        Task<IEnumerable<string>> GetVeterinariasHabilitadas(int refugioId);
     }
 }

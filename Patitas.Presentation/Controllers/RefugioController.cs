@@ -235,5 +235,20 @@ namespace Patitas.Presentation.Controllers
                 return BadRequest("No se pudo marcar asistencia del turno. Inténtelo más tarde. Causa: " + ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("{refugioId}/eleccion-veterinarias")]
+        public async Task<IActionResult> GetVeterinariasParaSeguimiento([FromRoute] int refugioId)
+        {
+            try
+            {
+                IEnumerable<string> veterinariaNombres = await _serviceManager.RefugioService.GetVeterinariasHabilitadas(refugioId);
+                return Ok(veterinariaNombres);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

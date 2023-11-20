@@ -103,7 +103,7 @@ namespace Patitas.Infrastructure
 
             modelBuilder.Entity<PlanDeVacunacion>()
                 .HasIndex(pv => pv.Id_Veterinaria)
-                .IsUnique();
+                .IsUnique(false);
 
             modelBuilder.Entity<Animal>()
                 .Property(e => e.Altura)

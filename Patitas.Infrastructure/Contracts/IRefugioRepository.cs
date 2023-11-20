@@ -9,5 +9,6 @@ namespace Patitas.Infrastructure.Contracts
 {
     public interface IRefugioRepository : IRepository<Refugio, int>
     {
+        Task<IEnumerable<string>> GetVeterinariasHabilitadas(int refugioId);
     }
 }

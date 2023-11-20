@@ -598,6 +598,7 @@ namespace Patitas.Services
                     SolicitudId = turno.Id_SolicitudDeAdopcion,
                     SolicitudEnEtapaDeSeguimiento = await _repositoryManager.SolicitudDeAdopcionRepository.EstaEnSeguimiento(turno.Id_SolicitudDeAdopcion),
                     AdoptanteId = usuarioAdoptante.Id,
+                    RefugioId = turno.Id_Refugio,
                     NombreAdoptante = usuarioAdoptante.NombreUsuario,
                     EmailAdoptante = usuarioAdoptante.Email,
                     Telefono = usuarioAdoptante.Telefono,
@@ -636,6 +637,19 @@ namespace Patitas.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<string>> GetVeterinariasHabilitadas(int refugioId)
+        {
+            try
+            {
+                return await _repositoryManager.RefugioRepository.GetVeterinariasHabilitadas(refugioId);
+            }
+            catch
+            {
+                throw new Exception("Ocurrió un problema al cargar las veterinarias asignadas al refugio.");
+            }
+        }
+
         public async Task HabilitarSeguimientoDeVacunaciones(IIdentity? identity, int solicitudId)
         {
             try

@@ -14,6 +14,7 @@ namespace Patitas.Services.DTO.Turno
         public int SolicitudId { get; set; }
         public bool SolicitudEnEtapaDeSeguimiento { get; set; }
         public int AdoptanteId { get; set; }
+        public int RefugioId { get; set; }
         public string NombreAdoptante { get; set; } = string.Empty;
         public string EmailAdoptante { get; set;} = string.Empty;
         public string? Telefono { get; set;} = string.Empty;

@@ -78,6 +78,27 @@ namespace Patitas.Presentation.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("veterinaria")]
+        [Authorize(Roles = "Veterinaria")]
+        public async Task<IActionResult> GetSolicitudesVinculadas()
+        {
+            try
+            {
+                SolicitudDeAdopcionResponseVeterinariaDTO solicitudesResponseDTO = await _serviceManager.SolicitudDeAdopcionService
+                    .GetSolicitudesVeterinaria(HttpContext.User.Identity);
+
+                return Ok(solicitudesResponseDTO);
+            }
+            catch(Exception ex)
+            {
+                if (ex is UnauthorizedAccessException)
+                    return Unauthorized(ex.Message);
+
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPut]
         [Route("aprobacion/{solicitudId}")]
         [Authorize(Roles = "Refugio")]
@@ -97,11 +118,12 @@ namespace Patitas.Presentation.Controllers
         [HttpPut]
         [Route("{solicitudId}")]
         [Authorize(Roles = "Refugio")]
-        public async Task<IActionResult> MarcarParaSeguimiento([FromRoute] int solicitudId)
+        public async Task<IActionResult> MarcarParaSeguimiento([FromRoute] int solicitudId, [FromBody] string nombreVeterinaria)
         {
             try
             {
-                await _serviceManager.SolicitudDeAdopcionService.HabilitarSeguimientoDeVacunaciones(HttpContext.User.Identity, solicitudId);
+                await _serviceManager.SolicitudDeAdopcionService
+                    .HabilitarSeguimientoDeVacunaciones(HttpContext.User.Identity, solicitudId, nombreVeterinaria);
                 return NoContent();
             }
             catch (Exception ex)
