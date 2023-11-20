@@ -24,5 +24,8 @@ namespace Patitas.Infrastructure.Contracts.Manager
         ICancelacionDeAdopcionRepository CancelacionDeAdopcionRepository { get; }
         ISeguimientoRepository SeguimientoRepository { get; }
         IPlanDeVacunacionRepository PlanDeVacunacionRepository { get; }
+        IEspecieRepository EspecieRepository { get; }
+        IVacunaRepository VacunaRepository { get; }
+        IVacunaDelPlanRepository VacunaDelPlanRepository { get; }
     }
 }

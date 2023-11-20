@@ -27,6 +27,7 @@ namespace Patitas.Services.Manager
         private readonly Lazy<ITurnoService> _turnoService;
         private readonly Lazy<ISeguimientoService> _seguimientoService;
         private readonly Lazy<IPlanDeVacunacionService> _planDeVacunacionService;
+        private readonly Lazy<IEspecieService> _especieService;
 
         public ServiceManager(IRepositoryManager repositoryManager, IOptions<TokenManagement> tokenManagement)
         {
@@ -42,6 +43,7 @@ namespace Patitas.Services.Manager
             _turnoService = new Lazy<ITurnoService>(() => new TurnoService(repositoryManager));
             _seguimientoService = new Lazy<ISeguimientoService>(() => new SeguimientoService(repositoryManager));
             _planDeVacunacionService = new Lazy<IPlanDeVacunacionService>(() => new PlanDeVacunacionService(repositoryManager));
+            _especieService = new Lazy<IEspecieService>(() => new EspecieService(repositoryManager));
         }
 
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
@@ -56,5 +58,6 @@ namespace Patitas.Services.Manager
         public ITurnoService TurnoService => _turnoService.Value;
         public ISeguimientoService SeguimientoService => _seguimientoService.Value;
         public IPlanDeVacunacionService PlanDeVacunacionService => _planDeVacunacionService.Value;
+        public IEspecieService EspecieService => _especieService.Value;
     }
 }

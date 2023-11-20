@@ -20,5 +20,6 @@ namespace Patitas.Services.Contracts.Manager
         ITurnoService TurnoService { get; }
         ISeguimientoService SeguimientoService { get; }
         IPlanDeVacunacionService PlanDeVacunacionService { get; }
+        IEspecieService EspecieService { get; }
     }
 }

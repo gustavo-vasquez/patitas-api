@@ -26,6 +26,9 @@ namespace Patitas.Infrastructure.Repositories.Manager
         private readonly Lazy<ICancelacionDeAdopcionRepository> _cancelacionDeAdopcionRepository;
         private readonly Lazy<ISeguimientoRepository> _seguimientoRepository;
         private readonly Lazy<IPlanDeVacunacionRepository> _planDeVacunacionRepository;
+        private readonly Lazy<IEspecieRepository> _especieRepository;
+        private readonly Lazy<IVacunaRepository> _vacunaRepository;
+        private readonly Lazy<IVacunaDelPlanRepository> _vacunaDelPlanRepository;
 
         public RepositoryManager(PatitasContext context)
         {
@@ -45,6 +48,9 @@ namespace Patitas.Infrastructure.Repositories.Manager
             _cancelacionDeAdopcionRepository = new Lazy<ICancelacionDeAdopcionRepository>(() => new CancelacionDeAdopcionRepository(context));
             _seguimientoRepository = new Lazy<ISeguimientoRepository>(() => new SeguimientoRepository(context));
             _planDeVacunacionRepository = new Lazy<IPlanDeVacunacionRepository>(() => new PlandeVacunacionRepository(context));
+            _especieRepository = new Lazy<IEspecieRepository>(() => new EspecieRepository(context));
+            _vacunaRepository = new Lazy<IVacunaRepository>(() => new VacunaRepository(context));
+            _vacunaDelPlanRepository = new Lazy<IVacunaDelPlanRepository>(() => new VacunaDelPlanRepository(context));
         }
 
         public IUsuarioRepository UsuarioRepository => _usuarioRepository.Value;
@@ -63,5 +69,8 @@ namespace Patitas.Infrastructure.Repositories.Manager
         public ICancelacionDeAdopcionRepository CancelacionDeAdopcionRepository => _cancelacionDeAdopcionRepository.Value;
         public ISeguimientoRepository SeguimientoRepository => _seguimientoRepository.Value;
         public IPlanDeVacunacionRepository PlanDeVacunacionRepository => _planDeVacunacionRepository.Value;
+        public IEspecieRepository EspecieRepository => _especieRepository.Value;
+        public IVacunaRepository VacunaRepository => _vacunaRepository.Value;
+        public IVacunaDelPlanRepository VacunaDelPlanRepository => _vacunaDelPlanRepository.Value;
     }
 }
