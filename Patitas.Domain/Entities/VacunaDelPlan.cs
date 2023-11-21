@@ -12,7 +12,7 @@ namespace Patitas.Domain.Entities
     {
         public int Id_PlanDeVacunacion { get; set; }
         public int Id_Vacuna { get; set; }
-        public int NroDosis { get; set; }
+        public byte NroDosis { get; set; }
         public DateTime? FechaDeAplicacion { get; set; }
     }
 }

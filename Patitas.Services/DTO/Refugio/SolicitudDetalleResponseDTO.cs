@@ -40,12 +40,9 @@ namespace Patitas.Services.DTO.Refugio
         public string NombreAnimal { get; set; } = string.Empty;
         public string RazaAnimal { get; set; } = string.Empty;
         public string GeneroAnimal { get; set; } = string.Empty;
-        public string LnkVerFichaCompleta { get; set; }
         public bool SnVerFichaCompleta { get; set; }
-        public string LnkTurnos { get; set; }
         public bool TieneTurnoActivo { get; set; }
         public bool SnTurnos { get; set; }
-        public string LnkSeguimiento { get; set; }
         public bool SnSeguimiento { get; set; }
         public bool SnPlanVacunacion { get; set; }
         public string TxtMotivo { get; set; } = string.Empty;

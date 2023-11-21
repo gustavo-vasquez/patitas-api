@@ -9,6 +9,8 @@ namespace Patitas.Services.DTO.Veterinaria
     public class SolicitudDetalleVeterinariaResponseDTO
     {
         public bool ExisteListaDeVacunas { get; set; }
+        public bool HayCitaProgramada { get; set; }
+        public bool FaltanVacunas { get; set; }
         public string NombreAnimal { get; set; } = string.Empty;
         public string RazaAnimal { get; set;} = string.Empty;
         public string GeneroAnimal { get; set; } = string.Empty;

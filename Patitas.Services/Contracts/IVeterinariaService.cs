@@ -1,4 +1,5 @@
-﻿using Patitas.Services.DTO.Veterinaria;
+﻿using Patitas.Services.DTO.Seguimiento;
+using Patitas.Services.DTO.Veterinaria;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace Patitas.Services.Contracts
         Task<SolicitudDetalleVeterinariaResponseDTO> GetSolicitudDetalle(IIdentity? identity, int solicitudId);
         Task<IEnumerable<VacunaComboDTO>> GetVacunaCombo(int especieId);
         Task CreateNuevoPlanDeVacunacion(IIdentity? identity, IEnumerable<PlanDeVacunacionRequestDTO> planVacunacionDTO, int solicitudId);
+        Task<SeguimientoDetalleVeterinariaDTO> GetSeguimientoDetalle(IIdentity? identity, int seguimientoId);
+        Task MarcarVacunacionDelAnimal(IIdentity? identity, SeguimientoMarcarVacunacionDTO marcarVacunacionDTO);
     }
 }

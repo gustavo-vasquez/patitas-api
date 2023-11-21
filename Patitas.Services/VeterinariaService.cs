@@ -2,6 +2,7 @@
 using Patitas.Infrastructure.Contracts.Manager;
 using Patitas.Infrastructure.Enums;
 using Patitas.Services.Contracts;
+using Patitas.Services.DTO.Seguimiento;
 using Patitas.Services.DTO.Veterinaria;
 using System;
 using System.Collections.Generic;
@@ -61,9 +62,17 @@ namespace Patitas.Services
 
             Raza? raza = await _repositoryManager.RazaRepository.GetByIdAsync(solicitud.Animal.Id_Raza);
 
+            bool existeCita = await _repositoryManager.SeguimientoRepository
+                .ExistsAsync(seg => seg.Id_SolicitudDeAdopcion.Equals(solicitud.Id) && seg.EstaActivo && !seg.EstaAplicada);
+
+            // si no falta ninguna vacuna, estoy en condiciones de finalizar la adopción
+            bool faltanVacunas = vacunasDelPlan.Any(vac => vac.FechaDeAplicacion == null);
+
             return new SolicitudDetalleVeterinariaResponseDTO()
             {
                 ExisteListaDeVacunas = vacunasDelPlan.Count() > 0,
+                HayCitaProgramada = existeCita,
+                FaltanVacunas = faltanVacunas,
                 NombreAnimal = solicitud.Animal.Nombre,
                 RazaAnimal = raza!.Nombre,
                 GeneroAnimal = solicitud.Animal.Genero == 'M' ? "Macho" : "Hembra",
@@ -136,6 +145,101 @@ namespace Patitas.Services
                 await _repositoryManager.VacunaDelPlanRepository.CreateAsync(nuevoItem);
             }
 
+        }
+
+        public async Task<SeguimientoDetalleVeterinariaDTO> GetSeguimientoDetalle(IIdentity? identity, int seguimientoId)
+        {
+            try
+            {
+                int veterinariaId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                SeguimientoDeVacunacion? seguimiento = await _repositoryManager.SeguimientoRepository
+                    .FindByAsync(t => t.Id.Equals(seguimientoId) && t.Id_Veterinaria.Equals(veterinariaId));
+
+                if (seguimiento is null)
+                    throw new ArgumentException("La cita de seguimiento solicitada no existe o no está asociado a su veterinaria.");
+
+                SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository
+                    .GetByIdAsync(seguimiento.Id_SolicitudDeAdopcion);
+
+                if (solicitud is null)
+                    throw new ArgumentException("La solicitud asociada al seguimiento no existe.");
+
+                Usuario? usuarioAdoptante = await _repositoryManager.UsuarioRepository.GetByIdAsync(solicitud.Id_Adoptante);
+
+                if (usuarioAdoptante is null)
+                    throw new ArgumentException("El adoptante asociado al seguimiento no existe.");
+
+                return new SeguimientoDetalleVeterinariaDTO()
+                {
+                    Id = seguimiento.Id,
+                    FechaAsignada = seguimiento.FechaAsignada.ToString("d"),
+                    HoraAsignada = seguimiento.FechaAsignada.ToString("t"),
+                    SolicitudId = seguimiento.Id_SolicitudDeAdopcion,
+                    AdoptanteId = usuarioAdoptante.Id,
+                    Id_Veterinaria = seguimiento.Id_Veterinaria,
+                    NombreAdoptante = usuarioAdoptante.NombreUsuario,
+                    EmailAdoptante = usuarioAdoptante.Email,
+                    Telefono = usuarioAdoptante.Telefono,
+                    EstaAplicada = seguimiento.EstaAplicada,
+                    EstaActivo = seguimiento.EstaActivo,
+                    PorReprogramar = seguimiento.PorReprogramar,
+                    MotivoDeReprogramacion = seguimiento.MotivoDeReprogramacion
+                };
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task MarcarVacunacionDelAnimal(IIdentity? identity, SeguimientoMarcarVacunacionDTO marcarVacunacionDTO)
+        {
+            try
+            {
+                int veterinariaId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                PlanDeVacunacion? plan = await _repositoryManager.PlanDeVacunacionRepository
+                    .FindByAsync(p => p.Id_SolicitudDeAdopcion.Equals(marcarVacunacionDTO.SolicitudId) && p.Id_Veterinaria.Equals(veterinariaId));
+
+                if (plan is null)
+                    throw new DirectoryNotFoundException("No se encontró el plan de vacunación asociado.");
+
+                VacunaDelPlan? vacunaAAplicar = await _repositoryManager.VacunaDelPlanRepository
+                    .FindByAsync(v => v.Id_PlanDeVacunacion.Equals(plan.Id) && v.FechaDeAplicacion == null);
+
+                if (vacunaAAplicar is null)
+                    throw new DirectoryNotFoundException("No hay vacunas por aplicar. Es posible que no se hayan cargado correctamente o que la adopción está completa.");
+
+                vacunaAAplicar.FechaDeAplicacion = DateTime.Now;
+                await _repositoryManager.VacunaDelPlanRepository.UpdateAsync(vacunaAAplicar);
+
+                SeguimientoDeVacunacion? seguimiento = await _repositoryManager.SeguimientoRepository
+                    .FindByAsync(seg => seg.Id.Equals(marcarVacunacionDTO.SeguimientoId) && seg.Id_Veterinaria.Equals(veterinariaId));
+
+                if (seguimiento is null)
+                    throw new DirectoryNotFoundException("El seguimiento no existe.");
+
+                seguimiento.EstaAplicada = true;
+                seguimiento.EstaActivo = false;
+
+                await _repositoryManager.SeguimientoRepository.UpdateAsync(seguimiento);
+
+                // si no encuentra vacunas por aplicar, quiere decir que la adopción está completa
+                bool faltanVacunas = await _repositoryManager.VacunaDelPlanRepository
+                    .ExistsAsync(vac => vac.Id_PlanDeVacunacion.Equals(plan.Id) && vac.FechaDeAplicacion == null);
+
+                if(faltanVacunas == false)
+                {
+                    plan.Completado = true;
+                    plan.FechaCompletado = DateTime.Now;
+                    await _repositoryManager.PlanDeVacunacionRepository.UpdateAsync(plan);
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

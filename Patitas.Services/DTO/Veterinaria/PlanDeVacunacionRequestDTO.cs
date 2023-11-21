@@ -9,6 +9,6 @@ namespace Patitas.Services.DTO.Veterinaria
     public class PlanDeVacunacionRequestDTO
     {
         public string NombreVacuna { get; set; } = string.Empty;
-        public int NroDosisVacuna { get; set; }
+        public byte NroDosisVacuna { get; set; }
     }
 }

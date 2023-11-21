@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Patitas.Services.Contracts.Manager;
+using Patitas.Services.DTO.Seguimiento;
 using Patitas.Services.DTO.Veterinaria;
 
 namespace Patitas.Presentation.Controllers
@@ -54,6 +55,24 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
+        [Route("seguimientos/{seguimientoId}")]
+        [Authorize(Roles = "Veterinaria")]
+        public async Task<IActionResult> GetSeguimiento([FromRoute] int seguimientoId)
+        {
+            try
+            {
+                SeguimientoDetalleVeterinariaDTO seguimiento = await _serviceManager.VeterinariaService
+                    .GetSeguimientoDetalle(HttpContext.User.Identity, seguimientoId);
+
+                return Ok(seguimiento);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("vacunas/{especieId}")]
         public async Task<IActionResult> GetListaDeVacunas([FromRoute] int especieId)
         {
@@ -82,6 +101,25 @@ namespace Patitas.Presentation.Controllers
                 return StatusCode(201);
             }
             catch (Exception ex)
+            {
+                if(ex is DirectoryNotFoundException)
+                    return NotFound(ex.Message);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("seguimientos")]
+        [Authorize(Roles = "Veterinaria")]
+        public async Task<IActionResult> MarcarVacunacion([FromBody] SeguimientoMarcarVacunacionDTO marcarVacunacionDTO)
+        {
+            try
+            {
+                await _serviceManager.VeterinariaService.MarcarVacunacionDelAnimal(HttpContext.User.Identity, marcarVacunacionDTO);
+                return NoContent();
+            }
+            catch(Exception ex)
             {
                 if(ex is DirectoryNotFoundException)
                     return NotFound(ex.Message);
