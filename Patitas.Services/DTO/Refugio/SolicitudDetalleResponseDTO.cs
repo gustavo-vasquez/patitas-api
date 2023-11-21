@@ -23,6 +23,7 @@ namespace Patitas.Services.DTO.Refugio
         public int Id_Animal { get; set; }
         public int Id_Refugio { get; set; }
         public bool EnEtapaDeSeguimiento { get; set; }
+        public bool PlanEstaCompleto { get; set; }
         public string NombreUsuario { get; set; } = string.Empty;
         public string EmailUsuario { get; set; } = string.Empty;
         public string FechaRegistroAdoptante { get; set; } = string.Empty;

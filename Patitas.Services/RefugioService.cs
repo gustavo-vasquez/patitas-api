@@ -500,6 +500,20 @@ namespace Patitas.Services
 
                 IEnumerable<Turno> turnos = await _repositoryManager.TurnoRepository.FindAllByAsync(t => t.Id_SolicitudDeAdopcion.Equals(solicitud.Id));
 
+                // verifico si no hay más vacunas que aplicar para poder finalizar el proceso de adopción
+                bool planCompletado = false;
+
+                if(solicitud.EnEtapaDeSeguimiento)
+                {
+                    PlanDeVacunacion? plan = await _repositoryManager.PlanDeVacunacionRepository
+                        .FindByAsync(p => p.Id_SolicitudDeAdopcion.Equals(solicitud.Id));
+
+                    if (plan is null)
+                        throw new ArgumentException("El plan asociado a la solicitud no existe");
+
+                    planCompletado = plan.Completado;
+                }
+
                 SolicitudDetalleResponseDTO solicitudDetalle = new SolicitudDetalleResponseDTO()
                 {
                     NroSolicitud = solicitud.Id,
@@ -513,6 +527,7 @@ namespace Patitas.Services
                     Id_Animal = solicitud.Id_Animal,
                     Id_Refugio = solicitud.Id_Refugio,
                     EnEtapaDeSeguimiento = solicitud.EnEtapaDeSeguimiento,
+                    PlanEstaCompleto = planCompletado,
                     NombreUsuario = usuarioAdoptante.NombreUsuario,
                     EmailUsuario = usuarioAdoptante.Email,
                     FechaRegistroAdoptante = usuarioAdoptante.FechaCreacion.ToString("d"),

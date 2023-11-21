@@ -381,5 +381,29 @@ namespace Patitas.Services
                 throw new ArgumentException("No se pudo habilitar la solicitud para seguimiento. Causa: " + ex.Message);
             }
         }
+
+        public async Task FinalizarProcesoDeAdopcion(IIdentity? identity, int solicitudId)
+        {
+            try
+            {
+                // obtengo el id del refugio que va a concluir la adopción
+                int refugioId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                // obtengo la solicitud asociada al refugio
+                SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository
+                    .FindByAsync(s => s.Id.Equals(solicitudId) && s.Id_Refugio.Equals(refugioId));
+
+                if (solicitud is null)
+                    throw new DirectoryNotFoundException("La solicitud no existe o no está asociada a su refugio.");
+
+                solicitud.FechaFinalizacion = DateTime.Now;
+                solicitud.EstaActivo = false;
+                await _repositoryManager.SolicitudDeAdopcionRepository.UpdateAsync(solicitud);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Ocurrió un error al finalizar el proceso de adopción. Causa: " + ex.Message);
+            }
+        }
     }
 }

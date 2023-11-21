@@ -131,5 +131,21 @@ namespace Patitas.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut]
+        [Route("{solicitudId}/finalizacion")]
+        [Authorize(Roles = "Refugio")]
+        public async Task<IActionResult> FinalizarAdopcion([FromRoute] int solicitudId)
+        {
+            try
+            {
+                await _serviceManager.SolicitudDeAdopcionService.FinalizarProcesoDeAdopcion(HttpContext.User.Identity, solicitudId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
