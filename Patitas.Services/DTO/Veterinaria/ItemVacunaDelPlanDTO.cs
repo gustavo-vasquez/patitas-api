@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Patitas.Services.DTO.Veterinaria
 {
-    public class PlanDeVacunacionRequestDTO
+    public class ItemVacunaDelPlanDTO
     {
         public string NombreVacuna { get; set; } = string.Empty;
-        public int NroDosisVacuna { get; set; }
+        public int NroDosisAAplicar { get; set; }
+        public DateTime? FechaDeAplicacion { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace Patitas.Services.Contracts
 {
     public interface IVeterinariaService
     {
+        Task<SolicitudDetalleVeterinariaResponseDTO> GetSolicitudDetalle(IIdentity? identity, int solicitudId);
         Task<IEnumerable<VacunaComboDTO>> GetVacunaCombo(int especieId);
         Task CreateNuevoPlanDeVacunacion(IIdentity? identity, IEnumerable<PlanDeVacunacionRequestDTO> planVacunacionDTO, int solicitudId);
     }

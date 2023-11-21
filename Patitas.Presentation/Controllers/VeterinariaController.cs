@@ -36,6 +36,24 @@ namespace Patitas.Presentation.Controllers
         }
 
         [HttpGet]
+        [Route("solicitudes/{solicitudId}")]
+        [Authorize(Roles = "Veterinaria")]
+        public async Task<IActionResult> GetSolicitudDetalle([FromRoute] int solicitudId)
+        {
+            try
+            {
+                SolicitudDetalleVeterinariaResponseDTO solicitudes = await _serviceManager.VeterinariaService
+                    .GetSolicitudDetalle(HttpContext.User.Identity, solicitudId);
+
+                return Ok(solicitudes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("vacunas/{especieId}")]
         public async Task<IActionResult> GetListaDeVacunas([FromRoute] int especieId)
         {
