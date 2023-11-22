@@ -15,5 +15,6 @@ namespace Patitas.Services.DTO.Refugio
         public RefugioInfoCompletaDTO InfoCompleta { get; set; } = null!;
         public bool PuedeComentar { get; set; }
         public bool SesionExpirada { get; set; }
+        public bool TieneComentario { get; set; }
     }
 }

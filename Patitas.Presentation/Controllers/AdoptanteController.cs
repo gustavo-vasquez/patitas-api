@@ -77,5 +77,21 @@ namespace Patitas.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("comentario")]
+        [Authorize(Roles = "Adoptante")]
+        public async Task<IActionResult> CreateComentario([FromBody] ComentarioCreateDTO comentarioDTO)
+        {
+            try
+            {
+                await _serviceManager.AdoptanteService.CrearComentario(HttpContext.User.Identity, comentarioDTO);
+                return StatusCode(201);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

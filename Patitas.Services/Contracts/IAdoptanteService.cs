@@ -15,5 +15,6 @@ namespace Patitas.Services.Contracts
 		Task<AdopcionDetalleResponseDTO> GetAdopcionDetalle(IIdentity? identity, int solicitudId);
         Task<TurnoDetalleAdoptanteDTO> GetTurnoDetalle(IIdentity? identity, int turnoId);
         Task ConfirmarMiTurno(IIdentity? identity, int turnoId);
+        Task CrearComentario(IIdentity? identity, ComentarioCreateDTO comentarioDTO);
     }
 }

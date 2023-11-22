@@ -181,5 +181,29 @@ namespace Patitas.Services
                 throw new ArgumentException("No se pudo confirmar el turno debido a un problema inesperado.");
             }
         }
+
+        public async Task CrearComentario(IIdentity? identity, ComentarioCreateDTO comentarioDTO)
+        {
+            try
+            {
+                int adoptanteId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+
+                Comentario nuevoComentario = new Comentario()
+                {
+                    Descripcion = comentarioDTO.Contenido,
+                    FechaCreacion = DateTime.Now,
+                    EstaActivo = true,
+                    Nro_Estrellas = comentarioDTO.NroEstrellas,
+                    Id_Refugio = comentarioDTO.Id_Refugio,
+                    Id_Adoptante = adoptanteId
+                };
+
+                await _repositoryManager.ComentarioRepository.CreateAsync(nuevoComentario);
+            }
+            catch(Exception ex)
+            {
+                throw new ArgumentException("Ocurrió un problema al crear el comentario. Causa: " + ex.Message);
+            }
+        }
     }
 }

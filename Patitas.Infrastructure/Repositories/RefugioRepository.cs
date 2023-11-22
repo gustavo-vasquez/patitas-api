@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,38 @@ namespace Patitas.Infrastructure.Repositories
             }
 
             return nombresDeVeterinarias;
+        }
+
+        public async Task<bool> AdoptanteTieneComentario(ClaimsIdentity? identity, int refugioId)
+        {
+            try
+            {
+                if (identity != null && identity.IsAuthenticated)
+                {
+                    int id = Convert.ToInt32(identity.FindFirst(ClaimTypes.NameIdentifier)?.Value); // obtengo el id del usuario que estaba en el token
+                    string? email = identity.FindFirst(ClaimTypes.Email)?.Value; // obtengo el email del usuario que estaba en el token
+                    string? rol = identity.FindFirst(ClaimTypes.Role)?.Value; // obtengo el rol del usuario logueado
+
+                    if (rol == "Adoptante")
+                    {
+                        // utilizo el id y el email para recuperar el usuario
+                        Usuario? usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id.Equals(id) && u.Email.Equals(email));
+
+                        if (usuario is not null)
+                        {
+                            return await _context.Comentarios.AnyAsync(c => c.Id_Adoptante.Equals(id) && c.Id_Refugio.Equals(refugioId));
+                        }
+
+                        return false;
+                    }
+                }
+
+                return false;
+            }
+            catch
+            {
+                throw new ArgumentException("Ocurrió un error al comprobar si el adoptante tiene algún comentario.");
+            }
         }
     }
 }

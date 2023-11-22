@@ -343,7 +343,8 @@ namespace Patitas.Services
             {
                 InfoBasica = await this.GetInformacionBasicaDelRefugio(refugioId),
                 Comentarios = comentariosDTO,
-                PuedeComentar = await _repositoryManager.SolicitudDeAdopcionRepository.AdoptantePuedeComentar(identity)
+                PuedeComentar = await _repositoryManager.SolicitudDeAdopcionRepository.AdoptantePuedeComentar(identity),
+                TieneComentario = await _repositoryManager.RefugioRepository.AdoptanteTieneComentario(identity, refugioId)
             };
         }
 
