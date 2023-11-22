@@ -35,6 +35,24 @@ namespace Patitas.Presentation.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("cita/{solicitudId}")]
+        [Authorize(Roles = "Veterinaria")]
+        public async Task<IActionResult> CargarCitaFormulario([FromRoute] int solicitudId)
+        {
+            try
+            {
+                SeguimientoCreateDTO createDTO = await _serviceManager.SeguimientoService
+                    .CargarInfoParaCita(HttpContext.User.Identity, solicitudId);
+
+                return Ok(createDTO);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         [Authorize(Roles = "Veterinaria")]
         public async Task<IActionResult> CreateSeguimiento([FromBody] SeguimientoCreateDTO seguimientoDTO)

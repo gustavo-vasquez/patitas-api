@@ -1,5 +1,6 @@
 ﻿using Patitas.Domain.Entities;
 using Patitas.Infrastructure.Contracts.Manager;
+using Patitas.Infrastructure.Enums;
 using Patitas.Services.Contracts;
 using Patitas.Services.DTO.Seguimiento;
 using Patitas.Services.DTO.Turno;
@@ -20,6 +21,48 @@ namespace Patitas.Services
         public SeguimientoService(IRepositoryManager repositoryManager)
         {
             _repositoryManager = repositoryManager;
+        }
+
+        public async Task<SeguimientoCreateDTO> CargarInfoParaCita(IIdentity? identity, int solicitudId)
+        {
+            int veterinariaId = await _repositoryManager.UsuarioRepository.GetUserLoggedId(identity);
+            SolicitudDeAdopcion? solicitud = await _repositoryManager.SolicitudDeAdopcionRepository
+                .GetByIdAsync(solicitudId, IncludeTypes.REFERENCE_TABLE_NAME, "Adoptante");
+
+            if (solicitud is null)
+                throw new DirectoryNotFoundException("La solicitud no existe.");
+
+            Usuario? usuarioAdoptante = await _repositoryManager.UsuarioRepository.GetByIdAsync(solicitud.Adoptante.Id);
+            Animal? animal = await _repositoryManager.AnimalRepository.GetByIdAsync(solicitud.Id_Animal);
+
+            if (usuarioAdoptante is null || animal is null)
+                throw new DirectoryNotFoundException("El usuario o animal requerido no existe.");
+
+            PlanDeVacunacion? plan = await _repositoryManager.PlanDeVacunacionRepository
+                .FindByAsync(p => p.Id_SolicitudDeAdopcion.Equals(solicitudId) && p.Id_Veterinaria.Equals(veterinariaId));
+
+            if (plan is null)
+                throw new DirectoryNotFoundException("El plan no existe.");
+
+            VacunaDelPlan? vacunaDelPlan = await _repositoryManager.VacunaDelPlanRepository
+                .FindByAsync(vac => vac.Id_PlanDeVacunacion.Equals(plan.Id) && vac.FechaDeAplicacion == null);
+
+            if (vacunaDelPlan is null)
+                throw new DirectoryNotFoundException("No se encontró ninguna vacuna pendiente.");
+
+            Vacuna? vacuna = await _repositoryManager.VacunaRepository.GetByIdAsync(vacunaDelPlan.Id_Vacuna);
+
+            if (vacuna is null)
+                throw new DirectoryNotFoundException("No se encontró la vacuna.");
+
+            return new SeguimientoCreateDTO()
+            {
+                NombreVacuna = vacuna.Nombre,
+                NroDosisAAplicar = vacunaDelPlan.NroDosis,
+                NombreAdoptante = usuarioAdoptante.NombreUsuario,
+                NombreAnimal = animal.Nombre,
+                FotoAnimal = animal.Fotografia
+            };
         }
 
         public async Task CreateCita(IIdentity? identity, SeguimientoCreateDTO seguimientoDTO)

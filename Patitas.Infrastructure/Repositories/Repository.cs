@@ -26,17 +26,20 @@ namespace Patitas.Infrastructure.Repositories
         {
             T? result = await _context.Set<T>().FindAsync(id);
 
-            switch(includeType)
+            if(result is not null)
             {
-                case IncludeTypes.REFERENCE_TABLE_NAME:
-                    await _context.Entry(result!).Reference(tableNameProperty).LoadAsync();
-                    break;
-                case IncludeTypes.COLLECTION_TABLE_NAME:
-                    await _context.Entry(result!).Collection(tableNameProperty).LoadAsync();
-                    break;
-                default:
-                    break;
-            }   
+                switch(includeType)
+                {
+                    case IncludeTypes.REFERENCE_TABLE_NAME:
+                        await _context.Entry(result).Reference(tableNameProperty).LoadAsync();
+                        break;
+                    case IncludeTypes.COLLECTION_TABLE_NAME:
+                        await _context.Entry(result).Collection(tableNameProperty).LoadAsync();
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             return result;
         }

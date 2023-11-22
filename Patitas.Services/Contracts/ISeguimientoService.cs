@@ -13,5 +13,6 @@ namespace Patitas.Services.Contracts
     {
         Task<SeguimientoResponseDTO> GetSeguimientosVeterinaria(IIdentity? identity);
         Task CreateCita(IIdentity? identity, SeguimientoCreateDTO seguimientoDTO);
+        Task<SeguimientoCreateDTO> CargarInfoParaCita(IIdentity? identity, int solicitudId);
     }
 }

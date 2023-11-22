@@ -22,5 +22,8 @@ namespace Patitas.Services.DTO.Seguimiento
         public int? SolicitudDeAdopcionId { get; set; }
         public string NombreVacuna { get; set; } = string.Empty;
         public byte NroDosisAAplicar { get; set; }
+        public string NombreAdoptante { get; set; } = string.Empty;
+        public string NombreAnimal { get;set; } = string.Empty;
+        public string FotoAnimal { get; set; } = string.Empty;
     }
 }

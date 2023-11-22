@@ -19,5 +19,6 @@ namespace Patitas.Services.DTO.Veterinaria
         public int Id_Especie { get; set; }
         public int Id_Refugio { get; set; }
         public List<ItemVacunaDelPlanDTO> ItemsVacunaDelPlan { get; set; } = new List<ItemVacunaDelPlanDTO>();
+        public DateTime? FechaFinalizacion { get; set; }
     }
 }

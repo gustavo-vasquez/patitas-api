@@ -80,7 +80,8 @@ namespace Patitas.Services
                 Id_Animal = solicitud.Animal.Id,
                 Id_Especie = raza.Id_Especie,
                 Id_Refugio = solicitud.Id_Refugio,
-                ItemsVacunaDelPlan = itemsDelPlan
+                ItemsVacunaDelPlan = itemsDelPlan,
+                FechaFinalizacion = solicitud.FechaFinalizacion
             };
         }
 
