@@ -128,24 +128,27 @@ namespace Patitas.Services
             if (planDeVacunacion is null)
                 throw new ArgumentException("No se pudo crear el plan de vacunación.");
 
-            foreach(PlanDeVacunacionRequestDTO item in vacunasDelPlan)
+            List<VacunaDelPlan> listaVacunas = new List<VacunaDelPlan>();
+            Vacuna? vacuna = null;
+
+            foreach (PlanDeVacunacionRequestDTO item in vacunasDelPlan)
             {
                 // si el nombre de la vacuna existe, devuelvo los datos de esa vacuna
-                Vacuna? vacuna = await _repositoryManager.VacunaRepository.FindByAsync(v => v.Nombre.Equals(item.NombreVacuna));
+                if (vacuna is null || item.NombreVacuna != vacuna.Nombre)
+                    vacuna = await _repositoryManager.VacunaRepository.FindByAsync(v => v.Nombre.Equals(item.NombreVacuna));
 
                 if (vacuna is null)
                     throw new DirectoryNotFoundException("La vacuna enviada no existe.");
 
-                VacunaDelPlan nuevoItem = new VacunaDelPlan()
+                listaVacunas.Add(new VacunaDelPlan()
                 {
                     Id_PlanDeVacunacion = planDeVacunacion.Id,
                     Id_Vacuna = vacuna.Id,
                     NroDosis = item.NroDosisVacuna
-                };
-
-                await _repositoryManager.VacunaDelPlanRepository.CreateAsync(nuevoItem);
+                });
             }
 
+            await _repositoryManager.VacunaDelPlanRepository.CreateAsync(listaVacunas);
         }
 
         public async Task<SeguimientoDetalleVeterinariaDTO> GetSeguimientoDetalle(IIdentity? identity, int seguimientoId)

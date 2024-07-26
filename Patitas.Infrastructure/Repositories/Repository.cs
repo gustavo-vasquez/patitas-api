@@ -70,6 +70,12 @@ namespace Patitas.Infrastructure.Repositories
             await SaveAsync();
         }
 
+        public async Task CreateAsync(IEnumerable<T> entities)
+        {
+            await _context.Set<T>().AddRangeAsync(entities);
+            await SaveAsync();
+        }
+
         public async Task UpdateAsync(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;

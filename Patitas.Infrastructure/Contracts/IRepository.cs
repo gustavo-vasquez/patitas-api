@@ -17,6 +17,7 @@ namespace Patitas.Infrastructure.Contracts
         Task<IEnumerable<T>> FindAllByAsync(Expression<Func<T, bool>> predicate);
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
         Task CreateAsync(T entity);
+        Task CreateAsync(IEnumerable<T> entities);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task SaveAsync();
