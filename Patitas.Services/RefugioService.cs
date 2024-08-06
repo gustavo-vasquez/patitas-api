@@ -503,6 +503,7 @@ namespace Patitas.Services
 
                 // verifico si no hay más vacunas que aplicar para poder finalizar el proceso de adopción
                 bool planCompletado = false;
+                bool hayPlanActivo = false;
 
                 if(solicitud.EnEtapaDeSeguimiento)
                 {
@@ -513,6 +514,7 @@ namespace Patitas.Services
                         throw new ArgumentException("El plan asociado a la solicitud no existe");
 
                     planCompletado = plan.Completado;
+                    hayPlanActivo = true;
                 }
 
                 SolicitudDetalleResponseDTO solicitudDetalle = new SolicitudDetalleResponseDTO()
@@ -549,8 +551,8 @@ namespace Patitas.Services
                     SnVerFichaCompleta = true,
                     TieneTurnoActivo = turnos.Any(t => t.EstaActivo == true),
                     SnTurnos = turnos.Count() > 0,
-                    SnSeguimiento = false,
-                    SnPlanVacunacion = false,
+                    SnSeguimiento = solicitud.EnEtapaDeSeguimiento,
+                    SnPlanVacunacion = hayPlanActivo,
                     TxtMotivo = formularioPreAdopcion.Motivo,
                     SnTuvoMascota = formularioPreAdopcion.TuvoMascota,
                     SnTieneMascotas = formularioPreAdopcion.TieneMascotas,

@@ -27,8 +27,7 @@ namespace Patitas.Domain.Entities
         [ForeignKey(nameof(Id_Veterinaria))]
         public Veterinaria Veterinaria { get; set; } = null!;
 
-        // N a N
-        // N vacunas <--(VacunaDelPlan)--> N plan de vacunación
-        public ICollection<Vacuna> Vacunas { get; } = new List<Vacuna>();
+        // 1 a N: 1 plan de vacunación <--> N vacuna del plan
+        public ICollection<VacunaDelPlan> VacunasDelPlan { get; } = new List<VacunaDelPlan>();
     }
 }

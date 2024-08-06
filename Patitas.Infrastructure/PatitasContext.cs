@@ -148,13 +148,13 @@ namespace Patitas.Infrastructure
                     r => r.HasOne<Especie>().WithMany().HasForeignKey(rv => rv.Id_Especie)
                 );
 
-            modelBuilder.Entity<PlanDeVacunacion>()
+            /*modelBuilder.Entity<PlanDeVacunacion>()
                 .HasMany(pv => pv.Vacunas)
                 .WithMany(v => v.PlanesDeVacunacion)
                 .UsingEntity<VacunaDelPlan>(
                     l => l.HasOne<Vacuna>().WithMany().HasForeignKey(vp => vp.Id_Vacuna),
                     r => r.HasOne<PlanDeVacunacion>().WithMany().HasForeignKey(vp => vp.Id_PlanDeVacunacion)
-                );
+                );*/
 
             ///////////////////////////////////////////////////////////
 
